@@ -117,8 +117,11 @@ namespace NReadability
 
         private static string GetArticleTitle(HtmlNode htmlNode)
         {
+            var titleNode = htmlNode.GetElementsByTagName("title").FirstOrDefault();
+            if (titleNode == null) return null;
+
             string currTitle, origTitle;
-            currTitle = origTitle = GetInnerText(htmlNode.GetElementsByTagName("title")[0]);
+            currTitle = origTitle = GetInnerText(titleNode);
 
             if (Regex.IsMatch(currTitle, @" [\|\-] "))
             {
@@ -267,7 +270,7 @@ namespace NReadability
                 }
             }
 
-            return topCandidate.InnerHtml;
+            return topCandidate == null ? null : topCandidate.InnerHtml;
         }
     }
 }
