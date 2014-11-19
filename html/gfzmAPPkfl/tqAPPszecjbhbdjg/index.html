@@ -1,0 +1,429 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>天气APP实战二（创建表和包的结构）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">上一篇地址</span></p>
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/40595829">天气APP的实战（1）
+</a><br>
+</span></p>
+<p><span style="font-size:18px">创建表和包的结构</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size:24px; color:#ff0000">1.activity<span style="font-family:宋体">放所有与活动相关的包，以为自己忘记在配置文件注册</span></span></p>
+<p><span style="font-size:24px; color:#ff0000">2.Db&nbsp;<span style="font-family:宋体">放于数据库相关的代码&nbsp;&nbsp;建立数据库&nbsp;数据持久化操作</span></span></p>
+<p><span style="font-size:24px; color:#ff0000">3.Model&nbsp;<span style="font-family:宋体">其实就是实体类&nbsp;</span></span></p>
+<p><span style="font-size:24px; color:#ff0000">4.Receive&nbsp;<span style="font-family:宋体">存放所有广播接收器相关的代码</span></span></p>
+<p><span style="font-size:24px; color:#ff0000">5.Service&nbsp;&nbsp;<span style="font-family:宋体">存放所有与服务相关的代码</span></span></p>
+<p><span style="font-size:24px; color:#ff0000">6.Utils&nbsp;&nbsp;<span style="font-family:宋体">大家都估计是最熟悉的包&nbsp;放工具类的地方</span></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size:18px">首先&nbsp;我们要获取省市县的数据&nbsp;用数据库进行存储&nbsp;所以先建数据库 其实 我对于数据库的语言，没有校对工具是很容易错的，所以呢，大家最好现在用SQLiteExpertPers工具去调试下再去COPY到代码中.</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">WeatherOpenHelper</span></p>
+<pre name="code" class="java">package com.xiaoxin.Weather.db;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class WeatherOpenHelper extends SQLiteOpenHelper {
+	
+	/**
+	 *  Province表建表语句
+	 */
+	public static final String CREATE_PROVINCE = &quot;create table Province (&quot;
+				+ &quot;id integer primary key autoincrement, &quot; 
+				+ &quot;province_name text, &quot;
+				+ &quot;province_code text)&quot;;
+	/**
+	 *  City表建表语句
+	 */
+	public static final String CREATE_CITY = &quot;create table City (&quot;
+				+ &quot;id integer primary key autoincrement, &quot; 
+				+ &quot;city_name text, &quot; 
+				+ &quot;city_code text, &quot; 
+				+ &quot;province_id integer)&quot;;
+	/**
+	 *  County表建表语句
+	 */
+	public static final String CREATE_COUNTY = &quot;create table County (&quot;
+				+ &quot;id integer primary key autoincrement, &quot; 
+				+ &quot;county_name text, &quot; 
+				+ &quot;county_code text, &quot; 
+				+ &quot;city_id integer)&quot;;
+
+	public WeatherOpenHelper(Context context, String name, CursorFactory factory,
+			int version) {
+		super(context, name, factory, version);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		db.execSQL(CREATE_PROVINCE);  // 创建Province表
+		db.execSQL(CREATE_CITY);  // 创建City表
+		db.execSQL(CREATE_COUNTY);  // 创建County表
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	}
+
+}</pre><br>
+就是三个建表的语句 最后在oncreate中执行 很简单的
+<p>
+<p><span style="font-size:18px">另外每一张表最好有一个实体类，以便于后期开发</span></p>
+<p><span style="font-size:18px">城市类</span></p>
+<p><span style="font-size:18px"></span></p>
+<pre name="code" class="java">package com.xiaoxin.Weather.model;
+
+public class City {
+
+	private int id;
+
+	private String cityName;
+
+	private String cityCode;
+
+	private int provinceId;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public String getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(String cityCode) {
+		this.cityCode = cityCode;
+	}
+
+	public int getProvinceId() {
+		return provinceId;
+	}
+
+	public void setProvinceId(int provinceId) {
+		this.provinceId = provinceId;
+	}
+
+}
+</pre>县
+<p>
+<p><span style="font-size:18px"></span></p>
+<pre name="code" class="java">package com.xiaoxin.Weather.model;
+
+public class County {
+
+	private int id;
+
+	private String countyName;
+
+	private String countyCode;
+
+	private int cityId;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getCountyName() {
+		return countyName;
+	}
+
+	public void setCountyName(String countyName) {
+		this.countyName = countyName;
+	}
+
+	public String getCountyCode() {
+		return countyCode;
+	}
+
+	public void setCountyCode(String countyCode) {
+		this.countyCode = countyCode;
+	}
+
+	public int getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
+	
+}
+</pre>省
+<p>
+<p><span style="font-size:18px"></span></p>
+<pre name="code" class="java">package com.xiaoxin.Weather.model;
+
+public class Province {
+
+	private int id;
+
+	private String provinceName;
+
+	private String provinceCode;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
+	}
+
+}
+</pre><br>
+可以看出来，实体类的内容都非常简单，基本就是生成数据库表对应字段的get和set方法，接着还需要创建一个coolWeatherDB类 这个类中会把一些常用的数据库操作进行封装，以便于后期使用。<br>
+<br>
+<pre name="code" class="java">package com.xiaoxin.Weather.db;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.xiaoxin.Weather.model.City;
+import com.xiaoxin.Weather.model.County;
+import com.xiaoxin.Weather.model.Province;
+
+public class WeatherDB {
+
+	/**
+	 * 数据库名
+	 */
+	public static final String DB_NAME = &quot;weather&quot;;
+
+	/**
+	 * 数据库版本
+	 */
+	public static final int VERSION = 1;
+
+	private static WeatherDB coolWeatherDB;
+
+	private SQLiteDatabase db;
+
+	/**
+	 * 将构造方法私有化
+	 */
+	private WeatherDB(Context context) {
+		WeatherOpenHelper dbHelper = new WeatherOpenHelper(context,
+				DB_NAME, null, VERSION);
+		db = dbHelper.getWritableDatabase();
+	}
+
+	/**
+	 * 获取CoolWeatherDB的实例。
+	 */
+	public synchronized static WeatherDB getInstance(Context context) {
+		if (coolWeatherDB == null) {
+			coolWeatherDB = new WeatherDB(context);
+		}
+		return coolWeatherDB;
+	}
+
+	/**
+	 * 将Province实例存储到数据库。
+	 */
+	public void saveProvince(Province province) {
+		if (province != null) {
+			ContentValues values = new ContentValues();
+			values.put(&quot;province_name&quot;, province.getProvinceName());
+			values.put(&quot;province_code&quot;, province.getProvinceCode());
+			db.insert(&quot;Province&quot;, null, values);
+		}
+	}
+
+	/**
+	 * 从数据库读取全国所有的省份信息。
+	 */
+	public List&lt;Province&gt; loadProvinces() {
+		List&lt;Province&gt; list = new ArrayList&lt;Province&gt;();
+		Cursor cursor = db
+				.query(&quot;Province&quot;, null, null, null, null, null, null);
+		if (cursor.moveToFirst()) {
+			do {
+				Province province = new Province();
+				province.setId(cursor.getInt(cursor.getColumnIndex(&quot;id&quot;)));
+				province.setProvinceName(cursor.getString(cursor
+						.getColumnIndex(&quot;province_name&quot;)));
+				province.setProvinceCode(cursor.getString(cursor
+						.getColumnIndex(&quot;province_code&quot;)));
+				list.add(province);
+			} while (cursor.moveToNext());
+		}
+		return list;
+	}
+
+	/**
+	 * 将City实例存储到数据库。
+	 */
+	public void saveCity(City city) {
+		if (city != null) {
+			ContentValues values = new ContentValues();
+			values.put(&quot;city_name&quot;, city.getCityName());
+			values.put(&quot;city_code&quot;, city.getCityCode());
+			values.put(&quot;province_id&quot;, city.getProvinceId());
+			db.insert(&quot;City&quot;, null, values);
+		}
+	}
+
+	/**
+	 * 从数据库读取某省下所有的城市信息。
+	 */
+	public List&lt;City&gt; loadCities(int provinceId) {
+		List&lt;City&gt; list = new ArrayList&lt;City&gt;();
+		Cursor cursor = db.query(&quot;City&quot;, null, &quot;province_id = ?&quot;,
+				new String[] { String.valueOf(provinceId) }, null, null, null);
+		if (cursor.moveToFirst()) {
+			do {
+				City city = new City();
+				city.setId(cursor.getInt(cursor.getColumnIndex(&quot;id&quot;)));
+				city.setCityName(cursor.getString(cursor
+						.getColumnIndex(&quot;city_name&quot;)));
+				city.setCityCode(cursor.getString(cursor
+						.getColumnIndex(&quot;city_code&quot;)));
+				city.setProvinceId(provinceId);
+				list.add(city);
+			} while (cursor.moveToNext());
+		}
+		return list;
+	}
+
+	/**
+	 * 将County实例存储到数据库。
+	 */
+	public void saveCounty(County county) {
+		if (county != null) {
+			ContentValues values = new ContentValues();
+			values.put(&quot;county_name&quot;, county.getCountyName());
+			values.put(&quot;county_code&quot;, county.getCountyCode());
+			values.put(&quot;city_id&quot;, county.getCityId());
+			db.insert(&quot;County&quot;, null, values);
+		}
+	}
+
+	/**
+	 * 从数据库读取某城市下所有的县信息。
+	 */
+	public List&lt;County&gt; loadCounties(int cityId) {
+		List&lt;County&gt; list = new ArrayList&lt;County&gt;();
+		Cursor cursor = db.query(&quot;County&quot;, null, &quot;city_id = ?&quot;,
+				new String[] { String.valueOf(cityId) }, null, null, null);
+		if (cursor.moveToFirst()) {
+			do {
+				County county = new County();
+				county.setId(cursor.getInt(cursor.getColumnIndex(&quot;id&quot;)));
+				county.setCountyName(cursor.getString(cursor
+						.getColumnIndex(&quot;county_name&quot;)));
+				county.setCountyCode(cursor.getString(cursor
+						.getColumnIndex(&quot;county_code&quot;)));
+				county.setCityId(cityId);
+				list.add(county);
+			} while (cursor.moveToNext());
+		}
+		return list;
+	}
+
+}</pre><br>
+weatherDB 我决定还是下一节 仔细的讲解一下 毕竟 郭大婶 封装的很好<br>
+<br>
+<p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/fxsjwsdgx/index.html">复习手机卫士的构想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPszecjbhbdjg/index.html">天气APP实战二（创建表和包的结构）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPdsz1/index.html">天气APP的实战（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl1lw/index.html">练手小项目之新闻类（1）联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl2Fragmentdlzlj/index.html">练手小项目之新闻类（2）Fragment的另种理解</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl3tjggl/index.html">练手小项目之新闻类（3）添加广告栏</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl4Listviewtphp/index.html">练手小项目之新闻类（4）Listview图片混排</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

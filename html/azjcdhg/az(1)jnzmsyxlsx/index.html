@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓(1)教你怎么使用下拉刷新</div><br><div id="article_content" class="article_content">
+
+<p>很久没用开源项目，重新复习一下下拉刷新&nbsp; 也是想总结下一个项目，应该需要那些东西， 为自己打下基础， 你也可以自己去下 library，关于源码我会在后面放在</p>
+<p>效果图&nbsp; <br>
+</p>
+<p><img src="23921086774699.jpg" alt=""><br>
+</p>
+<p>pulltorefresh（下拉刷新） 有一个类是 PullToRefreshListView 因为我只讲下拉刷新，所以只取了一部分的类。 首先复制 将一个包
+<br>
+</p>
+<p>&nbsp;粘贴进 你的工程</p>
+<p><img src="19583279853519.jpg" alt=""></p>
+<p><br>
+</p>
+<p>需要注意&nbsp; 这个类还需要一些资源文件：</p>
+<p>layout ： header.xml 头部出现的布局&nbsp; pull_to_refresh_header.xml 刷新的时候出现的布局&nbsp;&nbsp;&nbsp; 如果你们老板不喜欢可以自己定制
+<br>
+</p>
+<p>drawable-hdpi：目录下 有两张图片 pulltorefresh_down_arrow.png&nbsp;&nbsp; pulltorefresh_up_arrow.png&nbsp; 看名字知道 一个是下拉时图片。一个下拉到一个距离 出现的</p>
+<p>还需要一个res/values/attrs.xml 自定义标签&nbsp; <br>
+</p>
+<p><br>
+</p>
+<p>还有res/values/Strings.xml</p>
+<p>加入&nbsp; 这里你可以编辑 下拉时候出现的文字<br>
+</p>
+<p><pre name="code" class="java">    &lt;string name=&quot;pull_to_refresh_pull_label&quot;&gt;Pull to refresh...&lt;/string&gt;
+    &lt;string name=&quot;pull_to_refresh_release_label&quot;&gt;Release to refresh...&lt;/string&gt;
+    &lt;string name=&quot;pull_to_refresh_refreshing_label&quot;&gt;Loading...&lt;/string&gt;
+    &lt;string name=&quot;pull_to_refresh_tap_label&quot;&gt;Tap to refresh...&lt;/string&gt;</pre></p>
+<p>其实对于这个开源项目，你可以理解为一个线性布局，因为它内置了一个Listview ，就和ListFagment一样。</p>
+<p><br>
+</p>
+<p>相信大家都已经把项目建好了，我在上面已经说过了，可以当作一个线性布局，so&nbsp; 你 就拿着当线性布局用就行了&nbsp; 先写布局</p>
+<p><br>
+</p>
+<p><pre name="code" class="html">、&lt;pre name=&quot;code&quot; class=&quot;html&quot;&gt;&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; &gt;
+
+    &lt;pulltorefresh.PullToRefreshListView
+        android:id=&quot;@+id/ptrlv&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;fill_parent&quot;&gt;
+    &lt;/pulltorefresh.PullToRefreshListView&gt;
+
+&lt;/RelativeLayout&gt;</pre><br>
+</p>
+<pre></pre>
+<pre name="code" class="html">&lt;pre name=&quot;code&quot; class=&quot;html&quot;&gt;pulltorefresh.PullToRefreshListView  是 PullToRefreshListView类的全名 为了避免出错 ，直接复制包名 打开 PullToRefreshListView 子节点 直接右击一下 选择  copy qualifiled Name
+
+&lt;span style=&quot;font-size:18px;&quot;&gt;开始写java代码吧 &lt;/span&gt;
+既然在xml 里定义了，肯定要在java代码中实例化，
+&lt;pre name=&quot;code&quot; class=&quot;java&quot;&gt;    private PullToRefreshListView pullToRefreshListView;
+pullToRefreshListView = (PullToRefreshListView) findViewById(R.id.ptrlv);</pre><br>
+然后通过 getRefreshableView(); 得到一个 listview然后用adapter填充数据 <br>
+接着 下拉刷新有个方法 setOnRefreshListener 下拉监听 通常情况下：请求网络新数据、解析、展示<br>
+<pre></pre>
+<pre></pre>
+<p>
+<p>全部代码 <br>
+</p>
+<p><pre name="code" class="java">package com.example.day24;
+
+import pulltorefresh.PullToRefreshBase.OnRefreshListener;
+import pulltorefresh.PullToRefreshListView;
+import android.app.Activity;
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.os.Build;
+
+public class MainActivity extends Activity {
+	
+    private PullToRefreshListView pullToRefreshListView;
+    /** 将会被实例化为自定义的LinearLayout（PullToRefreshListView）中得到的ListView */
+	private ListView lv;
+    
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        pullToRefreshListView = (PullToRefreshListView) findViewById(R.id.ptrlv);
+        // 从LinearLayout中得到一个ListView
+        lv= pullToRefreshListView.getRefreshableView();
+    	// 给ListView填充数据
+        ArrayAdapter&lt;String&gt;adapter=new ArrayAdapter&lt;String&gt;(MainActivity.this,android.R.layout.simple_list_item_1, initData());
+        lv.setAdapter(adapter);
+        pullToRefreshListView.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				//刷新操作，通常情况下：请求网络新数据、解析、展示
+				//造假：异步.如果要给doInBackground（）传参，可以在execute()中传参
+				new MyAsyncT().execute();
+			}
+		});
+    }
+	//listview中得假数据
+	private String[] initData() {
+		String [] datas=new String[10];
+		for (int i = 0; i &lt; datas.length; i++) {
+			datas[i]=&quot;item&quot;+i;
+		}
+		return datas;
+	}
+	/**泛型1：doInBackground（）参数：：：String  url
+	 * 泛型2：onProgressUpdate（）参数：：：Integer  progress
+	 * 泛型3：doInBackground（）返回值类型，
+	 * 同时也是onPostExecute（）参数类型   通常：String   byte[]   Bitmap*/
+	class MyAsyncT extends AsyncTask&lt;String, Integer, String&gt;{
+
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(String result) {
+			//异步任务完成工作。告诉PullToRefreshListView任务完成
+			pullToRefreshListView.onRefreshComplete();
+			
+			super.onPostExecute(result);
+		}
+		
+	}
+}
+</pre>下一章&nbsp; 将下拉刷新 上拉加载更多一起写上<br>
+<span style="font-size:18px"><a target="_blank" target="_blank" href="http://download.csdn.net/detail/jack_king007/8153171">点击下载源码</a></span><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

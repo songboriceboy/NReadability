@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>Java常用类库之日期操作类</div><br><div id="article_content" class="article_content">
+
+Date类的使用&nbsp;<br>
+Calendar类的取得一个完整的日期<br>
+<br>
+<br>
+Data类是一个较为常用的类 但是其操作的日期&#26684;式会有一些不符合个人要求<br>
+<p>如果要进一步起的一些自己需要的时间 就可以使用Calendar类</p>
+<p><br>
+</p>
+<p>（1）data类的使用</p>
+<p><pre name="code" class="java">package KownClass;
+import java.util.Date ;
+public class DateDemo01{
+	public static void main(String args[]){
+		Date date = new Date() ;	// 直接实例化Date对象
+		System.out.println(&quot;当前日期为：&quot; + date) ;
+	}
+};</pre><br>
+结果：当前日期为：Tue Aug 12 18:11:01 CST 2014<br>
+</p>
+<p>（2）Calendar类使用</p>
+<p><pre name="code" class="java">package KownClass;
+import java.util.* ;
+public class DateDemo02{
+	public static void main(String args[]){
+		Calendar calendar = new GregorianCalendar();	// 实例化Calendar类对象
+		System.out.println(&quot;YEAR: &quot; + calendar.get(Calendar.YEAR));
+		System.out.println(&quot;MONTH: &quot; + (calendar.get(Calendar.MONTH) + 1));
+		System.out.println(&quot;DAY_OF_MONTH: &quot; + calendar.get(Calendar.DAY_OF_MONTH));
+		System.out.println(&quot;HOUR_OF_DAY: &quot; + calendar.get(Calendar.HOUR_OF_DAY));
+		System.out.println(&quot;MINUTE: &quot; + calendar.get(Calendar.MINUTE));
+		System.out.println(&quot;SECOND: &quot; + calendar.get(Calendar.SECOND));
+		System.out.println(&quot;MILLISECOND: &quot; + calendar.get(Calendar.MILLISECOND));
+	}
+};</pre><br>
+结果</p>
+<p>YEAR: 2014<br>
+MONTH: 8<br>
+DAY_OF_MONTH: 12<br>
+HOUR_OF_DAY: 18<br>
+MINUTE: 12<br>
+SECOND: 28<br>
+MILLISECOND: 803</p>
+<p>注意一下的就是月份要&#43;1</p>
+<p><br>
+</p>
+<p><span style="font-size:24px">DataFormate类</span><br>
+此类是一个日期的&#26684;式化类，专用&#26684;式化日期的操作因为java.util.Date<br>
+已经包含有完整的日期 所以只需要将此日期按照一些好的&#26684;式 &#26684;式化就显示就好了，同时也是一个抽象类 ，子类去实现就可以了<pre name="code" class="java">package KownClass;
+import java.text.DateFormat ;
+import java.util.Date ;
+public class DateDemo02{
+	public static void main(String args[]){
+		DateFormat df1 = DateFormat.getDateInstance() ;	// 得到日期的DateFormat对象
+		DateFormat df2 = DateFormat.getDateTimeInstance() ;	// 得到日期时间的DateFormat对象
+		System.out.println(&quot;DATE：&quot; + df1.format(new Date())) ; // 按照日期格式化
+		System.out.println(&quot;DATETIME：&quot; + df2.format(new Date())) ;	 // 按照日期时间格式化
+
+	}
+};</pre><br>
+也可以加入中国地区</p>
+<p><pre name="code" class="java">package KownClass;
+import java.text.DateFormat ;
+import java.util.Date ;
+import java.util.Locale ;
+public class DateDemo02{
+	public static void main(String args[]){
+		DateFormat df1 = null ;		// 声明一个DateFormat
+		DateFormat df2 = null ;		// 声明一个DateFormat
+		df1 = DateFormat.getDateInstance(DateFormat.YEAR_FIELD,new Locale(&quot;zh&quot;,&quot;CN&quot;)) ;	// 得到日期的DateFormat对象
+		df2 = DateFormat.getDateTimeInstance(DateFormat.YEAR_FIELD,DateFormat.ERA_FIELD,new Locale(&quot;zh&quot;,&quot;CN&quot;)) ;	// 得到日期时间的DateFormat对象
+		System.out.println(&quot;DATE：&quot; + df1.format(new Date())) ; // 按照日期格式化
+		System.out.println(&quot;DATETIME：&quot; + df2.format(new Date())) ;	 // 按照日期时间格式化
+
+	}
+};</pre><br>
+<span style="font-size:24px">SimpleDateFomat类的使用：一种日期&#26684;式变为另一种&#26684;式</span></p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">package KownClass;
+import java.text.* ;
+import java.util.* ;
+public class DateDemo02{
+	public static void main(String args[]){
+		String strDate = &quot;2008-10-19 10:11:30.345&quot; ;
+		// 准备第一个模板，从字符串中提取出日期数字
+		String pat1 = &quot;yyyy-MM-dd HH:mm:ss.SSS&quot; ;
+		// 准备第二个模板，将提取后的日期数字变为指定的格式
+		String pat2 = &quot;yyyy年MM月dd日 HH时mm分ss秒SSS毫秒&quot; ;
+		SimpleDateFormat sdf1 = new SimpleDateFormat(pat1) ;		// 实例化模板对象
+		SimpleDateFormat sdf2 = new SimpleDateFormat(pat2) ;		// 实例化模板对象
+		Date d = null ;
+		try{
+			d = sdf1.parse(strDate) ;	// 将给定的字符串中的日期提取出来
+		}catch(Exception e){			// 如果提供的字符串格式有错误，则进行异常处理
+			e.printStackTrace() ;		// 打印异常信息
+		}
+		System.out.println(sdf2.format(d)) ;	// 将日期变为新的格式
+	}
+};</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

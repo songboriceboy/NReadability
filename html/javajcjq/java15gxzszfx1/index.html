@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java15高新知识之泛型（1）</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:24px">（1）泛型产生的意义</span><br>
+<p><span style="font-size:18px">泛型可以解决数据类型的<span style="color:#ff0000">安全性</span>问题，它主要的原理是类声明的时候通过一个标示表示类中某个属性的类型或者是某个方法的返回&#20540;的参数类型，这样在类声明或实例化的时候只要指定好的类型即可</span></p>
+<p><span style="font-size:18px"><img src="30970859016259.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">按照此&#26684;式写一个类</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+
+class Point&lt;T&gt;{		// 此处可以随便写标识符号，T是type的简称
+	private T var ;	// var的类型由T指定，即：由外部指定
+	public T getVar(){	// 返回值的类型由外部决定
+		return var ;
+	}
+	public void setVar(T var){	// 设置的类型也由外部决定
+		this.var = var ;
+	}
+};
+public class test1{
+	public static void main(String args[]){
+		Point&lt;String&gt; p = new Point&lt;String&gt;() ;	// 里面的var类型为String类型
+		p.setVar(&quot;MLDN&quot;) ;		// 设置字符串
+		System.out.println(p.getVar().length()) ;	// 取得字符串的长度
+	}
+};</pre>泛型有一个好处就是你在前面的类不需要I指定数据类型，在外不指定就行了，同时也就避免了转型的错误</p>
+<p><span style="font-size:18px">如 Point&lt;String&gt; p=new Point&lt;String&gt;(); 其中&lt;String&gt; 就指定了数据类型了</span></p>
+<p><span style="font-size:18px">但是要注意的是 如果设置内容与指定的泛型不一致就会编译错误</span></p>
+<p><span style="font-size:18px"><img src="50901716297540.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">同时也可以更好的保护数据 直接在setter 里面加入泛型</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+
+class Point&lt;T&gt;{
+	private T x ;		// 表示X坐标
+	private T y ;		// 表示Y坐标
+	public void setX(T x){
+		this.x = x ;
+	}
+	public void setY(T y){
+		this.y = y ;
+	}
+	public T getX(){
+		return this.x ;
+	}
+	public T getY(){
+		return this.y ;
+	}
+};
+
+public class test1{
+	public static void main(String args[]){
+		Point&lt;Integer&gt; p = new Point&lt;Integer&gt;() ;
+		p.setX(10) ;		// 利用自动装箱操作：int --&gt; Integer
+		p.setY(20) ;		// 利用自动装箱操作：int --&gt; Integer
+		int x = p.getX() ;	// 自动拆箱
+		int y = p.getY() ;	// 自动拆箱
+		System.out.println(&quot;整数表示，X坐标为：&quot; + x) ;
+		System.out.println(&quot;整数表示，Y坐标为：&quot; + y) ;
+	}
+};</pre><br>
+在这样的程序里减少了类型转换的代码 而且更加安全 如果你设置的不是数字的 则会出现编译错误</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"><img src="24002806239154.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">泛型也可以在构造方法中使用，一般有可能使用构造方法为类中的属性赋&#20540;</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">(2)构造方法中使用泛型</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+
+class Point&lt;T&gt;{		// 此处可以随便写标识符号，T是type的简称
+	private T var ;	// var的类型由T指定，即：由外部指定
+	public Point(T var){		// 通过构造方法设置内容
+		this.var = var ;
+	}
+	public T getVar(){	// 返回值的类型由外部决定
+		return var ;
+	}
+	public void setVar(T var){	// 设置的类型也由外部决定
+		this.var = var ;
+	}
+};
+public class test1{
+	public static void main(String args[]){
+		Point&lt;String&gt; p = new Point&lt;String&gt;(&quot;MLDN&quot;) ;	// 里面的var类型为String类型
+		System.out.println(&quot;内容：&quot; + p.getVar()) ;
+	}
+};</pre><br>
+（3）设置多个多个泛型</p>
+<p><span style="font-size:18px">一个</span></p>
+<p><span style="font-size:18px">Point&lt;String&gt; p = new Point&lt;String&gt;(&quot;MLDN&quot;) ;<span style="white-space:pre">
+</span>// 里面的var类型为String类型<br>
+</span></p>
+<p><span style="font-size:18px">多个</span></p>
+<p><span style="font-size:18px">Notepad&lt;String,Integer&gt; t = null ;<span style="white-space:pre">
+</span>// 定义两个泛型类型的对象<br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">class Notepad&lt;K,V&gt;{		// 此处指定了两个泛型类型
+	private K key ;		// 此变量的类型由外部决定
+	private V value ;	// 此变量的类型由外部决定
+	public K getKey(){
+		return this.key ;
+	}
+	public V getValue(){
+		return this.value ;
+	}
+	public void setKey(K key){
+		this.key = key ;
+	}
+	public void setValue(V value){
+		this.value = value ;
+	}
+};
+public class GenericsDemo09{
+	public static void main(String args[]){
+		Notepad&lt;String,Integer&gt; t = null ;	// 定义两个泛型类型的对象
+		t = new Notepad&lt;String,Integer&gt;() ;	// 里面的key为String，value为Integer
+		t.setKey(&quot;李兴华&quot;) ;	// 设置第一个内容
+		t.setValue(30) ;	// 设置第二个内容
+		System.out.print(&quot;姓名；&quot; + t.getKey()) ;	// 取得信息
+		System.out.print(&quot;，年龄；&quot; + t.getValue()) ;	// 取得信息
+
+	}
+};</pre><br>
+（4）泛型的安全警告</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">在泛型引用中最好在声明类对象的时候指定好其内部的数据内型 例如&quot;Info&lt;String&gt;&quot;但也可以不指定类型
+</pre>虽然可以执行但是java为了保证程序依旧可以使用 会将T设置成Object类型 这样一来就可以接受任何数据类型<br>
+也可以说此时var型就是Object所有泛型信息将被擦除</p>
+<p><span style="font-size:18px">其实就相当于下面代码</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">class Info&lt;T&gt;{
+	private T var ;
+	public T getVar(){
+		return this.var ;
+	}
+	public void setVar(T var){
+		this.var = var ;
+	}
+	public String toString(){		// 覆写Object类中的toString()方法
+		return this.var.toString() ;
+	}
+};
+public class GenericsDemo11{
+	public static void main(String args[]){
+		Info&lt;Object&gt; i = new Info&lt;Object&gt;() ;		// 指定Object为泛型类型
+		i.setVar(&quot;MLDN&quot;) ;			// 设置字符串
+		System.out.println(&quot;内容：&quot; + i.getVar()) ;
+	}
+};</pre><br>
+我使用工具让大家区别在哪里</p>
+<p><span style="font-size:18px"><img src="13915858315865.jpg" alt=""><br>
+<br>
+</span></p>
+<p><span style="font-size:18px"><img src="9931726387037.jpg" alt=""><br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

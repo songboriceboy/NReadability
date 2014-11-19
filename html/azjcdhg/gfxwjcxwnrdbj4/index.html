@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程新闻内容的编辑（4）</div><br><div id="article_content" class="article_content">
+
+<p>这一篇内容主要是通过 新闻列表 点击 到达 新闻内容，因为现在并没有加载网络数据，所以先用假数据做一下，在后面我将用json数据做出来。</p>
+<p>UI大致为</p>
+<p><img src="12191558038657.jpg" alt=""></p>
+<p>我们先将UI做出来，&nbsp; 可以发现UI分成三部分 一个是标题一个是新闻 内容 另一个是 下方的的评论 内容， 因为I在上一节我已经讲了 UI的美化在这一节 我就不叙述着一些，毕竟篇幅有限。大家可以将就一下看看源码 重要部分我会讲解一下</p>
+<p>我们先看标题栏的内容的</p>
+<p><br>
+</p>
+<pre name="code" class="html">	&lt;RelativeLayout
+		android:id=&quot;@+id/newsdetails_titlebar_layout&quot;
+		android:layout_width=&quot;fill_parent&quot;
+		android:layout_height=&quot;wrap_content&quot;
+		android:background=&quot;@drawable/titlebar_background&quot;
+		&gt;
+		&lt;Button
+			android:id=&quot;@+id/newsdetails_titlebar_previous&quot;
+			android:layout_width=&quot;33dp&quot;
+			android:layout_height=&quot;33dp&quot;
+			android:layout_marginTop=&quot;7.0dip&quot;
+			android:layout_marginLeft=&quot;5.0dip&quot;
+			android:layout_alignParentLeft=&quot;true&quot; 
+			android:background=&quot;@drawable/newsdetails_title_previous_btn_selector&quot;
+			android:textSize=&quot;14.0sp&quot;
+			android:textStyle=&quot;bold&quot;
+			/&gt;
+		&lt;TextView
+			android:id=&quot;@+id/newsdetails_titlebar_title&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:layout_marginLeft=&quot;15.0dip&quot;
+			android:layout_marginTop=&quot;13.0dip&quot; 
+			android:layout_toRightOf=&quot;@id/newsdetails_titlebar_previous&quot;
+			android:textSize=&quot;18.0sp&quot;
+			android:textColor=&quot;@android:color/white&quot;
+			android:text=&quot;国内&quot;
+			/&gt;
+		&lt;Button
+			android:id=&quot;@+id/newsdetails_titlebar_next&quot;
+			android:layout_width=&quot;35dp&quot;
+			android:layout_height=&quot;35dp&quot;
+			android:layout_marginTop=&quot;8.0dip&quot;
+			android:layout_marginRight=&quot;5.0dip&quot;
+			android:layout_alignParentRight=&quot;true&quot; 
+			android:background=&quot;@drawable/newsdetails_title_next_btn_selector&quot;
+			/&gt;
+		&lt;Button
+			android:id=&quot;@+id/newsdetails_titlebar_comments&quot;
+			android:layout_width=&quot;65dp&quot;
+			android:layout_height=&quot;40dp&quot;
+			android:layout_alignParentRight=&quot;true&quot;
+			android:layout_marginRight=&quot;50.0dip&quot;
+			android:layout_marginTop=&quot;3.0dip&quot;
+			android:background=&quot;@drawable/newsdetails_titlebar_comments_background&quot;
+			android:textColor=&quot;@android:color/white&quot;
+			android:text=&quot;0跟帖&quot;
+			/&gt;
+	&lt;/RelativeLayout&gt;	</pre>
+<p>
+<p>标题栏是一个相对布局，背景设置了一张带有阴影的.9图片，高度适应 宽度填充 三个button背景都设置了 select的点击切换背景</p>
+<p>中间就是一个scollview</p>
+<p>中间内容的代码 <br>
+</p>
+<p>
+<pre name="code" class="html">&lt;LinearLayout
+		android:id=&quot;@+id/news_body_layout&quot;
+		android:layout_width=&quot;fill_parent&quot;
+		android:layout_height=&quot;fill_parent&quot;
+		android:layout_marginTop=&quot;-12.0dip&quot;
+		android:layout_marginBottom=&quot;40.0dip&quot;
+		android:layout_below=&quot;@id/newsdetails_titlebar_layout&quot;
+		&gt;
+		&lt;ScrollView
+			android:id=&quot;@+id/news_body_scrollview&quot;
+			android:layout_width=&quot;fill_parent&quot;
+			android:layout_height=&quot;fill_parent&quot;
+			android:background=&quot;#FFE7E7E7&quot;
+			android:fadingEdge=&quot;none&quot;
+			&gt;
+			&lt;LinearLayout
+				android:layout_width=&quot;fill_parent&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:orientation=&quot;vertical&quot;&gt;
+				&lt;LinearLayout
+					android:layout_width=&quot;fill_parent&quot;
+					android:layout_height=&quot;wrap_content&quot;
+					android:orientation=&quot;vertical&quot;&gt;
+					&lt;TextView
+						android:id=&quot;@+id/news_body_title&quot;
+						android:layout_width=&quot;fill_parent&quot;
+						android:layout_height=&quot;wrap_content&quot;
+						android:layout_marginLeft=&quot;12.0dip&quot;
+						android:layout_marginTop=&quot;12.0dip&quot;
+						android:layout_marginRight=&quot;12.0dip&quot;
+						android:textColor=&quot;#FF272727&quot;
+						android:textSize=&quot;18.0dip&quot;
+						android:textStyle=&quot;bold&quot;
+						/&gt;
+					&lt;TextView
+						android:id=&quot;@+id/news_body_ptime_source&quot;
+						android:layout_width=&quot;fill_parent&quot;
+						android:layout_height=&quot;wrap_content&quot;
+						android:layout_marginLeft=&quot;12.0dip&quot;
+						android:layout_marginTop=&quot;9.0dip&quot;
+						android:layout_marginRight=&quot;12.0dip&quot;
+						android:textColor=&quot;#FF888888&quot;
+						android:textSize=&quot;12.0sp&quot;
+						/&gt;
+					&lt;ImageView
+						android:id=&quot;@+id/news_body_separator_line&quot;
+						android:layout_width=&quot;fill_parent&quot;
+						android:layout_height=&quot;wrap_content&quot;
+						android:layout_marginTop=&quot;8.0dip&quot;
+						android:visibility=&quot;visible&quot;
+						android:src=&quot;@drawable/list_separator_line&quot;
+						/&gt;
+					&lt;ProgressBar
+						android:id=&quot;@+id/news_body_details_loading&quot;
+						android:layout_width=&quot;16.0dip&quot;
+						android:layout_height=&quot;16.0dip&quot;
+						android:layout_marginLeft=&quot;152.0dip&quot;
+						android:layout_marginTop=&quot;10.0dip&quot;
+						android:layout_centerHorizontal=&quot;true&quot;
+						android:layout_centerVertical=&quot;true&quot;
+						android:visibility=&quot;gone&quot;
+						android:clickable=&quot;false&quot;
+						style=&quot;?android:attr/progressBarStyleLarge&quot; /&gt;
+				&lt;/LinearLayout&gt;
+				&lt;TextView
+			        android:id=&quot;@+id/news_body_details&quot;
+			        android:layout_width=&quot;wrap_content&quot;
+			        android:layout_height=&quot;wrap_content&quot;
+			        android:layout_marginTop=&quot;5.0dip&quot;
+			        android:textColor=&quot;#ff000000&quot; 
+			        /&gt;
+			&lt;/LinearLayout&gt;
+		&lt;/ScrollView&gt;
+	&lt;/LinearLayout&gt;</pre>其中fadingEdgelength这就是控制渐变区域的宽度 唯一要重点说的就是 加入了一个 ProgressBar 当网络不好的时候 就会出现<br>
+<p>
+<p><br>
+</p>
+<p>下方的回复视图 <br>
+</p>
+<p>
+<pre name="code" class="html">	&lt;!-- 回复视图布局 --&gt;
+	&lt;LinearLayout
+		android:id=&quot;@+id/news_reply_layout&quot;
+		android:layout_width=&quot;fill_parent&quot;
+		android:layout_height=&quot;wrap_content&quot;
+		android:layout_alignParentBottom=&quot;true&quot;
+		android:layout_centerHorizontal=&quot;true&quot;
+		android:gravity=&quot;center&quot;
+		android:layout_gravity=&quot;bottom&quot;
+		android:orientation=&quot;horizontal&quot;
+		android:background=&quot;@drawable/news_reply_layout_background&quot;
+		android:visibility=&quot;visible&quot;
+		&gt;
+		&lt;LinearLayout
+			android:id=&quot;@+id/news_reply_edit_layout&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:gravity=&quot;center&quot;
+			android:layout_gravity=&quot;center&quot;
+			android:orientation=&quot;horizontal&quot;
+			android:visibility=&quot;gone&quot;
+			android:layout_marginTop=&quot;10.0dip&quot;
+			android:layout_marginBottom=&quot;5.0dip&quot;&gt;
+			&lt;EditText
+				android:id=&quot;@+id/news_reply_edittext&quot;
+				android:layout_width=&quot;230.0dip&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:layout_marginLeft=&quot;5.0dip&quot;
+				android:maxLength=&quot;500&quot; 
+				android:text=&quot;非常好的新闻&quot;/&gt;
+			&lt;ImageView
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:layout_marginLeft=&quot;10.0dip&quot;
+				android:layout_marginRight=&quot;10.0dip&quot;
+				android:src=&quot;@drawable/news_reply_layout_divider&quot; /&gt;
+			&lt;Button
+				android:id=&quot;@+id/news_reply_post&quot;
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:background=&quot;@drawable/news_reply_post_btn_selector&quot;
+				android:layout_marginRight=&quot;10.0dip&quot;
+				android:text=&quot;发表&quot; /&gt;
+		&lt;/LinearLayout&gt;
+		&lt;LinearLayout
+			android:id=&quot;@+id/news_reply_img_layout&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:gravity=&quot;center&quot;
+			android:layout_gravity=&quot;center&quot;
+			android:orientation=&quot;horizontal&quot;
+			android:layout_marginTop=&quot;3.0dip&quot;&gt;
+			&lt;ImageButton
+				android:id=&quot;@+id/news_reply_img_btn&quot;
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:background=&quot;#00000000&quot;
+				android:layout_marginLeft=&quot;5.0dip&quot;
+				android:src=&quot;@drawable/news_reply_img_btn_background&quot; /&gt;
+			&lt;ImageView
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:layout_marginLeft=&quot;5.0dip&quot;
+				android:layout_marginRight=&quot;2.0dip&quot;
+				android:src=&quot;@drawable/news_reply_layout_divider&quot; /&gt;
+			&lt;ImageButton
+				android:id=&quot;@+id/news_share_btn&quot;
+				android:background=&quot;#00000000&quot;
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:src=&quot;@drawable/news_share_btn_selector&quot; /&gt;
+			&lt;ImageView
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:layout_marginLeft=&quot;2.0dip&quot;
+				android:layout_marginRight=&quot;2.0dip&quot;
+				android:src=&quot;@drawable/news_reply_layout_divider&quot; /&gt;
+			&lt;ImageButton
+				android:id=&quot;@+id/news_collect_btn&quot;
+				android:background=&quot;#00000000&quot;
+				android:layout_width=&quot;wrap_content&quot;
+				android:layout_height=&quot;wrap_content&quot;
+				android:src=&quot;@drawable/news_collect_btn_selector&quot; /&gt;
+		&lt;/LinearLayout&gt;
+	&lt;/LinearLayout&gt;</pre>其实这样的布局 整个就是一个<img src="14588355546481.jpg" alt=""> 图片 点击时候会切换&nbsp; 一个隐藏 一个出现，
+<p>
+<p><br>
+</p>
+<p>然后再主文件中 队listview添加点击事件处理，因为这里不需要传递数据 都是死数据 所以只需要跳转</p>
+<p>
+<pre name="code" class="java">	newslist.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id)
+			{
+				Intent intent = new Intent(MainActivity.this, NewsDetailsActivity.class);
+				startActivity(intent);
+			}
+		});</pre><br>
+NewsDetailsActivity的代码 比较简单了 就是填充了一些假数据 <br>
+<p>
+<p>
+<pre name="code" class="java">package com.example.SundayNews;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.Html;
+import android.widget.TextView;
+
+public class NewsDetailsActivity extends Activity
+{
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.newsdetails);
+		
+		TextView newsTitle = (TextView)findViewById(R.id.news_body_title);
+		newsTitle.setText(&quot;新闻客户端教程发布啦&quot;);
+		TextView newsPtimeAndSource = (TextView)findViewById(R.id.news_body_ptime_source);
+		newsPtimeAndSource.setText(&quot;来源：工作室      2014-03-12 10:21:22&quot;);
+		TextView newsDetails = (TextView)findViewById(R.id.news_body_details);
+		newsDetails.setText(Html.fromHtml(NEWS));
+	}
+	
+	public final String NEWS = &quot;&lt;p&gt;　　环比全部停涨首次出现&lt;/p&gt;\r\n&lt;p&gt;　　数据显示，在新建商品住宅方面，2012年1月全国70个大中城市，价格环比下降的城市有48个，持平的城市有22个，没有一个城市出现上涨。从房价价格指数公布来看，首次出现了新建商品住宅环比全部停涨的现象。&lt;/p&gt;\r\n&lt;p&gt;　　从同比看，70个大中城市中，价格下降的城市有15个，比去年12月份增加6个。1月份，同比涨幅回落的城市有50个，涨幅均未超过3.9%。&lt;/p&gt;\r\n&lt;p&gt;　　二手住宅&lt;/p&gt;\r\n&lt;p&gt;　　仅有5个城市环比上涨&lt;/p&gt;\r\n&lt;p&gt;　　从二手房看,与上月相比，70个大中城市中，价格下降的城市有54个，持平的城市有11个。与去年12月份相比，1月份环比价格下降的城市增加了3个。环比上涨的仅5个城市：分别为贵阳、济宁、襄阳、韶关、遵义，均仅上涨0.1%。同比看，70个大中城市中，价格下降的城市有37个，比去年12月份增加了8个。1月份，同比涨幅回落的城市有29个，涨幅均未超过3.5%。&lt;/p&gt;\r\n&lt;p&gt;　　北京情况&lt;/p&gt;\r\n&lt;p&gt;　　二手房环比同比均下跌&lt;/p&gt;\r\n&lt;p&gt;　　数据显示，北京二手房价格不管是环比还是同比，都在下跌，且下跌幅度均有所加大。&lt;/p&gt;\r\n&lt;p&gt;　　在环比方面，自去年8月份出现停涨后，二手房价格环比开始下跌，且此后每个月的下跌幅度在不断加大，到2012年1月份，其环比下跌幅度已达到0.9%。而在同比方面，2012年1月份下跌3.1%，创下最大跌幅。&lt;/p&gt;\r\n&lt;p&gt;　　北京新建住宅价格指数2010年5月时同比涨幅为22%，而到了2012年1月同比涨幅仅为0.1%。新建商品房价格指数同比涨幅也是连续下跌，下降幅度也比较大，去年年底同比涨幅为1.3%，而到了今年1月份，则同比涨幅下跌为0.1%。在环比方面，继2011年10月首次出现下跌后，环比继续下跌为0.1%。&lt;/p&gt;\r\n&lt;p&gt;　　■ 分析&lt;/p&gt;\r\n&lt;p&gt;　　北京房价调控成效明显&lt;/p&gt;\r\n&lt;p&gt;　　北京中原地产市场总监张大伟认为，北京作为限购执行最严格的城市，房价调控已经见到明显成效。限购导致的直接需求减少，限购抑制投资、投机，在北京出台的最严格版限购下，5年外地户籍限购年限使得购房者回归自住，本地需求占据9成，自住首套占据9成，全市最近一年成交量中投资及投机基本绝迹。&lt;/p&gt;\r\n&lt;p&gt;　　同时，买卖双方博弈加剧，限购限贷使得购房者期待价格下调，但是投资手段匮乏、通货膨胀依然是阻碍价格下滑的关键因素。特别是城区部分二手房房主依然坚挺价格，惜售，这使得在价格依然居高不下的情况下，购房者入市谨慎。&lt;/p&gt;\r\n&lt;p&gt;　　■ 预测&lt;/p&gt;\r\n&lt;p&gt;　　今年房价或下调10%-20%&lt;/p&gt;\r\n&lt;p&gt;　　张大伟认为，2012年限购政策不会放松，一线城市楼市拐点已经明确，预期在6-12个月内房价可能还有10%-20%的下调，而且一线城市对全国的示范作用非常大，不仅在政策执行力度上，在房价下调过程中也会明显影响全国。&lt;/p&gt;\r\n&lt;p&gt;　　链家地产市场研究部冯联联认为，在楼市调控效果继续巩固的背景下，降价趋势仍会持续。1月份全国多个城市新房市场成交跌入谷底，观望情绪依旧浓重，为加速销售回款，将不断有开发商加入降价换量阵营，新房价格预期会进一步下调。&lt;/p&gt;&quot;;
+}
+</pre><br>
+<br>
+<p>
+<p><br>
+</p>
+<span id="pv-float-bar-container" style="top:238px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

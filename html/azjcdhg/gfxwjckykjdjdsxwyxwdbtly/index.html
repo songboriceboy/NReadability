@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">周末闲着没事，老师布置的作业都没完成，就简单去去实现下，还记得下午的写的联网的一个asnc——http框架的实现..........现在大多数APP，都在用大量的框架实现，不容置疑这样是提高了开发速度，但是新手 也会走上歪路，不断去用开源框架，其原理都不知道。 我们要做的就是下图：<br>
+</span></p>
+<p><img src="19618686115550.jpg" alt=""><br>
+</p>
+<p><span style="font-size:18px">小新我呢</span>，<span style="font-size:18px">写这篇文章的时候 2014.11.2.上图的效果 你用框架可以很简单的实现，<strong><a target="_blank" target="_blank" href="https://github.com/JakeWharton/Android-ViewPagerIndicator">Android-ViewPagerIndicator</a></strong>&nbsp;&nbsp;
+ 我赶上了安卓的末班车，现在世界是浮躁的，做开发的有几个能静下心的写下博客呢，所以既然静下心了，那就好好的做点有意义的事吧</span>。</p>
+<p><br>
+</p>
+<p><span style="font-size:18px">雄起吧，骚年</span>~~~~~</p>
+<p><br>
+</p>
+<p>大家看到这个效果是不是觉得，卧槽，这么高级的东西，感觉很难搞啊，说实话我也做不出这么美观的东西，因为我没有美工...............</p>
+<p>首先呢 这个布局&nbsp; 你可以看 首先相对布局，&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------思考时间------------ 然后呢 右边应该是一个button组建 功能 滑动左边的标题------------思考时间---------------</p>
+<p>能够滑动的东西 除了ScrollView 还有谁呢，正好里面有个&nbsp; HorizontalScrollView&nbsp;&nbsp; 里面镶嵌一个线性布局 填充GridView<br>
+</p>
+<p>
+<pre name="code" class="html">&lt;RelativeLayout
+        android:id=&quot;@+id/categorybar_layout&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginTop=&quot;-18.0dip&quot;
+        android:background=&quot;@drawable/categorybar_background&quot; &gt;
+
+        &lt;Button
+            android:id=&quot;@+id/category_arrow_right&quot;
+            android:layout_width=&quot;6.0dip&quot;
+            android:layout_height=&quot;10.0dip&quot;
+            android:layout_alignParentRight=&quot;true&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_marginLeft=&quot;2.0dip&quot;
+            android:layout_marginRight=&quot;10.0dip&quot;
+            android:background=&quot;@drawable/categorybar_right_arrow&quot; /&gt;
+
+        &lt;HorizontalScrollView
+            android:id=&quot;@+id/category_scrollview&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_marginLeft=&quot;6.0dip&quot;
+            android:layout_toLeftOf=&quot;@id/category_arrow_right&quot;
+            android:scrollbars=&quot;none&quot; &gt;
+
+            &lt;LinearLayout
+                android:id=&quot;@+id/category_layout&quot;
+                android:layout_width=&quot;wrap_content&quot;
+                android:orientation=&quot;horizontal&quot;
+                android:layout_height=&quot;wrap_content&quot;
+                android:gravity=&quot;center_vertical&quot; /&gt;
+            
+        &lt;/HorizontalScrollView&gt;
+    &lt;/RelativeLayout&gt;</pre><br>
+&nbsp;gridview 我将在main.java 里面填充 <br>
+<p>
+<p>因为在代码里只能写PX，所以我用了一个工具类，将PX转换成dp 这也是为了适配考虑 在最后的时候&nbsp; 我会将代码贴出来的，不过代码有点乱，我分开 讲</p>
+<p>在代码中 填充gridview&nbsp; <br>
+</p>
+<p>
+<pre name="code" class="java">GridView category = new GridView(this);
+		category.setColumnWidth(mColumnWidthDip);// 每個單元格的寬度
+		category.setNumColumns(GridView.AUTO_FIT);// 單元格數目
+		category.setGravity(Gravity.CENTER);// 設置對其方式
+		// 設置單元格選擇是背景色位透明，這樣選擇時就不實現黃色背景
+		category.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		// 根據單元格寬度和數目計算總寬度
+		int width = mColumnWidthDip * categories.size();
+		System.out.println(width);
+		LayoutParams params = new LayoutParams(width, LayoutParams.WRAP_CONTENT);</pre><br>
+<br>
+<p>
+<p>有了gridview 以后 要填充数据不是，对于标题，最好是从网络获取 然后填充，不过我先放在 res&nbsp; 文件中&nbsp;</p>
+<p>String[] categoryArray = getResources().getStringArray(<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;R.array.categories);</p>
+<p>gridview 我们是需要填充到 线性布局里面去的 gridview 又要填充 数据 <br>
+&nbsp;我们先填充gridview的数据吧&nbsp; 不知道大家记不记得 gridview怎么填充数据&nbsp; --------思考时间--------- 因为是数据是文字 所以 最简单的就是 SimpleAdapter</p>
+<p>SimpleAdapter 第一参数是 填充的activity 第二个参数 是一个map集合也是我们要填充的数据 所以呢 只有将数据 用map集合装起来呗</p>
+<p>
+<pre name="code" class="java">// 獲得新聞分類
+		String[] categoryArray = getResources().getStringArray(
+				R.array.categories);
+		// 把新聞分類保存到List中
+		List&lt;HashMap&lt;String, String&gt;&gt; categories = new ArrayList&lt;HashMap&lt;String, String&gt;&gt;();
+		for (int i = 0; i &lt; categoryArray.length; i++) {
+			HashMap&lt;String, String&gt; hashMap = new HashMap&lt;String, String&gt;();
+			hashMap.put(&quot;category_title&quot;, categoryArray[i]);
+			categories.add(hashMap);
+		}</pre>第三个参数是要填充的布局， 第四个是个数组，是从map集合中填充到 第五个界面的那个空间里面去<br>
+<p>
+<p>
+<pre name="code" class="java">    // 創建Adapter，指明映射字段
+        SimpleAdapter categoryAdapter = new SimpleAdapter(this, categories,
+                R.layout.category_title, new String[] { &quot;category_title&quot; },
+                new int[] { R.id.category_title });</pre>后面 就是将 实例化线性布局 将gridview 填充进来 <br>
+&nbsp;最后还有一个 button的功能&nbsp; 添加点击事件，滑动标题&nbsp;&nbsp; <br>
+<p>
+<p>
+<pre name="code" class="java">package com.example.SundayNews;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
+
+import com.example.SundayNews.utils.DensityUtil;
+
+public class MainActivity extends Activity {
+	private final int COLUMNWIDTHPX = 55;
+	private final int FLINGVELOCITYPX = 800;// 滚动距离
+	private int mColumnWidthDip;
+	private int mFlingVelocityDip;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_main);
+		// 吧px转换成dip
+		mColumnWidthDip = DensityUtil.px2dip(this, COLUMNWIDTHPX) + 90;
+		mFlingVelocityDip = DensityUtil.px2dip(this, FLINGVELOCITYPX) + 90;
+		// 獲得新聞分類
+		String[] categoryArray = getResources().getStringArray(
+				R.array.categories);
+		// 把新聞分類保存到List中
+		List&lt;HashMap&lt;String, String&gt;&gt; categories = new ArrayList&lt;HashMap&lt;String, String&gt;&gt;();
+		for (int i = 0; i &lt; categoryArray.length; i++) {
+			HashMap&lt;String, String&gt; hashMap = new HashMap&lt;String, String&gt;();
+			hashMap.put(&quot;category_title&quot;, categoryArray[i]);
+			categories.add(hashMap);
+		}
+		// 創建Adapter，指明映射字段
+		SimpleAdapter categoryAdapter = new SimpleAdapter(this, categories,
+				R.layout.category_title, new String[] { &quot;category_title&quot; },
+				new int[] { R.id.category_title });
+		GridView category = new GridView(this);
+		category.setColumnWidth(mColumnWidthDip);// 每個單元格的寬度
+		category.setNumColumns(GridView.AUTO_FIT);// 單元格數目
+		category.setGravity(Gravity.CENTER);// 設置對其方式
+		// 設置單元格選擇是背景色位透明，這樣選擇時就不實現黃色背景
+		category.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		// 根據單元格寬度和數目計算總寬度
+		int width = mColumnWidthDip * categories.size();
+		System.out.println(width);
+		LayoutParams params = new LayoutParams(width, LayoutParams.WRAP_CONTENT);
+		// 更新category寬度和高度，這樣category在一行顯示
+		category.setLayoutParams(params);
+		// 設置適配器
+		category.setAdapter(categoryAdapter);
+		// 把category加入到容器中
+		LinearLayout categoryList = (LinearLayout) findViewById(R.id.category_layout);
+		categoryList.addView(category);
+		// 箭头
+		final HorizontalScrollView categoryScrollview = (HorizontalScrollView) findViewById(R.id.category_scrollview);
+		Button categoryArrowRight = (Button) findViewById(R.id.category_arrow_right);
+		categoryArrowRight.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				categoryScrollview.fling(mFlingVelocityDip);
+			}
+		});
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}
+</pre><br>
+<br>
+<p>
+<p>&nbsp;<a target="_blank" target="_blank" href="http://download.csdn.net/detail/jack_king007/8112525">源码下载</a><br>
+</p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

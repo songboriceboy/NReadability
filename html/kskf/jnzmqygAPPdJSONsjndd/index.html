@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>教你怎么去一个APP的JSON数据，你懂的</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">今天闲着没事，谁让我今天是光棍节呢，算给大家一个福利，没事逛着应用市场，想找个应用高仿下，突然发现一个应用居然跟我一个名字&#23612;玛，&#23612;玛应用界面做的很简单，我觉得应该不难。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">惯性操作想去破解APK，找专门放URL的类，结果呢.......找了十分钟没找到，&#23612;玛碰到硬渣子，难得碰到保护的这么好的应用。</span></p>
+<p><span style="font-size:18px">如果大家没有合适额逆向破解apk 的工具可以去看看我写的一篇帖子，里面介绍了许多实用的安卓小工具</span></p>
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/40897217">作为安卓开发者必备的小软件（全是干货）</a></span></p>
+<p><span style="font-size:18px">接着我想这，老师给过我一个抓包工具，结果呢 第一次尝试，现在还没关 ，哈哈</span><br>
+</p>
+<p><span style="font-size:18px">先看看效果呗&nbsp;&nbsp; 大家可以看看时间 ，刚刚抓取的。嘿嘿 。高仿的APP也快做好了，嘻嘻<br>
+</span></p>
+<p><span style="font-size:18px"><img src="13909747001315.jpg" alt=""></span></p>
+<p><span style="font-size:18px"></span></p>
+<p>第一步：下载神器<span style="font-family:Arial">Fiddler,</span><span style="font-family:宋体">下载链接：</span></p>
+<a target="_blank" href="http://download.csdn.net/detail/jack_king007/8146713">点击下载软件</a>
+<p><br>
+</p>
+<p>下载完成之后，傻瓜式的安装一下了！</p>
+<p><br>
+</p>
+<p>
+<p><span style="font-size:18px">第二步：设置<span style="font-family:Arial">Fiddler</span></span>&nbsp;
+<span style="font-size:18px">后面有图片演示的</span><br>
+<span style="font-size:18px">打开<span style="font-family:Arial">Fiddler,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tools-&gt;&nbsp;Fiddler&nbsp;Options&nbsp;(</span><span style="font-family:宋体">配置完后记得要重启</span><span style="font-family:Arial">Fiddler)</span><br>
+选中<span style="font-family:Arial">&quot;Decrpt&nbsp;HTTPS&nbsp;traffic&quot;,&nbsp;&nbsp;&nbsp;&nbsp;Fiddler</span><span style="font-family:宋体">就可以截获</span><span style="font-family:Arial">HTTPS</span><span style="font-family:宋体">请求</span><br>
+选中<span style="font-family:Arial">&quot;Allow&nbsp;remote&nbsp;computers&nbsp;to&nbsp;connect&quot;.&nbsp;&nbsp;</span><span style="font-family:宋体">是允许别的机器把</span><span style="font-family:Arial">HTTP/HTTPS</span><span style="font-family:宋体">请求发送到</span><span style="font-family:Arial">Fiddler</span><span style="font-family:宋体">上来</span></span></p>
+<img src="50512378444590.jpg" alt="">
+<p><img src="47340297421680.jpg" alt=""></p>
+<p>
+<p><span style="font-size:18px; color:#FF0000">记住这个端口号是:8888，等下要在手机上设置，如果不像麻烦 安卓开发者可以在 模拟器上设置&nbsp;</span></p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p>
+<p><span style="font-size:18px">第三步：设置Android手机</span></p>
+<p><span style="font-size:18px">首先获取PC的ip地址：命令行中输入:ipconfig,获取ip地址</span></p>
+<img src="5385955658878.jpg" alt=""><br>
+<p><br>
+</p>
+<p><span style="font-size:18px">好吧，这时候我就拿到了IP地址和端口号了</span></p>
+<span style="font-size:18px">下面我用模拟器设置一下&nbsp; <br>
+</span>
+<p>
+<p><span style="font-size:18px">确定一下手机和PC是连接在同一个局域网中</span></p>
+<p><span style="font-size:18px">进入手机的设置-&gt;点击进入WLAN设置-&gt;选择连接到的无线网，长按弹出选项框：如图所示:</span></p>
+<p><img src="12693958356888.jpg" alt=""><br>
+</p>
+<p><span style="font-size:18px"><img src="3726335269495.jpg" alt=""></span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px"></span></p>
+<p>选择显示高级选项，将代理设置成手动，将上面获取到的ip地址和端口号填入，点击保存。这样就将我们的手机设置成功了。</p>
+<br>
+<p><span style="font-size:18px">第四步：下载Fiddler的安全证书</span></p>
+<p><span style="font-size:18px">使用Android手机的浏览器打开：http://10.2.145.187:8888，&nbsp;点&quot;FiddlerRoot&nbsp;certificate&quot;&nbsp;然后安装证书，如图:</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><img src="11665306698276.jpg" alt=""></span></p>
+<p><span style="font-size:18px"></span></p>
+<p>到这里我们就设置好所有的&#20540;，下面就来测试一下，</p>
+<p><img src="3728815942189.jpg" alt=""><br>
+</p>
+<br>
+好啦 成功了&nbsp; ， 如果有问题 可以给我留言<br>
+<span id="pv-float-bar-container" style="top:790.283px; left:0px; display:block"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/azViewpagexj1ggt/index.html">安卓Viewpage详解（1）——广告条</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf03zsssbqhdpd/index.html">快速开发03之手势识别器——滑动判断</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf04zdhdtypz/index.html">快速开发04之动画的统一配置</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf05zbzzfdsqysyyksfz/index.html">快速开发05之不做重复的事情——样式一样快速复制</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf06zMD5jmldsy/index.html">快速开发06之MD5加密类的使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf07zsrlzzf/index.html">快速开发07之输入流转字符</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf08zgsdcxTextviewzdxsnr/index.html">快速开发08之归属地查询——Textview自动显示内容</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf09zgsdcxxttgdddzdfw/index.html">快速开发09之归属地查询——系统提供的抖动振动服务</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf10zgsdcxzdsjkcxlhsjkbylw/index.html">快速开发10之归属地查询——自带数据库查询类和数据库不用联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf11zdcdjsjsxgndwndm/index.html">快速开发11之多次点击事件实现功能的万能代码</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf12zpmspandroiddphpxzjzh/index.html">快速开发12之屏幕适配—androiddp和px之间转换</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf13zkjqd/index.html">快速开发13之开机启动</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf14zcjkjfs/index.html">快速开发14之创建快捷方式</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz01buttondanxg/index.html">快速开发之01——button的按钮效果</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz02textviewnydjsjfs/index.html">快速开发之02——textview能有点击事件发生</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/jnzmqygAPPdJSONsjndd/index.html">教你怎么去一个APP的JSON数据，你懂的</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/sjcjhzSPdyhsgjl/index.html">数据持久化之SP的优化—送工具类</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

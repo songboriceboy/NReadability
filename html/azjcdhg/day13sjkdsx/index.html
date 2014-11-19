@@ -1,0 +1,442 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>day13数据库的思想</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">&nbsp; 对于安卓我一直认为，用java 去思考安卓内所有东西，用设计模式去解释，各种架构，而不是去记住每个方法有啥用的。 &nbsp;</span></p>
+<p><span style="font-size:18px">数据库-database &nbsp;本身就是一个操作类（增删改差），而需要一个help类去协助一起解决 而help又是一个抽象类，里面封装了很多方法，其中就有 Oncreate Onupdate 两个重要的方法，这也算是MVC模式么，不像， java 就是这么一个死德性，封装性高，每个类 都有自己的功能，高聚合低耦合。 &nbsp;其实也算是database 一个助理的存在。&nbsp;</span></p>
+<p><span style="font-size:18px">好啦 我还要用一个Demo来 证明思想的</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.sqlitesave;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DBhelper extends SQLiteOpenHelper {
+	private static final String DB_NAME = &quot;school&quot;;
+	private static final int VERSION = 1;
+	public static final String TABLE_NAME = &quot;stu&quot;;
+	public static final String S_ID = &quot;id&quot;;
+	public static final String S_NAME = &quot;name&quot;;
+	public static final String S_SEX = &quot;sex&quot;;
+	public static final String S_AGE = &quot;age&quot;;
+
+	public DBhelper(Context context, String name, CursorFactory factory,
+			int version) {
+		super(context, name, factory, version);
+	}
+	public DBhelper(Context context){
+		this(context, DB_NAME, null, VERSION);
+	}
+	public DBhelper(Context context,int version){
+		this(context, DB_NAME, null, version);
+	}
+	//第一次创建数据库表的时候会调用：创建表
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		//create table 表名（列名 列类型，列名 列类型....）
+		String createTable=&quot;create table &quot; + TABLE_NAME + &quot; ( &quot; + S_ID
+				+ &quot; INTEGER PRIMARY KEY autoincrement , &quot; + S_NAME
+				+ &quot; NVARCHAR(10) , &quot; + S_SEX + &quot; NVARCHAR(2) , &quot;+S_AGE+&quot; int )&quot;;
+		db.execSQL(createTable);
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+		
+	}
+
+}
+</pre>&nbsp;help类中没什么多说的，主要是 用全局变量来代理变量减少错误，其实完全可以封装成一个方法，在database中直接传&#20540;。</p>
+<p><span style="font-size:18px">我先说说demo的思想 &nbsp;先用伪代码。</span></p>
+<p><span style="font-size:18px"><img src="5081917687449.jpg" alt=""><br>
+<br>
+</span></p>
+<p>1.页面是一个listview 是来装数据 一个button是用来控制增加数据&nbsp;</p>
+<p>2.listview应该条目的短击是删除，长按是修改， 进入界面应该先查询数据。</p>
+<p>3.核心思想就是围绕着一个button的点击事件， 查询数据是应该用 contentvalue 来封装，查询出来的数据应该用集合来填充。</p>
+<p>所以</p>
+<p>第一步，初始化 所有组件 并给button添加各种点击事件，并在Oncreate中查询所有数据 填充起来，适配器因为数据所以只有一行 就应该用系统再带的simplelist。</p>
+<p>先说 获取表数据，首先要在help类中定义好，查询语句 关于数据检索的话 就会牵扯到Curce &nbsp;curce是一个接口 &nbsp;专门用于检索数据库的数据， 还能随机读写访问。非她莫属了，因为检索出来的是键&#20540;对，所以要用hashmap 来填充&nbsp;</p>
+<p>然后通过列名获取列索引--&gt;通过索引获取列上的&#20540;</p>
+<p>DbHelp.S_ID ID在help类里面 定义了全局变量 所以直接获取 &nbsp;通过列名获取索引 --》cursor.getColumnIndex(DBhelper.S_ID)&nbsp;通过列索引获取到列上的&#20540;&nbsp;<span style="white-space:pre">
+</span>String id = cursor.getInt(cursor.getColumnIndex(DBhelper.S_ID))<br>
+<span style="white-space:pre"></span>&#43; &quot;&quot;;</p>
+<p>然后用simpleadapter 讲map put好的数据 进行填充</p>
+<p>simpleadapter &nbsp;有四个属性 第一个 填充的acitivity &nbsp;第二个 填充的数据源， 第三个 要填充的布局 第四个 数据源从哪里来的 &nbsp;第五个 到哪里去</p>
+<p><pre name="code" class="java">	/** 获取表数据 */
+	private void getTableData() {
+		data.clear();
+		DBhelper dBhelper = new DBhelper(MainActivity.this);
+		SQLiteDatabase db = dBhelper.getReadableDatabase();
+		// 参数1表名 参数2要查询列 参数3查询条件“id=? and name=?” 参数4参数3中占位符的值 参数5分组条件 参数6组合条件
+		// 参数7排序
+		Cursor cursor = db.query(DBhelper.TABLE_NAME, null, null, null, null,
+				null, null);// 查出表中所有的数据
+		HashMap&lt;String, String&gt; hashMap;
+		while (cursor.moveToNext()) {
+			hashMap = new HashMap&lt;String, String&gt;();
+			// 通过列索引获取到列上的值；；；通过列名获取列索引；；；
+			// 获取id
+			String id = cursor.getInt(cursor.getColumnIndex(DBhelper.S_ID))
+					+ &quot;&quot;;
+			hashMap.put(&quot;id&quot;, id);
+			// 获取name
+			String name = cursor.getString(cursor
+					.getColumnIndex(DBhelper.S_NAME));
+			hashMap.put(&quot;name&quot;, name);
+			// 获取性别
+			String sex = cursor
+					.getString(cursor.getColumnIndex(DBhelper.S_SEX));
+			hashMap.put(&quot;sex&quot;, sex);
+			// 获取年龄
+			int age = cursor.getInt(cursor.getColumnIndex(DBhelper.S_AGE));
+			hashMap.put(&quot;age&quot;, age + &quot;&quot;);
+			// 添加到数据集
+			data.add(hashMap);
+		}
+		SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data,
+				android.R.layout.simple_list_item_2, new String[] { &quot;name&quot;,
+						&quot;age&quot; }, new int[] { android.R.id.text1,
+						android.R.id.text2 });
+		lv.setAdapter(adapter);
+	}</pre>第二步 &nbsp;也就单击 删除数据 首先要从点击发生的view中取到adapter 中的 item的&#20540; 然后再取&#20540;到ID &nbsp;进行删除操作 &nbsp;刷新数据</p>
+<p><pre name="code" class="java">		//单击操作：数据删除
+				lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView&lt;?&gt; parent, View view,
+							int position, long id) {
+						//数据库帮助类
+						DBhelper dBhelper = new DBhelper(MainActivity.this);
+						//可写入的数据库对象
+						SQLiteDatabase writableDatabase = dBhelper.getWritableDatabase();
+						//当前点中的item的数据
+						curClickHm = (HashMap&lt;String, String&gt;) parent.getAdapter()
+								.getItem(position);
+						//删除数据
+						writableDatabase.delete(DBhelper.TABLE_NAME, &quot;id=?&quot;, new String[]{curClickHm.get(&quot;id&quot;)});
+						getTableData();//刷新ListView数据
+						Toast.makeText(MainActivity.this, curClickHm.get(&quot;id&quot;)+&quot;被删除了&quot;, 1000).show();
+					}
+				});
+
+
+	}</pre><br>
+主要代码</p>
+<p><pre name="code" class="java">package com.example.sqlitesave;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+	List&lt;HashMap&lt;String, String&gt;&gt; data;
+	HashMap&lt;String, String&gt; curClickHm;
+	private Button btn;
+	private ListView lv;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		data = new ArrayList&lt;HashMap&lt;String, String&gt;&gt;();
+		btn = (Button) findViewById(R.id.btnInsert);
+		lv = (ListView) findViewById(R.id.lv_tableData);
+		getTableData();
+		btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				btnClickInsert();
+			}
+		});
+
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView&lt;?&gt; parent, View view,
+					int position, long id) {
+				Toast.makeText(MainActivity.this, &quot;短按~~~&quot;, 1000).show();
+			}
+		});
+		// c长按修改数据
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView&lt;?&gt; parent, View view,
+					int position, long id) {
+				curClickHm = (HashMap&lt;String, String&gt;) parent.getAdapter()
+						.getItem(position);
+				updateData();
+				Toast.makeText(MainActivity.this, curClickHm.get(&quot;id&quot;), 1000)
+						.show();
+				return true;
+			}
+		});
+		//单击操作：数据删除
+				lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView&lt;?&gt; parent, View view,
+							int position, long id) {
+						//数据库帮助类
+						DBhelper dBhelper = new DBhelper(MainActivity.this);
+						//可写入的数据库对象
+						SQLiteDatabase writableDatabase = dBhelper.getWritableDatabase();
+						//当前点中的item的数据
+						curClickHm = (HashMap&lt;String, String&gt;) parent.getAdapter()
+								.getItem(position);
+						//删除数据
+						writableDatabase.delete(DBhelper.TABLE_NAME, &quot;id=?&quot;, new String[]{curClickHm.get(&quot;id&quot;)});
+						getTableData();//刷新ListView数据
+						Toast.makeText(MainActivity.this, curClickHm.get(&quot;id&quot;)+&quot;被删除了&quot;, 1000).show();
+					}
+				});
+
+
+	}
+         
+	/** 修改数据 */
+	private void updateData() {
+		// DBhelper dBhelper = new DBhelper(MainActivity.this);
+		// SQLiteDatabase db = dBhelper.getWritableDatabase();
+		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		builder.setTitle(&quot;修改数据&quot;);
+		// 把布局转换视图
+		View view = View.inflate(MainActivity.this, R.layout.dialog, null);
+		builder.setView(view);
+		final EditText etxt_name;
+		final EditText etxt_sex;
+		final EditText etxt_age;
+		etxt_name = (EditText) view.findViewById(R.id.etxt_name);
+		etxt_sex = (EditText) view.findViewById(R.id.etxt_sex);
+		etxt_age = (EditText) view.findViewById(R.id.etxt_age);
+
+		// 添加按钮
+		builder.setPositiveButton(&quot;确定&quot;, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String name = etxt_name.getText().toString();
+				String sex = etxt_sex.getText().toString();
+				String age = etxt_age.getText().toString();
+
+				DBhelper dBhelper = new DBhelper(MainActivity.this);
+				SQLiteDatabase db = dBhelper.getWritableDatabase();
+				// 如果编辑框输入内容不为空，则更新到数据库中
+				if (!isTextOK(name)) {
+					ContentValues contentValues = new ContentValues();
+					contentValues.put(DBhelper.S_NAME, name);
+					db.update(DBhelper.TABLE_NAME, contentValues, &quot;id=?&quot;,
+							new String[] { curClickHm.get(&quot;id&quot;) });
+				}
+				// 重新查询数据库
+				getTableData();
+
+			}
+		});
+		builder.show();
+
+	}
+
+	private void btnClickInsert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		builder.setTitle(&quot;添加数据&quot;);
+		// 把布局转换视图
+		View view = View.inflate(MainActivity.this, R.layout.dialog, null);
+		builder.setView(view);
+
+		final EditText etxt_name;
+		final EditText etxt_sex;
+		final EditText etxt_age;
+		etxt_name = (EditText) view.findViewById(R.id.etxt_name);
+		etxt_sex = (EditText) view.findViewById(R.id.etxt_sex);
+		etxt_age = (EditText) view.findViewById(R.id.etxt_age);
+
+		// 添加按钮
+		builder.setPositiveButton(&quot;确定&quot;, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String name = etxt_name.getText().toString();
+				String sex = etxt_sex.getText().toString();
+				String age = etxt_age.getText().toString();
+				if (!isTextOK(name) &amp;&amp; !isTextOK(sex) &amp;&amp; !isTextOK(age)) {
+					DBhelper dBhelper = new DBhelper(MainActivity.this);
+					SQLiteDatabase db = dBhelper.getWritableDatabase();
+
+					ContentValues contentValues = new ContentValues();
+					contentValues.put(DBhelper.S_NAME, name);
+					contentValues.put(DBhelper.S_SEX, sex);
+					contentValues.put(DBhelper.S_AGE, Integer.parseInt(age));
+					db.insert(DBhelper.TABLE_NAME, null, contentValues);
+					getTableData();
+				}
+
+			}
+		});
+		builder.setNegativeButton(&quot;取消&quot;, null);
+		builder.show();
+
+	}
+
+	private boolean isTextOK(String str) {
+		return TextUtils.isEmpty(str);
+	}
+
+	/** 获取表数据 */
+	private void getTableData() {
+		data.clear();
+		DBhelper dBhelper = new DBhelper(MainActivity.this);
+		SQLiteDatabase db = dBhelper.getReadableDatabase();
+		// 参数1表名 参数2要查询列 参数3查询条件“id=? and name=?” 参数4参数3中占位符的值 参数5分组条件 参数6组合条件
+		// 参数7排序
+		Cursor cursor = db.query(DBhelper.TABLE_NAME, null, null, null, null,
+				null, null);// 查出表中所有的数据
+		HashMap&lt;String, String&gt; hashMap;
+		while (cursor.moveToNext()) {
+			hashMap = new HashMap&lt;String, String&gt;();
+			// 通过列索引获取到列上的值；；；通过列名获取列索引；；；
+			// 获取id
+			String id = cursor.getInt(cursor.getColumnIndex(DBhelper.S_ID))
+					+ &quot;&quot;;
+			hashMap.put(&quot;id&quot;, id);
+			// 获取name
+			String name = cursor.getString(cursor
+					.getColumnIndex(DBhelper.S_NAME));
+			hashMap.put(&quot;name&quot;, name);
+			// 获取性别
+			String sex = cursor
+					.getString(cursor.getColumnIndex(DBhelper.S_SEX));
+			hashMap.put(&quot;sex&quot;, sex);
+			// 获取年龄
+			int age = cursor.getInt(cursor.getColumnIndex(DBhelper.S_AGE));
+			hashMap.put(&quot;age&quot;, age + &quot;&quot;);
+			// 添加到数据集
+			data.add(hashMap);
+		}
+		SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data,
+				android.R.layout.simple_list_item_2, new String[] { &quot;name&quot;,
+						&quot;age&quot; }, new int[] { android.R.id.text1,
+						android.R.id.text2 });
+		lv.setAdapter(adapter);
+	}
+
+}
+</pre>好啦 有点累，休息休息<br>
+<br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

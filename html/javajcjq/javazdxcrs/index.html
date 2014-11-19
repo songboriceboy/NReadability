@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java之多线程认识</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:18px">多线程实现有两个类：<br>
+Thread类 多线程操作类 继承Thread类 覆写run方法&nbsp;<br>
+<br>
+<br>
+class 类名称 extend Thread{<br>
+属性<br>
+方法<br>
+public void run（）{<br>
+<span style="white-space:pre"></span>线程主体<br>
+}<br>
+</span>
+<p><span style="font-size:18px">}</span></p>
+<p><span style="font-size:18px">测试代码</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class MyThread extends Thread{
+	private String name;
+
+	public MyThread(String name) {
+		super();
+		this.name = name;
+	}
+
+	public void run() {//覆写run 方法 作为线程 的操作主体
+		
+	for (int i = 0; i &lt; 10; i++) {
+		System.out.println(name+&quot;运行,i=&quot;+i);
+	}
+	}
+	
+}
+public class test1 {
+	public static void main(String[] args) {
+		MyThread mt1=new MyThread(&quot;线程A&quot;);
+		MyThread mt2=new MyThread(&quot;线程B&quot;);
+		mt1.run();
+		mt2.run();
+		
+	}
+}
+</pre><br>
+结果<img src="30009579479341.jpg" alt="">&nbsp;</p>
+<p><span style="font-size:18px">可以看出来 并没有并发 这是最古老的写法，如果改成 start方法 &nbsp;结果就会并发 谁抢 就会先运行</span></p>
+<p><span style="font-size:18px">（2）实现 runnable接口&nbsp;<br>
+我们也可以从实现接口的形式 实现多线程 Runnable 只定义了一个抽象方法<br>
+public void run();<br>
+<br>
+<br>
+class 类名称 implement Runnable{<br>
+<span style="white-space:pre"></span>属性....；<br>
+<span style="white-space:pre"></span>方法.....；<br>
+<span style="white-space:pre"></span>public void run(){ //覆写run方法<br>
+<span style="white-space:pre"></span>线程主体<br>
+<span style="white-space:pre"></span>}<br>
+}<br>
+</span></p>
+<p><span style="font-size:18px">测试代码</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class MyThread implements Runnable{
+	private String name;
+
+	public MyThread(String name) {
+		this.name = name;
+	}
+
+	public void run() {//覆写run 方法 作为线程 的操作主体
+		
+	for (int i = 0; i &lt; 10; i++) {
+		System.out.println(name+&quot;运行,i=&quot;+i);
+	}
+	}
+	
+}
+public class test1 {
+	public static void main(String[] args) {
+		MyThread mt1=new MyThread(&quot;线程A&quot;);
+		MyThread mt2=new MyThread(&quot;线程B&quot;);
+		Thread tq=new Thread(mt1);//实例化Thread对象
+		Thread tw=new Thread(mt2);
+		tq.start();
+		tw.start();
+	}
+}
+</pre><br>
+其实可以看出Runnable 后面还是实例化了 Thread对象了 调用了start方法</p>
+<p><span style="font-size:18px">结果</span></p>
+<p><span style="font-size:18px"><img src="7456096034768.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">已经实现了并发</span></p>
+<p><span style="font-size:18px">3.Thread类与Runnable接口的联系</span></p>
+<p><span style="font-size:18px">因为这个联系 最好是用一个卖票系统来演示&nbsp;</span></p>
+<p><span style="font-size:18px">Thread 和Runnable的区别 就是共享资源&nbsp;</span></p>
+<p><span style="font-size:18px">先看thread</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class MyThread implements Runnable{
+	private int ticket=5;
+	public void run() {
+		for (int i = 0; i &lt; 100; i++) {
+			if (this.ticket&gt;0) {
+				System.out.println(&quot;卖票:ticket&quot;+ticket--);
+			}
+		}
+	}
+	
+}
+public class test1 {
+	public static void main(String[] args) {
+		MyThread mt1=new MyThread();//实例化对象
+		MyThread mt2=new MyThread();
+		MyThread mt3=new MyThread();
+		mt1.run();//调用线程主体
+		mt2.run();
+		mt3.run();
+	}
+}
+</pre><br>
+<img src="" alt=""><br>
+</p>
+<p><span style="font-size:18px">总共15张票</span></p>
+<p><span style="font-size:18px">如果用Runnable 就会卖出5张票</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class MyThread implements Runnable{
+	private int ticket=5;
+	public void run() {
+		for (int i = 0; i &lt; 100; i++) {
+			if (this.ticket&gt;0) {
+				System.out.println(&quot;卖票:ticket&quot;+ticket--);
+			}
+		}
+	}
+	
+}
+public class test1 {
+	public static void main(String[] args) {
+	/*	MyThread mt1=new MyThread();//实例化对象
+		MyThread mt2=new MyThread();
+		MyThread mt3=new MyThread();
+		mt1.run();//调用线程主体
+		mt2.run();
+		mt3.run();
+		对比一下
+		*/
+		MyThread mt=new MyThread();//实例化对象
+	//调用了三条线称
+		new Thread(mt).run();
+		new Thread(mt).run();
+		new Thread(mt).run();
+
+	}
+}
+</pre><br>
+<img src="" alt=""><br>
+</p>
+<p><span style="font-size:18px">Thread类与Runnable接口&nbsp;<br>
+<span style="color:#ff0000">实现Runnable接口的明显有点<br>
+适合多个相同程序代码的线程去处理同一个资源<br>
+可以便面由于单继承局限所带来的影响<br>
+增强了程序的健壮性 代码能被多个线程共享 代码与数据是独立的</span><br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">模板代码<br>
+创建状态：准备好了一个多线程对象 Thread t=new Thread（）；<br>
+就绪状态 调用start（）方法 等待cpu的调度<br>
+运行状态：执行run（）<br>
+阻塞状态：暂时停止执行 可能会把资源给其他使用<br>
+终止状态：线程执行完。不再使用<br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

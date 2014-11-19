@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目（2）生活小助手身份证查询</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">昨天帮一个小伙子做APP，就花了一天的时间把功能做出来了，UI不怎么美观&nbsp; 我只把我这一部分代码，放在上面。数据接口，你们要自己去找了，我的数据接口一天就50次请求，</span></p>
+<p><span style="font-size:18px">如果找不到数据接口清百度《API数据接口》 由于要给你展示，所以就给一个展示页面<img src="23469808325450.jpg" alt=""></span></p>
+<p><span style="font-size:18px">这一章就先讲身份证查询</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"></span><img src="9729655299128.jpg" alt=""><br>
+<span style="font-size:18px"></span></p>
+<p><span style="font-size:18px"></span>界面很简单。就是一个Edittext 获取身份证号，BUtton进行数据提交 联网解析数据，然后在下面显示&nbsp;&nbsp; ，不说基础的话，这篇文章就没说的意义了，我还是说下吧</p>
+<p><br>
+</p>
+<p>首先实例化&nbsp; Edittext，BUtton&nbsp; 和四个textview&nbsp;&nbsp;&nbsp;&nbsp; 直接贴代码吧&nbsp; <pre name="code" class="java">package com.example.helper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.helper.utils.HttpUtils;
+import com.example.helper.utils.HttpUtils.OnNetWorkResponse;
+import com.example.helper.utils.UrlApi;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class IdSearch extends Activity {
+	private EditText editText;
+	private Button button;
+	private TextView id_name_sex,id_name_address,id_name_year;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.idsearch);
+		//第一步 首先实例化  Edittext，BUtton  和四个textview   
+		button = (Button) findViewById(R.id.id_serhch);
+		editText = (EditText) findViewById(R.id.id_num);
+		id_name_sex = (TextView) findViewById(R.id.id_name_sex);
+		id_name_address = (TextView) findViewById(R.id.id_name_address);
+		id_name_year = (TextView) findViewById(R.id.id_name_year);
+		
+		
+	}
+	public void btn(View view){
+		//2.得到用户输入的数据进行拼接URL 进行网络数据连接 
+		String str = editText.getText().toString().trim();
+		String url=UrlApi.ONE+str;
+		//3.通过自己封装的联网工具类，就可以得到json   
+		HttpUtils.RequestNetWork(url, new OnNetWorkResponse() {
+			
+			@Override
+			public void ok(String response) {
+				try {
+//					{	json数据接口
+//					    &quot;error_code&quot;: 0,
+//					    &quot;reason&quot;: &quot;SUCCESS&quot;,
+//					    &quot;result&quot;: {
+//					        &quot;area&quot;: &quot;湖南省长沙市长沙县&quot;,
+//					        &quot;birthday&quot;: &quot;1993-6-30&quot;,
+//					        &quot;sex&quot;: &quot;男&quot;
+//					    }
+//					}
+					JSONObject o1=new JSONObject(response);
+					int error_code = o1.getInt(&quot;error_code&quot;);
+					System.out.println(error_code);
+					if (error_code==0) {
+						//第一个为大括号用jsonObject
+						JSONObject o2 = o1.getJSONObject(&quot;result&quot;);
+						//进行复制
+						id_name_sex.setText(&quot;性别: &quot;+o2.getString(&quot;sex&quot;));
+						id_name_address.setText(&quot;所在地: &quot;+o2.getString(&quot;area&quot;));
+						id_name_year.setText(&quot;出生日期: &quot;+o2.getString(&quot;birthday&quot;));
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void error(String error) {
+				
+			}
+		});
+	}
+}
+</pre></p>
+<p>还有三个功能没写，写完就法源码吧，如果需要源码的可以留言 我发过去<br>
+<br>
+</p>
+<p><br>
+</p>
+<span id="pv-float-bar-container" style="top:912px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm(1)znltjqr/index.html">练手小项目(1)——智能聊天机器人</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzszgjm/index.html">练手小项目（2）生活小助手周公解梦</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzsxzyscx/index.html">练手小项目（2）生活小助手星座运势查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzssfzcx/index.html">练手小项目（2）生活小助手身份证查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm3djs/index.html">练手小项目（3）倒计时</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/gddtjc_poissyjxs/index.html">高德地图教程_poi搜索以及显示</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,504 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓教你使用IXListView上拉更多，下拉刷新(2)</div><br><div id="article_content" class="article_content">
+
+<p>本节代码的基础是在以前的一个Demo上讲解的，现在复习基础，就好好的讲一下listview的上拉更多，下拉刷新，我就基于上一篇帖子继续讲。</p>
+<p>如果了解结构 请看<br>
+</p>
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/39099051">APP开发之Viewpage&#43;Fragment&#43;下拉刷新&nbsp;</a></span></p>
+<p><br>
+</p>
+<p>上一篇帖子&nbsp;&nbsp;</p>
+<p><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/41077105"><span style="font-size:18px">安卓 (1)教你怎么使用下拉刷新&nbsp;</span></a></p>
+<p><br>
+</p>
+<p>这一次&nbsp; 用xlistview 来实现&nbsp; 也就是用开源项目 如果你想看基础 不用任何框架的话&nbsp; 可以看我以前的写的一篇帖子</p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/40804419">高仿新闻教程-——添加button实现加载更多数据(9)</a></span>&nbsp;&nbsp;&nbsp;
+<br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px">说实话，对于一个安卓基础不扎实的人来说，最好把开源框架 看下源码 ，和作者介绍怎么使用的。不知道一件东西的原理是很恐怖的。</span>
+<span style="font-size:18px">源码在最后放上。</span>&nbsp;&nbsp;&nbsp;</p>
+<p><br>
+</p>
+<p><span style="color:#FF0000">先看效果图</span></p>
+<p><img src="18704289014073.jpg" alt=""><img src="16990368524358.jpg" alt=""></p>
+<p><br>
+</p>
+<p>这个Demo的结构是一个Viewpage套着Fragment&nbsp; so&nbsp; 我们要在Fragment 里面 进行填充一个listview 然后设置一个adapter&nbsp; 将数据设置上去 ，进行展示，</p>
+<p>首先 xlistview </p>
+<p><span style="color:#3f7f5f; background:rgb(255,255,255)">你可以这么想<span style="font-family:Consolas">xListview&nbsp;</span><span style="font-family:宋体">就是一个封装了下拉刷新和上拉更多的</span><span style="font-family:Consolas">listview&nbsp;&nbsp;&nbsp;
+<span style="font-family:Consolas">首先 现在布局里面 显示吧</span></span></span></p>
+<p><br>
+</p>
+<pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; 
+    android:background=&quot;#f2f2f2&quot;
+    &gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:orientation=&quot;vertical&quot; &gt;
+
+        
+
+        &lt;com.example.viewpagedemo.UI.XListView
+            android:id=&quot;@+id/listview&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;match_parent&quot;
+            android:divider=&quot;@drawable/my_line_img&quot;
+            android:cacheColorHint=&quot;@android:color/transparent&quot;
+            android:fastScrollEnabled=&quot;true&quot;
+            android:layout_marginTop=&quot;-3dp&quot;
+            /&gt;
+			
+        &lt;TextView
+            android:id=&quot;@+id/nodata_tips&quot;
+            android:layout_width=&quot;fill_parent&quot;
+            android:layout_height=&quot;fill_parent&quot;
+            android:gravity=&quot;center&quot;
+            android:text=&quot;@string/not_problem&quot;
+            android:textColor=&quot;@color/black&quot;
+            android:textSize=&quot;18sp&quot;
+            android:visibility=&quot;gone&quot; /&gt;
+    &lt;/LinearLayout&gt;
+    
+    &lt;LinearLayout 
+        android:id=&quot;@+id/progressbar_layout&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;horizontal&quot;
+        android:layout_centerInParent=&quot;true&quot;
+        android:visibility=&quot;gone&quot; 
+        &gt;
+        &lt;ProgressBar
+            android:id=&quot;@+id/circle_progressbar&quot;
+            style=&quot;?android:attr/progressBarStyleLarge&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:indeterminate=&quot;true&quot;
+            android:visibility=&quot;visible&quot; 
+            /&gt;
+        
+        &lt;TextView
+            android:id=&quot;@+id/circle_progressbar_tips&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_gravity=&quot;center_vertical&quot;
+            android:text=&quot;@string/loading_data_ing&quot;
+            android:textColor=&quot;@color/gray&quot;
+            android:textSize=&quot;18sp&quot;
+            android:visibility=&quot;visible&quot; 
+            /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/RelativeLayout&gt;
+
+</pre><br>
+<br>
+<p><br>
+</p>
+<font color="#3f7f5f"><span style="font-family:Consolas">布局之中加入了一个l<span style="font-family:Consolas">xlistview&nbsp; 因为代码是从项目之中抽出的来，所以 里面还有一个progressbar 这个你不用理会，接着 就要在java代码中实例化了，记住既然要用他的<span style="font-family:Consolas">东西 你先要把他的包复制 粘贴进来
+<br>
+</span></span></span></font>
+<p><font color="#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"><img src="39107149524333.jpg" alt="">
+ 同时还有两个布局 都是xlistview&nbsp; 开头的&nbsp; 还有一些图片&nbsp; <br>
+</span></span></span></font></p>
+<p><br>
+</p>
+<p><font color="#3f7f5f"><font face="Consolas"><font face="Consolas"><font face="Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas">首先 Fragment 要<span style="font-family:Consolas">实现</span></span></span></font></font></font></font><span style="color:#000000; background:rgb(255,255,255)"><span style="font-family:Consolas">&nbsp;
+</span>IXListViewListener</span><span style="color:#000000; background:rgb(255,255,255)">&nbsp;接口</span><font color="#3f7f5f"><font face="Consolas"><font face="Consolas"><font face="Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span>&nbsp;
+<br>
+</font></font></font></font></p>
+<p><font color="#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span></font></p>
+<p><span style="color:#000000; background:rgb(255,255,255)">其中接口里面有&nbsp;</span><span style="color:#000000; background:rgb(192,192,192)">onLoadMore</span><span style="color:#000000; background:rgb(255,255,255)">()</span><span style="color:#000000; background:rgb(255,255,255)">方法</span></p>
+<p><span style="color:#3f7f5f; background:rgb(255,255,255)">//上拉加载更多时触发,历史数据</span></p>
+<p><span style="color:#000000; background:rgb(255,255,255)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; onRefresh()</span><span style="color:#000000; background:rgb(255,255,255)">方法</span></p>
+<p><span style="color:#3f7f5f; background:rgb(255,255,255)">//下拉刷新的时候会触发该方法</span></p>
+<p><br>
+</p>
+<p><font color="#3f7f5f" style="background:rgb(255,255,255)">在Fagmen<span style="font-family:Consolas">t里的OncreateView 方法<span style="font-family:Consolas">里填充<span style="font-family:Consolas">布局&nbsp; 接着在onActivityCreated中填充数据&nbsp;
+<br>
+</span></span></span></font></p>
+<p><font color="#3f7f5f" style="background:rgb(255,255,255)"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"><br>
+</span></span></span></font></p>
+<p><font color="#3f7f5f" style="background:rgb(255,255,255)"><font face="Consolas"><font face="Consolas"><font face="Consolas"><span style="font-family:Consolas">x<span style="font-family:Consolas">Listview&nbsp; 是通过 两个方法来开启 下拉刷新和加载更多<span style="font-family:Consolas">功能的
+<br>
+</span></span></span></font></font></font></font></p>
+<p><font color="#3f7f5f" style="background:rgb(255,255,255)"><font face="Consolas"><font face="Consolas"><font face="Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas">&nbsp;&nbsp;&nbsp; listView.setPullLoadEnable(true);//
+ 开启加载更多<br>
+&nbsp;&nbsp;&nbsp; listView.setPullRefreshEnable(true);// 开启下拉刷新</span></span></span></font></font></font><br>
+</font></p>
+其中 &nbsp;&nbsp;&nbsp; private List&lt;IAsk&gt; list; 里面放着假数据&nbsp; 通过initdata（）将数据填充到集合中去的
+<p><font color="#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span></font><span style="color:#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span><pre name="code" class="java">
+
+
+&lt;span style=&quot;font-size:18px;color:#333333;&quot;&gt;&lt;/span&gt;&lt;pre name=&quot;code&quot; class=&quot;java&quot;&gt;	private List&lt;IAsk&gt; initData() {
+		List&lt;IAsk&gt; list = new ArrayList&lt;IAsk&gt;();
+		try {
+			for (int i = 0; i &lt; 15; i++) {
+				IAsk ask = new IAsk();
+				ask.setTitle(&quot;今天准时吃饭！&quot; + i);
+				ask.setDetails(&quot;为什么中午吃红烧肉不好？&quot; + i);
+				ask.setAvatarId(R.drawable.user_icon);
+				String date = &quot;2013-12-02 11:54:&quot; + i;
+				ask.setAskTime(sdf.parse(date));
+				ask.setScore(20 + i);
+				ask.setAnswerCount(5 + i);
+				list.add(ask);
+
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}</pre><br>
+<br>
+</p>
+<pre></pre>
+<font color="#3f7f5f"><font face="Consolas"><font face="Consolas"><font face="Consolas"><font face="Consolas">Xlistview
+<span style="font-family:Consolas">封装的很好 其中 上拉更多 和下拉刷新 都单独成了一个方法<span style="font-family:Consolas"> 可以单独在<span style="font-family:Consolas">里面加载数据&nbsp;
+<br>
+</span></span></span></font></font></font></font></font>
+<p>
+<p><font color="#3f7f5f"><font face="Consolas"><font face="Consolas"><font face="Consolas"><font face="Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span></font><br>
+<br>
+</font></font></font></font></p>
+<p><font color="#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span></font><pre name="code" class="java">	@Override
+	public void onLoadMore() {
+		// 上拉加载更多时触发,历史数据
+		IAsk ask;
+		try {
+			ask = new IAsk();
+			ask.setTitle(&quot;加载更多的问题标题&quot;);
+			ask.setDetails(&quot;加载更多的问题详情&quot;);
+			ask.setAvatarId(R.drawable.user_icon);
+			Random r = new Random();
+			int s = r.nextInt(60);
+			String date = &quot;2013-12-02 11:52:&quot; + s;
+			ask.setAskTime(sdf.parse(date));
+			ask.setScore(20);
+			ask.setAnswerCount(5);
+			list.add(ask);
+			adapter.notifyDataSetChanged();
+			listView.stopLoadMore();// 让加载更多的圈圈消失
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}</pre><br>
+<pre name="code" class="java">	@Override
+	public void onRefresh() {
+		// 下拉刷新的时候会触发该方法
+		handler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					IAsk ask = new IAsk();
+					ask.setTitle(&quot;下拉刷新加载的最新问题标题&quot;);
+					ask.setDetails(&quot;下拉刷新问题的详情&quot;);
+					ask.setAvatarId(R.drawable.user_icon);
+					Random r = new Random();
+					int s = r.nextInt(60);
+
+					String date = &quot;2013-12-02 14:45:&quot; + s;
+					ask.setAskTime(sdf.parse(date));
+					ask.setScore(20);
+					ask.setAnswerCount(5);
+
+					list.add(ask);
+
+					Collections.sort(list, comparator);
+					listView.setRefreshTime(sdf.format(new Date()));
+					adapter.notifyDataSetChanged();
+					listView.stopRefresh();// 让下拉刷新的圈圈消失
+
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}, 3000);
+	}</pre><br>
+<br>
+</p>
+<p><br>
+</p>
+<p><span style="color:#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas">上全部代码吧
+<br>
+</span></span></span></p>
+<p><span style="color:#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span><pre name="code" class="java">package com.example.viewpagedemo.Fragment;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.viewpagedemo.DateUtil;
+import com.example.viewpagedemo.R;
+import com.example.viewpagedemo.UI.XListView;
+import com.example.viewpagedemo.UI.XListView.IXListViewListener;
+import com.example.viewpagedemo.adapter.IAskAdapter;
+import com.example.viewpagedemo.duomian.IAsk;
+
+public class IAskAnswerFragment extends Fragment implements IXListViewListener {
+
+	private View rootView;
+	private XListView listView;
+	// 时间格式化类
+	private SimpleDateFormat sdf;
+	private List&lt;IAsk&gt; list;
+	private IAskAdapter adapter;
+
+	private Handler handler = new Handler();
+
+	// fragment被创建的时候调用
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);// super方法必须被调用
+	}
+
+	/**
+	 * 相当于activity里的setContentView,当前fragment显示需要的layout文件
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		rootView = inflater.inflate(R.layout.iask_answer_fragment, null);
+
+		return rootView;
+	}
+
+	/**
+	 * 当activity创建的时候调用
+	 */
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);// super方法必须被调用
+
+		listView = (XListView) rootView.findViewById(R.id.listview);
+		listView.setPullLoadEnable(true);// 开启加载更多
+		listView.setPullRefreshEnable(true);// 开启下拉刷新
+
+		listView.setXListViewListener(this);
+
+		sdf = DateUtil.getSimpleDateFormat();
+
+		list = initData();
+
+		adapter = new IAskAdapter(getActivity(), list);
+		listView.setAdapter(adapter);
+
+	}
+
+	private List&lt;IAsk&gt; initData() {
+		List&lt;IAsk&gt; list = new ArrayList&lt;IAsk&gt;();
+		try {
+			for (int i = 0; i &lt; 15; i++) {
+				IAsk ask = new IAsk();
+				ask.setTitle(&quot;今天准时吃饭！&quot; + i);
+				ask.setDetails(&quot;为什么中午吃红烧肉不好？&quot; + i);
+				ask.setAvatarId(R.drawable.user_icon);
+				String date = &quot;2013-12-02 11:54:&quot; + i;
+				ask.setAskTime(sdf.parse(date));
+				ask.setScore(20 + i);
+				ask.setAnswerCount(5 + i);
+				list.add(ask);
+
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public void onRefresh() {
+		// 下拉刷新的时候会触发该方法
+		handler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					IAsk ask = new IAsk();
+					ask.setTitle(&quot;下拉刷新加载的最新问题标题&quot;);
+					ask.setDetails(&quot;下拉刷新问题的详情&quot;);
+					ask.setAvatarId(R.drawable.user_icon);
+					Random r = new Random();
+					int s = r.nextInt(60);
+
+					String date = &quot;2013-12-02 14:45:&quot; + s;
+					ask.setAskTime(sdf.parse(date));
+					ask.setScore(20);
+					ask.setAnswerCount(5);
+
+					list.add(ask);
+
+					Collections.sort(list, comparator);
+					listView.setRefreshTime(sdf.format(new Date()));
+					adapter.notifyDataSetChanged();
+					listView.stopRefresh();// 让下拉刷新的圈圈消失
+
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}, 3000);
+	}
+
+	private Comparator&lt;IAsk&gt; comparator = new Comparator&lt;IAsk&gt;() {
+
+		@Override
+		public int compare(IAsk i1, IAsk i2) {
+			// 从小到大，从大到小
+			// 根据第一个参数小于、等于或大于第二个参数分别返回负整数、零或正整数。
+			if (i1.getAskTime().getTime() &lt; i2.getAskTime().getTime()) {
+				return 1;
+			} else if (i1.getAskTime().getTime() &gt; i2.getAskTime().getTime()) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
+	};
+
+	@Override
+	public void onLoadMore() {
+		// 上拉加载更多时触发,历史数据
+		IAsk ask;
+		try {
+			ask = new IAsk();
+			ask.setTitle(&quot;加载更多的问题标题&quot;);
+			ask.setDetails(&quot;加载更多的问题详情&quot;);
+			ask.setAvatarId(R.drawable.user_icon);
+			Random r = new Random();
+			int s = r.nextInt(60);
+			String date = &quot;2013-12-02 11:52:&quot; + s;
+			ask.setAskTime(sdf.parse(date));
+			ask.setScore(20);
+			ask.setAnswerCount(5);
+			list.add(ask);
+			adapter.notifyDataSetChanged();
+			listView.stopLoadMore();// 让加载更多的圈圈消失
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+</pre><br>
+<span style="font-size:18px"><a target="_blank" href="http://download.csdn.net/detail/jack_king007/7870991">点击下载源码</a></span><br>
+</p>
+<p><span style="color:#3f7f5f"><span style="font-family:Consolas"><span style="font-family:Consolas"></span></span></span><br>
+</p>
+<span id="pv-float-bar-container" style="top:1717px; left:385px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>数据持久化之SP的优化—送工具类</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">&nbsp;第一点：sp存储的是键&#20540;对</span></p>
+<p>getSharedPreferences 第一个参数是你保存文件的名字，第个是保存的模式一般可以默认为0 <br>
+</p>
+<p><br>
+</p>
+<p>先看普通 使用SP 存储String类型字符串吧</p>
+<p>&nbsp;&nbsp;&nbsp; SharedPreferences.Editor edit = getSharedPreferences(&quot;config&quot;, 0).edit();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;edit.putString(&quot;name&quot;, &quot;tom&quot;);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;edit.putInt(&quot;age&quot;, 21);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;edit.putBoolean(&quot;married&quot;, false);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;edit.commit();</p>
+<p>因为SP是无法直接编辑取&#20540;的就我们不能直接调用service里的方法一样，我们需要系统给我们提供的接口 使用 .edit 就可以得到一个Editor接口 就可以进行编辑了，可以看得出SP可以存储 数据类型 基本是可以支持的</p>
+<p>然后再看 用SP读取内容 那就更简单了</p>
+<p>SharedPreferences sp=context.getSharedPreferences(SP_NAME, 0);</p>
+<p>sp.getString(key, defValue);</p>
+<p><br>
+</p>
+<p>好啦，既然要抽出到工具类的话 ，就必须要知道sp 使用需要那些东西 <br>
+</p>
+<p>第一个 Context&nbsp;&nbsp; 要让SP知道你在那个类里使用他</p>
+<p>第二个&nbsp; key&nbsp; 文件名&nbsp; <br>
+</p>
+<p>第三个 value 设置&#20540;需要 但是获取&#20540;并不需要 <br>
+</p>
+<p>好啦 万能的SP工具类 要出现了&nbsp; 鼓掌 <pre name="code" class="java">package com.xiaoxin.NewsPaper.utils;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import org.apache.commons.codec.binary.Base64;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+
+/**
+ * SharePreferences操作工具类
+ */
+public class SharePrefUtil {
+	private static String tag = SharePrefUtil.class.getSimpleName();
+	private final static String SP_NAME = &quot;config&quot;;
+	private static SharedPreferences sp;
+
+
+	/**
+	 * 保存布尔值
+	 * 
+	 * @param context
+	 * @param key
+	 * @param value
+	 */
+	public static void saveBoolean(Context context, String key, boolean value) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		    sp.edit().putBoolean(key, value).commit();
+	}
+
+	/**
+	 * 保存字符串
+	 * 
+	 * @param context
+	 * @param key
+	 * @param value
+	 */
+	public static void saveString(Context context, String key, String value) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		sp.edit().putString(key, value).commit();
+		
+	}
+	
+	public static void clear(Context context){
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		sp.edit().clear().commit();
+	}
+
+	/**
+	 * 保存long型
+	 * 
+	 * @param context
+	 * @param key
+	 * @param value
+	 */
+	public static void saveLong(Context context, String key, long value) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		sp.edit().putLong(key, value).commit();
+	}
+
+	/**
+	 * 保存int型
+	 * 
+	 * @param context
+	 * @param key
+	 * @param value
+	 */
+	public static void saveInt(Context context, String key, int value) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		sp.edit().putInt(key, value).commit();
+	}
+
+	/**
+	 * 保存float型
+	 * 
+	 * @param context
+	 * @param key
+	 * @param value
+	 */
+	public static void saveFloat(Context context, String key, float value) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		sp.edit().putFloat(key, value).commit();
+	}
+
+	/**
+	 * 获取字符值
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defValue
+	 * @return
+	 */
+	public static String getString(Context context, String key, String defValue) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		return sp.getString(key, defValue);
+	}
+
+	/**
+	 * 获取int值
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defValue
+	 * @return
+	 */
+	public static int getInt(Context context, String key, int defValue) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		return sp.getInt(key, defValue);
+	}
+
+	/**
+	 * 获取long值
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defValue
+	 * @return
+	 */
+	public static long getLong(Context context, String key, long defValue) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		return sp.getLong(key, defValue);
+	}
+
+	/**
+	 * 获取float值
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defValue
+	 * @return
+	 */
+	public static float getFloat(Context context, String key, float defValue) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		return sp.getFloat(key, defValue);
+	}
+
+	/**
+	 * 获取布尔值
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defValue
+	 * @return
+	 */
+	public static boolean getBoolean(Context context, String key,
+			boolean defValue) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		return sp.getBoolean(key, defValue);
+	}
+	
+	/**
+	 * 将对象进行base64编码后保存到SharePref中
+	 * 
+	 * @param context
+	 * @param key
+	 * @param object
+	 */
+	public static void saveObj(Context context, String key, Object object) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(object);
+			// 将对象的转为base64码
+			String objBase64 = new String(Base64.encodeBase64(baos
+					.toByteArray()));
+
+			sp.edit()
+					.putString(key,objBase64).commit();
+			oos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 将SharePref中经过base64编码的对象读取出来
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defValue
+	 * @return
+	 */
+	public static Object getObj(Context context, String key) {
+		if (sp == null)
+			sp = context.getSharedPreferences(SP_NAME, 0);
+		String objBase64 = sp.getString(key, null);
+		if (TextUtils.isEmpty(objBase64))
+			return null;
+
+		// 对Base64格式的字符串进行解码
+		byte[] base64Bytes = Base64.decodeBase64(objBase64.getBytes());
+		ByteArrayInputStream bais = new ByteArrayInputStream(base64Bytes);
+
+		ObjectInputStream ois;
+		Object obj = null;
+		try {
+			ois = new ObjectInputStream(bais);
+			obj = (Object) ois.readObject();
+			ois.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
+
+}
+</pre><br>
+获取&#20540;得使用 用法&nbsp; <br>
+</p>
+<p>String result = SharePrefUtil.getString(ct,<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;QLApi.NEWS_CENTER_CATEGORIES, &quot;&quot;);</p>
+<p>以此类推 设置&#20540;也是差不多的</p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/azViewpagexj1ggt/index.html">安卓Viewpage详解（1）——广告条</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf03zsssbqhdpd/index.html">快速开发03之手势识别器——滑动判断</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf04zdhdtypz/index.html">快速开发04之动画的统一配置</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf05zbzzfdsqysyyksfz/index.html">快速开发05之不做重复的事情——样式一样快速复制</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf06zMD5jmldsy/index.html">快速开发06之MD5加密类的使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf07zsrlzzf/index.html">快速开发07之输入流转字符</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf08zgsdcxTextviewzdxsnr/index.html">快速开发08之归属地查询——Textview自动显示内容</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf09zgsdcxxttgdddzdfw/index.html">快速开发09之归属地查询——系统提供的抖动振动服务</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf10zgsdcxzdsjkcxlhsjkbylw/index.html">快速开发10之归属地查询——自带数据库查询类和数据库不用联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf11zdcdjsjsxgndwndm/index.html">快速开发11之多次点击事件实现功能的万能代码</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf12zpmspandroiddphpxzjzh/index.html">快速开发12之屏幕适配—androiddp和px之间转换</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf13zkjqd/index.html">快速开发13之开机启动</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf14zcjkjfs/index.html">快速开发14之创建快捷方式</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz01buttondanxg/index.html">快速开发之01——button的按钮效果</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz02textviewnydjsjfs/index.html">快速开发之02——textview能有点击事件发生</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/jnzmqygAPPdJSONsjndd/index.html">教你怎么去一个APP的JSON数据，你懂的</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/sjcjhzSPdyhsgjl/index.html">数据持久化之SP的优化—送工具类</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

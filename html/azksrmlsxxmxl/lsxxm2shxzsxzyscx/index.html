@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目（2）生活小助手星座运势查询</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">上一篇内容 <br>
+</span></p>
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/41174425">练手小项目（2）-生活小助手</a><br>
+</span></p>
+<p><span style="font-size:18px">今天星期一，趁着中午的休息时间把 第二个写出来 星座运势，最近看看极客学院 用聚合数据做了天气预报的视频教程，不好评价他，看他在后面的代码变更那么大，我就知道，后面肯定做不下去，于是，就改代码了，代码变更那么大，有几个人会去理解，还不如我自己写................</span></p>
+<p>先看布局 <img src="21038399156425.jpg" alt=""></p>
+<p>点击去就是一个spinner 用几个textview显示查询内容&nbsp;&nbsp; 布局有点丑，主要是给别人做功能，UI我就不考虑 <br>
+</p>
+<p><img src="19744886224097.jpg" alt=""></p>
+<p>关于UI&nbsp; 我还是要贴下代码。如果你有想法就把他美化下呗</p>
+<p><pre name="code" class="java">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;fill_parent&quot; &gt;
+
+    &lt;Spinner
+        android:id=&quot;@+id/constellation_name&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot; /&gt;
+
+    &lt;LinearLayout
+        android:layout_marginTop=&quot;20dp&quot;
+        android:layout_below=&quot;@id/constellation_name&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;vertical&quot; &gt;
+ 		&lt;TextView
+          android:id=&quot;@+id/datetime&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;时间&quot; /&gt;
+ 		&lt;TextView
+          android:id=&quot;@+id/name&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;星座&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/OFriend&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;最佳配偶星座&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/all&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;幸运度&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/color&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;幸运颜色&quot; /&gt;
+       
+        &lt;TextView
+          android:id=&quot;@+id/health&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;健康运势&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/love&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;爱情运势&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/money&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;金钱运势&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/work&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;工作运势&quot; /&gt;
+        
+        &lt;TextView
+          android:id=&quot;@+id/number&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;幸运数字&quot; /&gt;
+        &lt;TextView
+          android:id=&quot;@+id/summary&quot;
+          style=&quot;@style/TextStyle&quot;
+          android:text=&quot;建议:&quot; /&gt;
+
+    &lt;/LinearLayout&gt;
+
+&lt;/RelativeLayout&gt;</pre></p>
+<p>然后看 java代码吧 <br>
+</p>
+<p><br>
+</p>
+<p>1.实例化所有控件</p>
+<p><pre name="code" class="java">	private void initview() {
+		spinner = (Spinner) findViewById(R.id.constellation_name);
+		datetime=(TextView) findViewById(R.id.datetime);
+		name=(TextView) findViewById(R.id.name);
+		OFriend=(TextView) findViewById(R.id.OFriend);
+		all=(TextView) findViewById(R.id.all);
+		color=(TextView) findViewById(R.id.color);
+		health=(TextView) findViewById(R.id.health);
+		love=(TextView) findViewById(R.id.love);
+		money=(TextView) findViewById(R.id.money);
+		work=(TextView) findViewById(R.id.work);
+		number=(TextView) findViewById(R.id.number);
+		summary=(TextView) findViewById(R.id.summary);
+	}</pre><br>
+2.建立数据元 给spinner 进行填充，</p>
+<p><br>
+</p>
+<p>// 建立数据源 &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;String[] mItems = getResources().getStringArray(R.array.book); <br>
+</p>
+<p>数据源在I res/values/arrays&nbsp; 就是12星座</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;string-array name=&quot;book&quot;&gt;
+        &lt;item &gt;当前没有选择星座&lt;/item&gt;
+        &lt;item &gt;白羊座&lt;/item&gt;
+        &lt;item &gt;金牛座&lt;/item&gt;
+        &lt;item &gt;双子座&lt;/item&gt;
+        &lt;item &gt;巨蟹座&lt;/item&gt;
+        &lt;item &gt;狮子座&lt;/item&gt;
+        &lt;item &gt;处女座&lt;/item&gt;
+        &lt;item &gt;天枰座&lt;/item&gt;
+        &lt;item &gt;天蝎座&lt;/item&gt;
+        &lt;item &gt;射手座&lt;/item&gt;
+        &lt;item &gt;魔蝎座&lt;/item&gt;
+        &lt;item &gt;水瓶座&lt;/item&gt;
+        &lt;item &gt;双鱼座&lt;/item&gt;
+    &lt;/string-array&gt;
+    
+&lt;/resources&gt;
+</pre><br>
+3.数据源有了，就要定义 适配器了&nbsp; spainner 的用法就是一个mvc&nbsp;&nbsp; 记住即可</p>
+<p>&nbsp;因为数据不多 所以就用arrayadapter <br>
+</p>
+<p><pre name="code" class="java">// 建立Adapter并且绑定数据源  
+        ArrayAdapter&lt;String&gt; _Adapter=new ArrayAdapter&lt;String&gt;(this,android.R.layout.simple_spinner_item, mItems);
+        //绑定 Adapter到控件  
+        spinner.setAdapter(_Adapter);  </pre><br>
+4.对于spinnner点击事件处理 根据点击的条目 进行联网操作，json解析 然后展示&nbsp; 看全部代码吧 我在代码中解释<br>
+</p>
+<p><br>
+</p>
+<p><pre name="code" class="java">package com.example.helper;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.helper.utils.HttpUtils;
+import com.example.helper.utils.HttpUtils.OnNetWorkResponse;
+import com.example.helper.utils.UrlApi;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class ConstellationSearch extends Activity {
+	private Spinner spinner;
+	private TextView datetime,name,OFriend,all,color,health,love,money,work,number,summary;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.constellation_search);
+		initview();
+		// 建立数据源  
+		String[] mItems = getResources().getStringArray(R.array.book);  
+		// 建立Adapter并且绑定数据源  
+		ArrayAdapter&lt;String&gt; _Adapter=new ArrayAdapter&lt;String&gt;(this,android.R.layout.simple_spinner_item, mItems); 
+		//绑定 Adapter到控件  
+		spinner.setAdapter(_Adapter);  
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			private String encode;
+			@Override
+			public void onNothingSelected(AdapterView&lt;?&gt; parent) {
+				// TODO Auto-generated method stub
+			}
+			@Override
+			public void onItemSelected(AdapterView&lt;?&gt; parent, View view,
+					int position, long id) {
+				 String str=parent.getItemAtPosition(position).toString();  
+				    Toast.makeText(ConstellationSearch.this, &quot;你点击的是:&quot;+str, 2000).show();  
+				    try {
+				    	//此数据要求url编码所以我们转一下
+						encode = URLEncoder.encode(str,&quot;utf-8&quot;);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+				    	//拼接字符串 成url进行联网
+				    String path=UrlApi.TWO+encode+UrlApi.TWO_ITEM;
+				    HttpUtils.RequestNetWork(path, new OnNetWorkResponse() {
+						
+						@Override
+						public void ok(String response) {
+							try {
+								JSONObject o1=new JSONObject(response);
+								int error_code = o1.getInt(&quot;error_code&quot;);
+								System.out.println(error_code);
+								if (error_code==0) {
+									/*json格式 
+									 * {
+										    &quot;error_code&quot;: 0,
+										    &quot;reason&quot;: &quot;Success&quot;,
+										    &quot;result&quot;: {
+										        &quot;OFriend&quot;: &quot;狮子座&quot;,
+										        &quot;all&quot;: &quot;61%&quot;,
+										        &quot;color&quot;: &quot;橙&quot;,
+										        &quot;date&quot;: &quot;1416199893&quot;,
+										        &quot;datetime&quot;: &quot;2014-11-17&quot;,
+										        &quot;health&quot;: &quot;82%&quot;,
+										        &quot;love&quot;: &quot;59%&quot;,
+										        &quot;money&quot;: &quot;67%&quot;,
+										        &quot;name&quot;: &quot;双子座&quot;,
+										        &quot;number&quot;: &quot;2&quot;,
+										        &quot;summary&quot;: &quot;今天，工作上，你的任务要是想要提前完成的话，得需要身边的同事多多配合才行；感情上，不要吝啬于表达自己的感情，要让对方体验到你的真心才行；健康上，状态不错；财运上，下降。&quot;,
+										        &quot;work&quot;: &quot;55%&quot;
+										    }
+										}
+									 * 
+									 * */
+									//json解析非常简单 我简单 讲一下  第一个是大括号 SO  jsonobject  然后看下我们要的数据在哪，result 
+									// 后面也是括号 getStringObject 
+									JSONObject o2 = o1.getJSONObject(&quot;result&quot;);
+									datetime.setText(&quot;当前时间: &quot;+o2.getString(&quot;datetime&quot;));
+									name.setText(&quot;你选择星座是: &quot;+o2.getString(&quot;name&quot;));
+									OFriend.setText(&quot;最佳配偶星座: &quot;+o2.getString(&quot;OFriend&quot;));
+									all.setText(&quot;幸运度: &quot;+o2.getString(&quot;all&quot;));
+									color.setText(&quot;幸运色&quot;+o2.getString(&quot;color&quot;));
+									health.setText(&quot;健康指数: &quot;+o2.getString(&quot;health&quot;));
+									love.setText(&quot;爱情指数: &quot;+o2.getString(&quot;love&quot;));
+									money.setText(&quot;金钱指数: &quot;+o2.getString(&quot;money&quot;));
+									work.setText(&quot;升职指数: &quot;+o2.getString(&quot;work&quot;));
+									number.setText(&quot;幸运数字: &quot;+o2.getString(&quot;number&quot;));
+									summary.setText(&quot;建议: &quot;+o2.getString(&quot;summary&quot;));
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						
+						@Override
+						public void error(String error) {
+							
+						}
+					});
+			}
+		});
+	}
+
+	private void initview() {
+		spinner = (Spinner) findViewById(R.id.constellation_name);
+		datetime=(TextView) findViewById(R.id.datetime);
+		name=(TextView) findViewById(R.id.name);
+		OFriend=(TextView) findViewById(R.id.OFriend);
+		all=(TextView) findViewById(R.id.all);
+		color=(TextView) findViewById(R.id.color);
+		health=(TextView) findViewById(R.id.health);
+		love=(TextView) findViewById(R.id.love);
+		money=(TextView) findViewById(R.id.money);
+		work=(TextView) findViewById(R.id.work);
+		number=(TextView) findViewById(R.id.number);
+		summary=(TextView) findViewById(R.id.summary);
+	}
+}
+</pre><a target="_blank" target="_blank" href="http://download.csdn.net/detail/jack_king007/8167051">
+<span style="font-size:18px">点击下载源码</span></a><br>
+</p>
+<p><br>
+</p>
+<span id="pv-float-bar-container" style="top:769px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm(1)znltjqr/index.html">练手小项目(1)——智能聊天机器人</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzszgjm/index.html">练手小项目（2）生活小助手周公解梦</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzsxzyscx/index.html">练手小项目（2）生活小助手星座运势查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzssfzcx/index.html">练手小项目（2）生活小助手身份证查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm3djs/index.html">练手小项目（3）倒计时</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/gddtjc_poissyjxs/index.html">高德地图教程_poi搜索以及显示</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

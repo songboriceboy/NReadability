@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿威信主界面，不使用任何框架</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px; color:#990000">主要是练习Fragment&#43;Viewpage&#43;Actionbar。</span></p>
+<p><span style="font-size:18px; color:#990000">大家是知道actionbar是有tab模式 你添加两个TABs就就会显示 两个tab页</span></p>
+<p><span style="font-size:18px; color:#990000"><img src="4527976257996.jpg" alt=""></span></p>
+<p><span style="font-size:18px; color:#990000"></span><pre name="code" class="java">	private void initActionBar() {
+		ActionBar actionBar = getSupportActionBar();
+		// 设置TAB导航模式
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// 添加Tab，获取Tab对象
+		Tab tab1 = actionBar.newTab().setText(&quot;导航1&quot;).setTag(&quot;0&quot;)
+				.setTabListener(new TabListener());
+		// 添加进ActionBar
+		actionBar.addTab(tab1);
+		// 添加Tab，获取Tab对象
+		Tab tab2 = actionBar.newTab().setText(&quot;导航2&quot;).setTag(&quot;1&quot;)
+				.setTabListener(new TabListener());
+		// 添加进ActionBar
+		actionBar.addTab(tab2);
+		// 添加Tab，获取Tab对象
+		Tab tab3 = actionBar.newTab().setText(&quot;导航3&quot;).setTag(&quot;2&quot;)
+				.setTabListener(new TabListener());
+		// 添加进ActionBar
+		actionBar.addTab(tab3);
+	}</pre><br>
+同时添加了点击事件处理</p>
+<p><span style="font-size:18px; color:#990000"></span><pre name="code" class="java">//Tab的点击监听
+    public static class TabListener implements android.support.v7.app.ActionBar.TabListener{
+
+		@Override
+		public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+			
+		}
+
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction arg1) {
+			//获取到Tab的tag，转换成int：0、1、2
+			int tag=Integer.parseInt(tab.getTag().toString());
+			//设置Pager的当前页
+			pager.setCurrentItem(tag);
+		}
+
+		@Override
+		public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
+			
+		}
+    	
+    }</pre><br>
+因为每个tab都有一个特征码 所以转下&#26684;式 设置给Viewpage页 就会形成点击也会切换</p>
+<p><span style="font-size:18px; color:#990000">好了，回到viewpage 我们知道要想使用viewpage</span></p>
+<p><span style="font-size:18px; color:#990000">1.要在代码里形成</span></p>
+<p><span style="font-size:18px; color:#990000"></span><pre name="code" class="html">  &lt;android.support.v4.view.ViewPager
+        android:id=&quot;@+id/pager&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;fill_parent&quot; &gt;
+    &lt;/android.support.v4.view.ViewPager&gt;</pre><br>
+2.然后在代码里实例化</p>
+<p><span style="font-size:18px; color:#990000">&nbsp;&nbsp;&nbsp; private static ViewPager pager;</span></p>
+<p><span style="font-size:18px; color:#990000">&nbsp;&nbsp;&nbsp; //ViewPager视图<br>
+&nbsp;&nbsp;&nbsp; pager=(ViewPager) findViewById(R.id.pager);</span></p>
+<p><span style="font-size:18px; color:#990000">3.然后需要一个PageAdapter&nbsp; 里面放Fragment 去展示出来<br>
+</span></p>
+<p><span style="font-size:18px; color:#990000">&nbsp;&nbsp;&nbsp; MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());</span></p>
+<p><span style="font-size:18px; color:#990000">4.pageadapter 需要填充数据</span></p>
+<p><span style="font-size:18px; color:#990000"></span><pre name="code" class="java">package com.example.tabviewpage;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+
+public class MyPagerAdapter extends FragmentStatePagerAdapter {
+	private final int NUM_ITEM=3;
+	private int [] imgIds={R.drawable.z1,R.drawable.z2,R.drawable.z3};
+
+	public MyPagerAdapter(FragmentManager fm) {
+		super(fm);
+	}
+
+	@Override
+	public Fragment getItem(int arg0) {
+		return MyFragment.newInstance(imgIds[arg0]);
+	}
+
+	@Override
+	public int getCount() {
+		return NUM_ITEM;
+	}
+
+}
+</pre><br>
+getCount是多少页 也就是 3页</p>
+<p><span style="font-size:18px; color:#990000">getItem&nbsp; 得到当前页的数据&nbsp; <br>
+&nbsp;这里会调用Fragment中的静态方法 得到一个Fragment</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#990000">我们再看看Fragment 类 <br>
+</span></p>
+<p><span style="font-size:18px; color:#990000"></span><pre name="code" class="java">package com.example.tabviewpage;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+public class MyFragment extends Fragment {
+	public static MyFragment newInstance(int imgId){
+		MyFragment fragment=new MyFragment();
+		Bundle bundle=new Bundle();
+		bundle.putInt(&quot;img&quot;, imgId);
+		//传参，Bundle
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment, container, false);
+	}
+	/**视图创建完成以后，进行View的相关操作：把参数中ImageView 的图片id拿出来，通过id把图片设置给ImageView*/
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		Bundle bundle=getArguments();
+		int imgId=bundle==null?R.drawable.ic_launcher:bundle.getInt(&quot;img&quot;);
+		ImageView imgv=(ImageView) view.findViewById(R.id.imgv_fragment);
+		imgv.setBackgroundResource(imgId);
+		
+	}
+}
+</pre><br>
+<br>
+</p>
+<p><span style="font-size:18px; color:#990000">为啥要用bundle 方法和 getArguments方法呢，因为谷歌官方考虑到 Fragment 可能会用到平板 有时候会切换屏幕，但是一旦切换屏幕数据会丢失，用个<span style="font-size:18px; color:#990000">getArguments</span> 并不会丢失 数据</span></p>
+<p><span style="font-size:18px; color:#990000">然后再Fragment 内 OncreateView中将 Fragment视图填充进来，然后再OnViewCreate 将图片设置到背景</span></p>
+<p><span style="font-size:18px; color:#990000">End<br>
+</span></p>
+<p><span style="font-size:18px; color:#990000"><span style="font-size:18px; color:#990000"></span><br>
+</span></p>
+<span id="pv-float-bar-container" style="top:195px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

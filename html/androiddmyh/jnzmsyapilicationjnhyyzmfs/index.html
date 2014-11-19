@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>教你怎么使用apilication—纪念火影影子模仿术</div><br><div id="article_content" class="article_content">
+
+<p>
+<h1 class="title maintitle" id=""><span class="lemmaTitleH1">影子模仿术——鹿丸的绝招</span></h1>
+<p>
+<p><span style="font-size:14px"><a target="_blank" target="_blank" href="http://baike.baidu.com/view/985180.htm">奈良一族</a>密传的忍术，藉由伸长自己的影子来与敌方的连结，使对方作出和<span style="color:#CC0000">自己相同动作</span>的奇特忍术。</span><br>
+</p>
+<br>
+<p><span style="font-size:18px">其实对于安卓来说，入口并不是activity的Oncreate，而是aplication 大家可以看看配置文件，最先的并不是activity。</span></p>
+<p><span style="font-size:18px">其实我第一次看怎么使用aplication的时候，总觉得有点像单例模式，或者是说，aplication就是拿着单例的原理 造就了他的特性么？</span></p>
+<p><span style="font-size:18px">他就像影子模仿术一样，它里面存放着全局变量，不管是谁，只要是他的子类，只要在一个进程，都可以共用一个&#20540;。</span></p>
+<p><span style="font-size:18px">官方解释：</span></p>
+<p><span style="font-size:18px"></span>
+<table border="1" cellpadding="1" cellspacing="1" height="147" width="848">
+<tbody>
+<tr>
+<td><span style="font-size:18px">android.app.Application类和Activity,Service一样是<a target="_blank" href="http://www.2cto.com/kf/yidong/Android/" target="_blank" class="keylink">Android</a>框架的一个系统<a target="_blank" href="http://www.2cto.com/kf/all/zujian/" target="_blank" class="keylink">组件</a>，当Android程序启动时<a target="_blank" href="http://www.2cto.com/os/" target="_blank" class="keylink">系统</a>会创建一个Application对象，用来存储系统的一些信息。<br>
+<br>
+</span>
+<p align="left"><strong>Android系统自动会为每个程序运行时创建一个Application类的对象且只创建一个</strong>，所以Application可以说是<span style="color:#CC0000">单例（singleton）模式的一个类。</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:14px">启动Application时，系统会创建一个PID，即进程ID，所有的Activity都会在此进程上运行。那么我们在Application创建的时候初始化全局变量，同一个应用的所有Activity都可以取到这些全局变量的&#20540;，换句话说，我们在某一个Activity中改变了这些全局变量的&#20540;，那么在同一个应用的其他Activity中&#20540;就会改变。<strong>Application对象的生命周期是整个程序中最长的，它的生命周期就等于这个程序的生命周期。</strong>因为它是全局的单例的，所以在不同的Activity,Service中获得的对象都是同一个对象。因此可以通过Application来进行一些，如：数据传递、数据共享和数据缓存等操作。</span><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">好了 开始正题：</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">首先创建一个类， MyApp类，继承Application</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.aplicationdemo;
+import android.app.Application;
+import android.util.Log;
+/**
+ * 
+ *
+ *整个应用的上下文对象
+ */
+public class MyApp extends Application
+{
+    private static final MyApp instance = new MyApp();
+     
+    /**
+     * 全局变量
+     */
+    private String name = &quot;JDK&quot;;
+     
+    /*
+     * android应用程序真正入口。
+     * 此方法在所有activity，servie，receiver组件之前调用
+     * */
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();//必须调用父类方法
+        Log.i(&quot;CREATE&quot;,&quot;application created....&quot;);
+    }
+     
+     
+    /**
+     * 此方法方便在那些没有context对象的类中使用
+     * @return MyApp实例
+     */
+    public static MyApp getApplicationInstance()
+    {
+        return instance;
+    }
+     
+    /* setter/getter 方法 */
+    public String getName()
+    {
+        return name;
+    }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+     
+}</pre><br>
+其中getset方法是给你提供修改&#20540;用的</p>
+<p><span style="font-size:18px">注意的是 建完myapp类以后再 配置文件 注册下 在aplication下加一个name属性即可</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">  &lt;application
+        android:allowBackup=&quot;true&quot;
+        android:icon=&quot;@drawable/ic_launcher&quot;
+        android:name=&quot;com.example.aplicationdemo.MyApp&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:theme=&quot;@style/AppTheme&quot; &gt;</pre><br>
+2.接着我们在MainActivity 实例化 进行输出&#20540;看一下</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.aplicationdemo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+public class MainActivity extends Activity {
+    private static final String TAG = &quot;MainActivity&quot;;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Log.i(&quot;CREATE&quot;,&quot;activity created...&quot;);
+       &lt;span style=&quot;color:#FF0000;&quot;&gt; MyApp app1 = (MyApp) this.getApplication();
+        app1.setName(&quot;xxx&quot;);&lt;/span&gt;
+        Log.i(TAG,&quot;方式一：&quot;+app1.getName());
+         
+//        MyApp app2 = (MyApp) this.getApplicationContext();
+//        Log.i(TAG,&quot;方式二：&quot;+app2.getName());
+//         
+//        MyApp app3 = MyApp.getApplicationInstance();//用在获取不到context对象的类中
+//        Log.i(TAG,&quot;方式三：&quot;+app3.getName());
+    }
+    public void btn(View view){
+    	Intent intent=new Intent(MainActivity.this,main2.class);
+    		startActivity(intent);
+    		finish();
+    }
+
+}
+</pre><br>
+输出&#20540; <br>
+</p>
+<p><span style="font-size:18px">11-10 15:38:55.099: I/MainActivity(2475): 方式一：xxx&nbsp;
+<br>
+</span></p>
+<p><span style="font-size:18px">LOG 打印 说明我们成功了。</span></p>
+<p><span style="font-size:18px">然后我们通过 button 点击 进入下一个activity 实验能否成功 修改&#20540;</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.aplicationdemo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+public class main2 extends Activity {
+	private static final String TAG = &quot;MainActivity&quot;;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		  MyApp app1 = (MyApp) this.getApplication();
+		  	app1.setName(&quot;张泰&quot;);
+	        Log.i(TAG,&quot;方式一：&quot;+app1.getName());
+	}
+	  public void btn(View view){
+	    	Intent intent=new Intent(main2.this,main3.class);
+	    		startActivity(intent);
+	    		finish();
+	    }
+}
+</pre><br>
+11-10 15:40:38.447: I/MainActivity(2475): 方式一：张泰<br>
+可以看到成功了&nbsp; <br>
+</p>
+<p><span style="font-size:18px">我们再点击下一个页面试试</span></p>
+<p><span style="font-size:18px">11-10 15:41:05.307: I/MainActivity(2475): 方式一：清哥<br>
+<br>
+有成功了 <br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">这说明 aplication 设置的&#20540; 是可以全局 可用的 而且也可以被修改，思维发散下 aplication通常可以放入 一个entry类 或者 地图的location<br>
+</span></p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/azbtlyh1jnhyyss/index.html">安卓标题栏优化（1）——纪念火影隐身术</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/jnzmsyapilicationjnhyyzmfs/index.html">教你怎么使用apilication—纪念火影影子模仿术</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

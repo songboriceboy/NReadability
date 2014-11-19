@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>APP开发之slidingmenu+viewpage+tab页+Fragment之一</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">我写这一系列也是为了我对代码的优化，以及为了快速开发做准备，自己积累点大多数APP的框架------------</span></p>
+<p><span style="font-size:24px">第一篇我讲以slidingmenu&#43;Fragment开始</span></p>
+<p><span style="font-size:24px"><img src="26076597337781.jpg" alt=""><img src="15880045679738.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px">根据谷歌官方显示tabhost tabactivity不建议使用了，因为前2者都需要创建activity，太消耗资源了，所以tab页我将以RadioGroup来显示组件</span></p>
+<p><br>
+</p>
+<p><span style="font-size:24px">回到这片文章的开始，因为我们需要slidingmenu 和Fragment 来创建APP 所以我们的Mainactivity需要继承SlidingFragmentActivity，同时导入slidingmenu的架包 记住覆盖V4架包，同时Fragment需要引入 v4架包 对下兼容。</span></p>
+<p><span style="font-size:24px">同时，要创建一个HomeFragment替换主布局，和MenuFragment去替换菜单布局</span></p>
+<p><span style="font-size:24px">对于slidingmenu 的使用</span></p>
+<p><span style="font-size:24px">第一 导入架包</span></p>
+<p><span style="font-size:24px">第二 继承slidingmenu</span></p>
+<p><span style="font-size:24px">第三 使用slidingmenu&nbsp;</span></p>
+<p><span style="font-size:24px">1 得到滑动菜单&nbsp;</span></p>
+<p><span style="font-size:24px">2 设置滑动菜单是在左边出来还是右边出来&nbsp;</span></p>
+<p><span style="font-size:24px">3 设置滑动菜单出来之后，内容页，显示的剩余宽度</span></p>
+<p><span style="font-size:24px">4 设置滑动菜单的阴影&nbsp;设置阴影，阴影需要在开始的时候，特别暗，慢慢的变淡</span></p>
+<p><span style="font-size:24px">5 设置阴影的宽度</span></p>
+<p><span style="font-size:24px">6 设置滑动菜单的范围</span><br>
+</p>
+<p><span style="font-size:24px; color:#cc0000">小新思路：要想使用slidingmenu（工具），你就必须去拿到使用权（架包），然后再用的时候把工具拿出来（继承他），然后拿到工具(slidingmenu)开始使用。</span></p>
+<p><span style="font-size:24px; color:#cc0000">对于Fragment 第一点很重要就是生命周期，有时候生命周期，能帮助我们完成很多事情，同时我在前面说了有些东西被谷歌官方不建议使用，就因为他的出现，为了APP的效率我们也只有用他了，Fragment 跟Activity的区别在于，不需要重新创建activity也有会有他的效果，对于一个App是很好的事情，开始使用他的时候，大家都有陌生</span></p>
+<p><span style="font-size:24px; color:#cc0000">他也有很多方法</span></p>
+<p><span style="font-size:24px; color:#cc0000">首先是：getactivity（） 能得到当前适用对象的activity</span></p>
+<p><br>
+</p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">package com.xiaoxin.NewS;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.xiaoxin.NewS.Fragment.HomeFragment;
+import com.xiaoxin.NewS.Fragment.MenuFragment;
+
+import android.app.Activity;
+import android.app.ActionBar;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.os.Build;
+
+public class MainActivity extends SlidingFragmentActivity {
+	private SlidingMenu sm;
+
+	/**
+	 * 1 得到滑动菜单 2 设置滑动菜单是在左边出来还是右边出来 3 设置滑动菜单出来之后，内容页，显示的剩余宽度 4 设置滑动菜单的阴影
+	 * 设置阴影，阴影需要在开始的时候，特别暗，慢慢的变淡 5 设置阴影的宽度 6 设置滑动菜单的范围
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//设置菜单布局
+		setBehindContentView(R.layout.menu);
+		setContentView(R.layout.content);
+		// 设置滑动菜单的布局
+		sm = getSlidingMenu();
+		// 2 设置滑动菜单是在左边出来还是右边出来
+		// 参数可以设置左边LEFT，也可以设置右边RIGHT ，还能设置左右LEFT_RIGHT
+		sm.setMode(SlidingMenu.LEFT);
+		// 3 设置滑动菜单出来之后，内容页，显示的剩余宽度
+		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		// 4 设置滑动菜单的阴影 设置阴影，阴影需要在开始的时候，特别暗，慢慢的变淡
+		sm.setShadowDrawable(R.drawable.shadow);
+		// 5 设置阴影的宽度
+		sm.setShadowWidth(R.dimen.shadow_width);
+		// 6 设置滑动菜单的范围
+		// 第一个参数 SlidingMenu.TOUCHMODE_FULLSCREEN 可以全屏滑动
+		// 第二个参数 SlidingMenu.TOUCHMODE_MARGIN 只能在边沿滑动
+		// 第三个参数 SlidingMenu.TOUCHMODE_NONE 不能滑动
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		// 创建fragment,获取到使用权
+		MenuFragment menuFragment = new MenuFragment();
+		// 获取fragment的管理者
+		getSupportFragmentManager()
+		// 开启事物
+				.beginTransaction()
+				// 替换
+				.replace(R.id.menu_frame, menuFragment, &quot;Menu&quot;)
+				// 提交
+				.commit();
+		HomeFragment homeFragment = new HomeFragment();
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_frame, homeFragment, &quot;Home&quot;).commit();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	/**
+	 * 方法D 回调
+	 */
+	public void switchFragment(Fragment f) {
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_frame, f).commit();
+		// 自动切换
+		sm.toggle();
+	}
+
+}
+</pre>相信大家看到代码最后有一个方法时回调，其实用slidingmenu有个最难的地方就是点击slidingmenu的menu会切换界面，但是是在一个界面切换，使用Fragment去替换，相信大家看到了菜单上有5个Fragment &nbsp;我们就先看到MenuFragment上的代码</p>
+<p><span style="font-size:24px">首先我先说一个经常用的一个方法 填充器，专门填充各种各种布局，控件</span><pre name="code" class="java">LayoutInflater</pre></p>
+<p><pre name="code" class="java" style="font-size:24px;">package com.xiaoxin.NewS.Fragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.xiaoxin.NewS.MainActivity;
+import com.xiaoxin.NewS.R;
+import com.xiaoxin.NewS.R.id;
+import com.xiaoxin.NewS.R.layout;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+public class MenuFragment extends Fragment implements OnItemClickListener {
+
+	private View view;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		//将ListView填充到Fragment 在这里要记住Fragment的生命周期
+		view=LayoutInflater.from(getActivity()).inflate(R.layout.list_view, null);
+		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		ListView listView=(ListView) view.findViewById(R.id.list_view);
+		ArrayAdapter&lt;String&gt;adapter=new ArrayAdapter&lt;String&gt;(getActivity(), android.R.layout.simple_list_item_1,android.R.id.text1,initData());
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
+	}
+
+	private List&lt;String&gt; initData() {
+		List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+		list.add(&quot;fragment1&quot;);
+		list.add(&quot;fragment2&quot;);
+		list.add(&quot;fragment3&quot;);
+		list.add(&quot;fragment4&quot;);
+		list.add(&quot;fragment5&quot;);
+		return list;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position,
+			long id) {
+		Fragment f=null;
+		switch (position) {
+		case 0:
+			f  =new Fragment1();
+			break;
+			
+		case 1:
+			f  =new Fragment2();
+			break;
+		case 2:
+			f  =new Fragment3();
+			break;
+		case 3:
+			f  =new Fragment4();
+			break;
+		case 4:
+			f  =new Fragment5();
+			break;
+		}
+		 switchFragment(f);
+	}
+
+	private void switchFragment(Fragment f) {
+		if(f!=null){
+//			Fragment中有一个getActivity()的方法。这个方法会返回当前Fragment所附加的Activity
+			if(getActivity()instanceof MainActivity){
+				((MainActivity)getActivity()).switchFragment(f);
+			}
+		}
+	}
+}
+</pre><br>
+<span style="font-size:18px">大家也看的出 布局一个 ListView &nbsp;它的出现就意味着要有一个适配器。相信大家都看的懂的。</span></p>
+<p><span style="font-size:18px">当然这里是一个Fragment我就顺便说下他的生命周期 一般会用三个方法 顺序</span></p>
+<p><span style="font-size:18px">onCreate<span style="white-space:pre"> </span>onCreateView &nbsp;<span style="white-space:pre">onActivityCreated</span>&nbsp; 利用他的周期&nbsp;</span></p>
+<p><span style="font-size:18px">我们可以 在onCreateView &nbsp;的时候initview（） &nbsp;<span style="white-space:pre">onActivityCreated</span>&nbsp; &nbsp;initdata（） 大家记着 因为后面我会把Fragment的文件提取抽来 做一个BaseFragment 用来继承 为的就是少写几行代码</span><br>
+</p>
+<p><span style="font-size:18px">同时我也说下思路：因为布局使用ListView所以会有adapter适配器去添加所有的Fragment去显示 同时添加点击事件，去切换布局。</span></p>
+<p><span style="font-size:18px">同时说下回调：</span></p>
+<p><span style="font-size:18px">小新思路：因为slidingmenu的menu的点击 需要MainAcitivity去切换Fragment的 所以回调是最好的方法</span></p>
+<p><span style="font-size:18px">回调的使用，也就是将一个类的引用放入另一个类 同时两个类形成 子类父类的关系 所以就有了 instanceof这个方法</span></p>
+<p><span style="font-size:18px">我们再看看HomeFragmet的方法</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.xiaoxin.NewS.Fragment;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import com.xiaoxin.NewS.R;
+import com.xiaoxin.NewS.R.layout;
+
+public class HomeFragment extends BaseFragment{
+
+	@Override
+	public View initView(LayoutInflater inflater) {
+		View view = inflater.inflate(R.layout.frag_home2, null);
+		return view;
+	}
+
+	@Override
+	public void initData(Bundle savedInstanceState) {
+		
+	}
+	
+}
+</pre>就如我在前面说说 我用了继承baseFragment 好啦 大家看看&nbsp;</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.xiaoxin.NewS.Fragment;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+/**
+ * BaseFragment的存在 在于 让每一个Fragment少写几行代码 
+ * @author Administrator
+ *
+ */
+public abstract class BaseFragment extends Fragment {
+	
+	public View view;
+	private Context ct;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ct = getActivity();
+	}
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		initData(savedInstanceState);
+	}
+
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = initView(inflater);
+
+		return view;
+	}
+	/**
+	 * 初始化view
+	 */
+	public abstract View initView(LayoutInflater inflater);
+
+	public abstract void initData(Bundle savedInstanceState);
+}
+</pre>相信大家看得懂的<br>
+<br>
+<br>
+</p>
+<p><span style="font-size:18px">好了 回到主方法 大家可以看到 菜单 和HomeFragment替换的是哪个部分&nbsp;</span></p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">MenuFragment menuFragment = new MenuFragment();
+		// 获取fragment的管理者
+		getSupportFragmentManager()
+		// 开启事物
+				.beginTransaction()
+				// 替换
+				.replace(R.id.menu_frame, menuFragment, &quot;Menu&quot;)
+				// 提交
+				.commit();
+		HomeFragment homeFragment = new HomeFragment();
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_frame, homeFragment, &quot;Home&quot;).commit();</pre><br>
+<br>
+</p>
+<p><span style="font-size:24px"><a target="_blank" href="http://download.csdn.net/detail/jack_king007/7865291">源代码下载</a><br>
+</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzslidingmenu+viewpage+taby+Fragmentzy/index.html">APP开发之slidingmenu+viewpage+tab页+Fragment之一</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzViewpage+Fragment+xlsx/index.html">APP开发之Viewpage+Fragment+下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzysplashmbdm/index.html">APP开发之一splash模板代码</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

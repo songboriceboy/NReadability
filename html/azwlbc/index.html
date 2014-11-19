@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>01SAX解析xml</div><br><div id="article_content" class="article_content">
+
+<p>第一步 创建一个Person类存放相关信息</p>
+<p><pre name="code" class="java">package com.xiaoxin.xml.bean;
+
+public class Person{
+	private Integer id;
+	private String name;
+	private Short age;
+	public Person() {
+		super();
+	}
+	public Person(Integer id, String name, Short age) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
+	
+	public Person(String name, Short age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Short getAge() {
+		return age;
+	}
+	public void setAge(Short age) {
+		this.age = age;
+	}
+	@Override
+	public String toString() {
+		return &quot;Person [id=&quot; + id + &quot;, name=&quot; + name + &quot;, age=&quot; + age + &quot;]&quot;;
+	}
+	
+	
+	
+}</pre><span style="font-size:24px">第二步 新建一个类继承DefultHandle而DefultHandle实现了controlHandle的接口&nbsp;controlHandle提供了相关的事件方法 &nbsp;然后在其中覆盖</span><br>
+</p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)">startDocumnet() :当开始解析xml文件的声明的时候就会触发这个事件, 可以做一些初始化的工作</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"><br>
+startElement() 当开始解析元素的开始标签的时候,就会触发这个事件</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"><br>
+characters() 当读到文本元素的时候要触发这个事件.</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"><br>
+endElement() 当读到结束标签的时候 就会触发这个事件</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"><br>
+</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)">先看 XML文件吧，好对SAX读取的顺序有个了解</span></p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;span style=&quot;white-space:pre&quot;&gt;	&lt;/span&gt;&lt;person&gt;
+
+    &lt;person id=&quot;23&quot; &gt;
+        &lt;name&gt;
+	NEwii
+        &lt;/name&gt;
+
+        &lt;age&gt;
+	21
+        &lt;/age&gt;
+    &lt;/person&gt;</pre><pre name="code" class="html">
+    &lt;person id=&quot;20&quot; &gt;
+        &lt;name&gt;
+	WiiWill
+        &lt;/name&gt;
+
+        &lt;age&gt;
+	25
+        &lt;/age&gt;
+    &lt;/person&gt;
+
+&lt;/person&gt;</pre><br>
+<br>
+</p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"></span><pre name="code" class="java">package com.xiaoxin.xml;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import android.util.Log;
+
+import com.xiaoxin.xml.bean.Person;
+
+public class Sax extends DefaultHandler {
+	private static final String TAG=&quot;Sax&quot;;
+	//用一个集合存放解析东西
+	private List&lt;Person&gt;persons;
+	private String perTag;//通过此变量 ，记录前一个标签的名称
+	Person person;//记录当前Person
+	
+	public List&lt;Person&gt;getPersons(){
+		return persons;
+		
+	}
+	@Override
+	public void startDocument() throws SAXException {
+		persons=new ArrayList&lt;Person&gt;();
+		Log.i(TAG, &quot;开始解析了&quot;);
+		super.startDocument();
+	}
+	
+	/* (non-Javadoc)
+	 * uri命名空间 
+	 * localName 标签名称
+	 * qName 戴明明空间的标签名
+	 * attributes 存放该标签的所有属性
+	 */
+	@Override
+	public void startElement(String uri, String localName, String qName,
+			Attributes attributes) throws SAXException {
+		//首先判断是不是我们想要的元素
+		if(&quot;person&quot;.equals(localName)){
+			for(int i=0;i&lt;attributes.getLength();i++){</pre><pre name="code" class="java">
+&lt;span style=&quot;white-space:pre&quot;&gt;		&lt;/span&gt;Log.i(TAG, &quot;attributesName:&quot;+attributes.getLocalName(i)+&quot;attributes_value&quot;+attributes.getValue(i));
+				//需要处理的一个对象的开始标记 所以我们在这里需要new一个person对象
+				person=new Person();
+				person.setId(Integer.valueOf(attributes.getValue(i)));
+			}
+		}
+		perTag=localName;
+		Log.i(TAG, &quot;****startElement&quot;);
+	}
+	
+	/* (non-Javadoc)
+	 * ch 当前读到Textnode字节数组
+	 * start 直接开始的位置
+	 * lengh textnode的长度
+	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+	 */
+	@Override
+	public void characters(char[] ch, int start, int length)
+			throws SAXException {
+		String data=new String(ch,start,length).trim();
+		if(!&quot;&quot;.equals(data.trim())){
+			Log.i(TAG,&quot;content:&quot;+data.trim());
+		}
+		if(&quot;name&quot;.equals(perTag)){
+			person.setName(data);
+		}else if(&quot;age&quot;.equals(perTag)){
+			person.setAge(new Short(data));
+			
+		}
+	}
+
+	@Override
+	public void endDocument() throws SAXException {
+
+		Log.i(TAG,&quot;********endDocument()******&quot;);
+		
+	}
+
+	@Override
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+		Log.i(TAG,qName+&quot;******endElement()**&quot;);
+		if(&quot;person&quot;.equals(localName)){
+			persons.add(person);
+			person=null;
+		}
+		perTag=null;
+	}
+
+
+
+
+
+}
+</pre>然后在配置文件中 配置 测试单元</p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    package=&quot;com.xiaoxin.xml&quot;
+    android:versionCode=&quot;1&quot;
+    android:versionName=&quot;1.0&quot; &gt;
+
+    &lt;uses-sdk
+        android:minSdkVersion=&quot;14&quot;
+        android:targetSdkVersion=&quot;19&quot; /&gt;
+
+    &lt;application
+        android:allowBackup=&quot;true&quot;
+        android:icon=&quot;@drawable/ic_launcher&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:theme=&quot;@style/AppTheme&quot; &gt;
+      &lt;!--   增加测试单员 --&gt;
+        &lt;uses-library android:name=&quot;android.test.runner&quot; /&gt;
+
+        &lt;activity
+            android:name=&quot;com.xiaoxin.xml.MainActivity&quot;
+            android:label=&quot;@string/app_name&quot; &gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+&lt;!--   增加测试单员 --&gt;
+    &lt;instrumentation
+        android:name=&quot;android.test.InstrumentationTestRunner&quot;
+        android:targetPackage=&quot;com.xiaoxin.xml&quot; &gt;
+    &lt;/instrumentation&gt;
+
+&lt;/manifest&gt;</pre><br>
+测试单员</p>
+<p><span style="font-size:18px; background-color:rgb(51,255,51)"></span><pre name="code" class="java">package com.xiaoxin.xml;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import com.xiaoxin.xml.bean.Person;
+
+import android.test.AndroidTestCase;
+import android.util.Log;
+
+public class PersonServiceTest extends AndroidTestCase {
+	private static final String TAG = &quot;PersonServiceTest&quot;;
+
+	public void testSax()throws Throwable{
+		//因为XML在src文件中 可以直接反射到路径 inputStream
+		InputStream inputStream=this.getClass().getClassLoader().getResourceAsStream(&quot;xiaoxin.xml&quot;);
+		Sax sax=new Sax();
+		//建立解析工厂
+		SAXParserFactory spf=SAXParserFactory.newInstance();
+		//简历解析模式
+		SAXParser saxParser=spf.newSAXParser();
+		//导入路径 和解析方法 开始
+		saxParser.parse(inputStream, sax);
+		List&lt;Person&gt;persons=sax.getPersons();
+		inputStream.close();
+		for(Person person:persons){
+			Log.i(TAG, person.toString());
+		}
+	}
+}
+</pre><br>
+<br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

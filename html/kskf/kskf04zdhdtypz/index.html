@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>快速开发04之动画的统一配置</div><br><div id="article_content" class="article_content">
+
+<p>作为一个有经验的程序员 必须保证自己的代码不臃肿 所以我们就将动画统一配置到 res/anim文件下</p>
+<p>先看一段示例代码</p>
+<p><pre name="code" class="java">	public void showPre() {
+		Intent intent = new Intent(this,Setup1Activity.class);
+		startActivity(intent);
+		finish();
+		overridePendingTransition(R.anim.tran_pre_in, R.anim.tran_pre_out);
+		
+		
+	}</pre><pre name="code" class="java">
+</pre>overridePendingTransition这个就是引入从左倒右的动画 &nbsp;里面有两个参数 &nbsp;一个是进 一个是出</p>
+<p>tran_pre_in</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;translate xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:duration=&quot;500&quot;
+    android:fromXDelta=&quot;-100%p&quot;
+    android:fromYDelta=&quot;0&quot;
+    android:toXDelta=&quot;0&quot;
+    android:toYDelta=&quot;0&quot; &gt;
+
+&lt;/translate&gt;</pre><br>
+tran_pre_out</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;translate xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:duration=&quot;500&quot;
+    android:fromXDelta=&quot;0&quot;
+    android:fromYDelta=&quot;0&quot;
+    android:toXDelta=&quot;100%p&quot;
+    android:toYDelta=&quot;0&quot; &gt;
+
+&lt;/translate&gt;</pre><br>
+<br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/azViewpagexj1ggt/index.html">安卓Viewpage详解（1）——广告条</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf03zsssbqhdpd/index.html">快速开发03之手势识别器——滑动判断</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf04zdhdtypz/index.html">快速开发04之动画的统一配置</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf05zbzzfdsqysyyksfz/index.html">快速开发05之不做重复的事情——样式一样快速复制</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf06zMD5jmldsy/index.html">快速开发06之MD5加密类的使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf07zsrlzzf/index.html">快速开发07之输入流转字符</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf08zgsdcxTextviewzdxsnr/index.html">快速开发08之归属地查询——Textview自动显示内容</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf09zgsdcxxttgdddzdfw/index.html">快速开发09之归属地查询——系统提供的抖动振动服务</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf10zgsdcxzdsjkcxlhsjkbylw/index.html">快速开发10之归属地查询——自带数据库查询类和数据库不用联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf11zdcdjsjsxgndwndm/index.html">快速开发11之多次点击事件实现功能的万能代码</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf12zpmspandroiddphpxzjzh/index.html">快速开发12之屏幕适配—androiddp和px之间转换</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf13zkjqd/index.html">快速开发13之开机启动</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf14zcjkjfs/index.html">快速开发14之创建快捷方式</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz01buttondanxg/index.html">快速开发之01——button的按钮效果</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz02textviewnydjsjfs/index.html">快速开发之02——textview能有点击事件发生</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/jnzmqygAPPdJSONsjndd/index.html">教你怎么去一个APP的JSON数据，你懂的</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/sjcjhzSPdyhsgjl/index.html">数据持久化之SP的优化—送工具类</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

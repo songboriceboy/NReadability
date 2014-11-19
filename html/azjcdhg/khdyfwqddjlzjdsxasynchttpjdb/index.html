@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>客户端与服务器端的交流——自己动手写asynchttp简单版</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">以前对于 客户端与服务器端总是不太熟悉，借着周末的事件好好的复习吧 </span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">骚年雄起吧~~~</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">还记步骤不？</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">还记得我上一篇文章&nbsp;&nbsp;&nbsp; </span><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/40707417" target="_blank">Hanlde消息处理机制的复习——网络图片下载</a>么
+<br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px">上一篇文章我对于网络方面我很少提到，主要是用来复习handle消息机制的 。 安卓是不允许主线程有很多耗时操作的，而对于联网操作必须要放到 次线程的。而次线程请求的数据，而又不能放在次线程更新的，所以要放在主线程更新，所以handler消息机制的出现不是偶然。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">具体步骤：</span></p>
+<p><span style="font-size:18px">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; //1.开启子线程 执行一个http请求在后台执行在子线程执行</span></p>
+<p><span style="font-size:18px">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; //2.子线程执行完毕后 通知ui界面更新</span></p>
+<p><span style="font-size:18px"><span style="color:#CC0000">程序员前期要好好打基础，我们要好好听前辈的话，而到后期代码熟练以后，我要好好的偷懒~</span><br>
+</span></p>
+<p><span style="font-size:18px">我还记得 最火的开源项目里 第6个 正好是对于 异步&#43;Http的封装，大家可以去github去下载， 如果单单是使用直接考入jar 就行了&nbsp;
+<br>
+</span></p>
+<p><br>
+</p>
+<p>我们先看一个对post 登录的封装吧&nbsp; 很方便&nbsp; 就5行代码</p>
+<p><img src="25646225378954.jpg" alt=""><br>
+</p>
+<p><br>
+</p>
+<p>首先 <br>
+</p>
+<p>1-2 拿到 登录帐号和密码<br>
+</p>
+<p>3.实例化 &nbsp; AsyncHttpclient （要用别人的东西还是要实例化的） <br>
+</p>
+<p>4.准备好一个url</p>
+<p>5.将数据put 进去</p>
+<p>6. 然后post 请求&nbsp;&nbsp; （第一个参数是url，第二参数是 属性你put进来的数据 第三个是 handler&nbsp; jar自己封装的）</p>
+<p>7.然后super 2个方法 也就是成功和失败 。 <br>
+</p>
+<p><span style="font-size:24px">~~~~~~~~~~~~我是淫荡的分割线~~~~ ~~~ ~~~</span> <span style="font-size:24px">
+是时候自己写了</span></p>
+<p><span style="font-size:18px; color:#FF0000">第一步 开启子线程 执行一个http请求在后台执行在子线程执行</span></p>
+<p>PS：线程是用来获取数据的，你需要两个参数 一个URL 和handler&nbsp; 联网我们用httpclient 其中还会有一个流转String的一个工具类 然后用handler将数据发送出去</p>
+<p><pre name="code" class="java">package com.xiaoxin.AsyHttp;
+
+
+import java.io.InputStream;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.os.Message;
+
+public class AsyncHttpClient {
+	public void get(final String path, final MyHandler myhandler) {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				HttpClient client = new DefaultHttpClient();
+
+				HttpGet get = new HttpGet(path);
+				try {
+					HttpResponse response = client.execute(get);
+					InputStream is = response.getEntity().getContent();
+					String content = StreamTool.readInputStream(is);
+					// 执行成功
+					Message message=new Message();
+					message.what=1;
+					message.obj=content;
+					myhandler.sendMessage(message);
+				} catch (Exception e) {
+					// 执行失败
+					e.printStackTrace();
+					Message message=new Message();
+					message.what=2;
+					message.obj=&quot;请求失败&quot;;
+					myhandler.sendMessage(message);
+				}
+			}
+		});
+	}
+}
+</pre>关于工具类 大家好好手残好哦&nbsp; StreamTool</p>
+<p><pre name="code" class="java">package com.xiaoxin.AsyHttp;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+public class StreamTool {
+
+	public static String readInputStream(InputStream is) {
+		try {
+
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			int length = 0;
+			byte[] buffer = new byte[1024];
+			if ((length = is.read(buffer)) != -1) {
+				out.write(buffer, 0, length);
+			}
+			is.close();
+			byte[] result = out.toByteArray();
+			return new String(result);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return &quot;转换失败&quot;;
+	}
+
+}
+</pre><br>
+三步：联网---》流转str---&gt;handler发送数据 成功发送内容 不成功 发送请求失败</p>
+<p><br>
+</p>
+<p><span style="font-size:24px; color:#CC0000">第二步 自定义MyHandler</span> <br>
+</p>
+<p>PS：自定义嘛 先继承Handler 先写两个方法 成功或者失败&nbsp; 因为在 AsyncHttpClient&nbsp; 传来了 内容 所以需要加入一个参数&nbsp; String content 如果这个类不熟悉的话</p>
+<p>同学们需要去复习下 消息机制了</p>
+<p><pre name="code" class="java">package com.xiaoxin.AsyHttp;
+
+import android.os.Handler;
+import android.os.Message;
+
+public class MyHandler extends Handler {
+	public void OnFailure(String content) {
+
+	}
+
+	public void OnSuccess(String content) {
+
+	}
+	@Override
+	public void handleMessage(Message msg) {
+		String content=(String) msg.obj;
+		super.handleMessage(msg);
+		switch (msg.what) {
+		case 1:
+			OnSuccess(content);
+			break;
+		case 2:
+			OnFailure(content);
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+</pre><br>
+<span style="font-size:24px; color:#CC0000">第三步 开始用 我们定义好的类啦</span></p>
+<p><span style="font-size:24px; color:#CC0000">你会发现 我们现在所写的&#26684;式 和 开源框架是那么的像<br>
+</span></p>
+<p><pre name="code" class="java">package com.xiaoxin.AsyHttp;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+    }
+    public void btn(View view){
+    	//1.开启子线程 执行一个http请求在后台执行在子线程执行
+    	String path=&quot;&quot;;
+    	AsyncHttpClient asyncHttpClient=new AsyncHttpClient();
+    	asyncHttpClient.get(path, new	 MyHandler(){
+
+			@Override
+			public void OnFailure(String content) {
+				Toast.makeText(MainActivity.this, content, 1).show();
+				super.OnFailure(content);
+			}
+
+			@Override
+			public void OnSuccess(String content) {
+				Toast.makeText(MainActivity.this, content, 1).show();
+				super.OnSuccess(content);
+			}
+    		
+    	});
+    	//2.子线程执行完毕后 通知ui界面更新
+    }
+}
+</pre><br>
+<br>
+</p>
+<p><br>
+</p>
+<p>End------------- <br>
+</p>
+<p>下一篇内容是 用开源框架 上传文件， 其实嘛 很多程序员也不是都去了解 开源框架的，工作中使用开源框架是让你效率提高嘛&nbsp;&nbsp; <br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<span id="pv-float-bar-container" style="top:762px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

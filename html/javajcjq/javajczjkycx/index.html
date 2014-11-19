@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java基础之接口与抽象</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">接口是java中最重要的概念，接口可以理解为一种特殊的类，里面全部是全局常量和公共的抽象方法所组成</span></p>
+<p><span style="font-size:24px">&#26684;式</span></p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">interface A{		// 定义接口A
+	public static final String AUTHOR = &quot;李兴华&quot; ;	// 全局常量
+	public abstract void print() ;	// 抽象方法
+	public abstract String getInfo() ;	// 抽象方法
+}</pre><br>
+<br>
+</p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">interface A{
+	String AUTHOR=&quot;JDK&quot;;
+	void print();
+	String getinfo();
+	
+}</pre></p>
+<p><span style="font-size:24px; color:#3366ff">这两者是一样的</span></p>
+因为JAVA里面默认接口里是全局变量和抽象方法 所以其他的省略
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:14px">实现接口<br>
+（1） 与抽象类一样，接口要使用也必须通过子类，子类必须同implement关键字实现接口<br>
+（2）实现&#26684;式<br>
+</span><pre name="code" class="java">class 子类 implement 接口A，接口b{
+}</pre><span style="color:#3333ff">接口中使用中 必须要有子类，子类必须复写全部方法，一个子类能同时实现多个接口</span></p>
+<p><span style="color:#3333ff">讲了这么多了 用一段代码来演示一下</span></p>
+<p><pre name="code" class="java">interface A{		// 定义接口A
+	public String AUTHOR = &quot;李兴华&quot; ;	// 全局常量
+	public void print() ;	// 抽象方法
+	public String getInfo() ;	// 抽象方法
+}
+interface B{	// 定义接口B
+	public void say() ;	// 定义抽象方法
+}
+class X implements A,B{	// X类同时实现A和B两个接口
+	public void say(){
+		System.out.println(&quot;Hello World!!!&quot;) ;
+	}
+	public String getInfo(){
+		return &quot;HELLO&quot; ;
+	}
+	public void print(){
+		System.out.println(&quot;作者：&quot; + AUTHOR) ;
+	}
+};
+public class InterfaceDemo03{
+	public static void main(String args[]){
+		X x = new X() ;	// 实例化子类对象
+		x.say() ;
+		x.print() ;
+	}
+};</pre><br>
+<span style="font-size:18px; color:#cc0000">同时也能继承抽象类实现接口</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">interface A{		// 定义接口A
+	public String AUTHOR = &quot;李兴华&quot; ;	// 全局常量
+	public void print() ;	// 抽象方法
+	public String getInfo() ;	// 抽象方法
+}
+abstract class B{	// 定义抽象类B
+	public abstract void say() ;	// 定义抽象方法
+}
+class X extends B implements A{	// X类线继承B类，再实现A接口
+	public void say(){
+		System.out.println(&quot;Hello World!!!&quot;) ;
+	}
+	public String getInfo(){
+		return &quot;HELLO&quot; ;
+	}
+	public void print(){
+		System.out.println(&quot;作者：&quot; + AUTHOR) ;
+	}
+};
+public class InterfaceDemo04{
+	public static void main(String args[]){
+		X x = new X() ;	// 实例化子类对象
+		x.say() ;
+		x.print() ;
+	}
+};</pre><br>
+同时也要注意 接口不能继承抽象类 抽象类却能继承接口</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">interface A{		// 定义接口A
+	public String AUTHOR = &quot;李兴华&quot; ;	// 全局常量
+	public void print() ;	// 抽象方法
+	public String getInfo() ;	// 抽象方法
+}
+abstract class B implements A{	// 定义抽象类B，实现接口A
+	public abstract void say() ;	// 定义抽象方法
+}
+class X extends B{	// X类线继承B类
+	public void say(){
+		System.out.println(&quot;Hello World!!!&quot;) ;
+	}
+	public String getInfo(){
+		return &quot;HELLO&quot; ;
+	}
+	public void print(){
+		System.out.println(&quot;作者：&quot; + AUTHOR) ;
+	}
+};
+public class InterfaceDemo05{
+	public static void main(String args[]){
+		X x = new X() ;	// 实例化子类对象
+		x.say() ;
+		x.print() ;
+	}
+};</pre><br>
+<br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

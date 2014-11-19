@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>多线程之同步和死锁</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:18px">在多线程的开发中， 同步与死锁的概念非常重要<br>
+<br>
+<br>
+我需要知道的是 那里需要同步&nbsp;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 如何实现同步 代码了解即可<br>
+</span>
+<p><span style="font-size:18px"><span style="white-space:pre"></span>以及实现同步之后 有哪些副作用</span></p>
+<p><span style="font-size:18px">接下来以买火车票为例</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class Tong implements Runnable{
+	private int ticket=5;
+	public void run() {
+		
+		for (int i = 0; i &lt; 100; i++) {
+			if (ticket&gt;0) {//还有票
+				try {
+					Thread.sleep(1000);//加入yanchi
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(&quot;卖票:ticket=&quot;+ticket--);
+			}
+		}
+	}
+	
+}
+
+public class TongBuDemo {
+	public static void main(String[] args) {
+		Tong tong=new Tong();//定义线程对象
+		Thread t1=new Thread(tong);//定义Thread实例
+		Thread t2=new Thread(tong);
+		Thread t3=new Thread(tong);
+		t1.start();
+		t2.start();
+		t3.start();
+	}
+	
+	
+}
+</pre><img src="" alt=""><br>
+出现了负数 &nbsp;说明那个地方出错了 相信大家 也看了 这个程序分为两个步骤</p>
+<p><span style="font-size:18px"><img src="" alt=""><br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">这时候就需要用同步代码块 同步就是指：多个操作在同一个时间段内只能有一个线程</span></p>
+<p><span style="font-size:18px"><span style="white-space:pre"></span>其他线程只有等这个线程技术才能执行<br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">代码块上加入synchronized关键字 就是同步代码块<br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class Tong implements Runnable{
+	private int ticket=5;
+	public void run() {
+		
+		for (int i = 0; i &lt; 100; i++) {
+			synchronized (this) {//要对当前对象进行同步
+				if (ticket&gt;0) {//还有票
+					try {
+						Thread.sleep(1000);//加入yanchi
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println(&quot;卖票:ticket=&quot;+ticket--);
+				}
+			}
+			
+		}
+	}
+	
+}
+
+public class TongBuDemo {
+	public static void main(String[] args) {
+		Tong tong=new Tong();//定义线程对象
+		Thread t1=new Thread(tong);//定义Thread实例
+		Thread t2=new Thread(tong);
+		Thread t3=new Thread(tong);
+		t1.start();
+		t2.start();
+		t3.start();
+	}
+	
+	
+}
+</pre><br>
+这样大家都看的出效率降低了好多<br>
+<span style="white-space:pre"></span>还有一种方法 &nbsp;synchronized关键字将一个方法声明成同步方法<br>
+<span style="white-space:pre"></span>synchronized 方法返回&#20540; 方法名称（参数列表）{}<br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package ThreadTest;
+class Tong implements Runnable{
+	private int ticket=5;
+	public void run() {
+		
+		for (int i = 0; i &lt; 100; i++) {
+//			synchronized (this) {//要对当前对象进行同步
+				
+				this.sale();
+			
+			
+			
+		}
+	}
+	private synchronized void sale() {
+		if (ticket&gt;0) {//还有票
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(&quot;卖票:ticket=&quot;+ticket--);
+		}
+	}
+	
+}
+
+public class TongBuDemo {
+	public static void main(String[] args) {
+		Tong tong=new Tong();//定义线程对象
+		Thread t1=new Thread(tong);//定义Thread实例
+		Thread t2=new Thread(tong);
+		Thread t3=new Thread(tong);
+		t1.start();
+		t2.start();
+		t3.start();
+	}
+	
+	
+}
+</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

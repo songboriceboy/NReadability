@@ -1,0 +1,472 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓复习基础学生管理系统</div><br><div id="article_content" class="article_content">
+
+<img src="16917486583831.jpg" alt=""><br>
+<p><br>
+</p>
+<p><span style="font-size:18px">主界面应该就是这样的，大家可以动下你们的小脑袋，想下这个怎么写。</span></p>
+<p><span style="font-size:18px">主界面 不难 最上方就是一个textview 显示内容</span></p>
+<p><span style="font-size:18px">下方一个那个界面 用线性布局比较容易做，但是有点复杂，也是大部分人能想到的，但是从布局优化程度上来说，谷歌推荐相对布局，相对布局 先放三个Textview然后再用 属性below 将下三个Edittext 控制好 toleft属性 将button放置好。</span></p>
+<p><span style="font-size:18px">ok 看着中间的布局 大家是不是马上想到了 listview ，不急 这个可以用 线性布局 可以显示 想不到吧&nbsp;</span></p>
+<p><span style="font-size:18px">下面的就是一个button&nbsp;</span></p>
+<p><span style="font-size:18px">布局如下</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:background=&quot;@android:color/white&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+
+    &lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_gravity=&quot;center_horizontal&quot;
+        android:layout_marginTop=&quot;5dip&quot;
+        android:text=&quot;学生管理系统&quot;
+        android:textColor=&quot;#99CCFF&quot;
+        android:textSize=&quot;23sp&quot; /&gt;
+
+    &lt;RelativeLayout
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginTop=&quot;5dip&quot;
+        android:padding=&quot;5dip&quot; &gt;
+
+        &lt;TextView
+            android:id=&quot;@+id/tv_name&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:paddingLeft=&quot;15dip&quot;
+            android:paddingRight=&quot;15dip&quot;
+            android:text=&quot;姓名&quot;
+            android:textSize=&quot;18sp&quot; /&gt;
+
+        &lt;TextView
+            android:id=&quot;@+id/tv_sex&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_marginLeft=&quot;5dip&quot;
+            android:layout_toRightOf=&quot;@id/tv_name&quot;
+            android:paddingLeft=&quot;15dip&quot;
+            android:paddingRight=&quot;15dip&quot;
+            android:text=&quot;性别&quot;
+            android:textSize=&quot;18sp&quot; /&gt;
+
+        &lt;TextView
+            android:id=&quot;@+id/tv_age&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_marginLeft=&quot;5dip&quot;
+            android:layout_toRightOf=&quot;@id/tv_sex&quot;
+            android:paddingLeft=&quot;15dip&quot;
+            android:paddingRight=&quot;15dip&quot;
+            android:text=&quot;年龄&quot;
+            android:textSize=&quot;18sp&quot; /&gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/et_name&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_alignLeft=&quot;@id/tv_name&quot;
+            android:layout_alignRight=&quot;@id/tv_name&quot;
+            android:layout_below=&quot;@id/tv_name&quot;
+            android:singleLine=&quot;true&quot; /&gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/et_sex&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_alignLeft=&quot;@id/tv_sex&quot;
+            android:layout_alignRight=&quot;@id/tv_sex&quot;
+            android:layout_below=&quot;@id/tv_sex&quot;
+            android:singleLine=&quot;true&quot; /&gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/et_age&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_alignLeft=&quot;@id/tv_age&quot;
+            android:layout_alignRight=&quot;@id/tv_age&quot;
+            android:layout_below=&quot;@id/tv_age&quot;
+            android:inputType=&quot;number&quot;
+            android:singleLine=&quot;true&quot; /&gt;
+
+        &lt;Button
+            android:id=&quot;@+id/btn_add_student&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_alignBaseline=&quot;@id/et_age&quot;
+            android:layout_toRightOf=&quot;@id/et_age&quot;
+            android:text=&quot;添加学生&quot;
+            android:textSize=&quot;20sp&quot; /&gt;
+    &lt;/RelativeLayout&gt;
+
+    &lt;ScrollView
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_weight=&quot;1&quot; &gt;
+
+        &lt;LinearLayout
+            android:id=&quot;@+id/ll_student_list&quot;
+            android:layout_width=&quot;fill_parent&quot;
+            android:layout_height=&quot;fill_parent&quot;
+            android:layout_margin=&quot;1dip&quot;
+            android:orientation=&quot;vertical&quot;
+            android:padding=&quot;5dip&quot; &gt;
+        &lt;/LinearLayout&gt;
+    &lt;/ScrollView&gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginTop=&quot;5dip&quot;
+        android:orientation=&quot;horizontal&quot; &gt;
+
+        &lt;Button
+            android:id=&quot;@+id/btn_save&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_weight=&quot;1&quot;
+            android:text=&quot;保存数据&quot;
+            android:textSize=&quot;20sp&quot; /&gt;
+
+        &lt;Button
+            android:id=&quot;@+id/btn_restore&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_weight=&quot;1&quot;
+            android:text=&quot;恢复数据&quot;
+            android:textSize=&quot;20sp&quot; /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;</pre>在回寝室的路上，我仔细想着我 一个APP 布局到实现的思路，还记我买彩票的时候，往往大部分的彩民，只会看别人的分析，然后跟着买，这样，亏得要比赢得多，为什么，这样你永远不知道为什么你会输，还不如自己分析各个球队的主力上场情况，受伤情况，加上庄家的盘口变化，就如自己总是拿着别人的封装好的东西，你永远只会是一个CV战士，万物其根本原理是一样，其实我又想到每个APP里面都会有广告栏，其实一个东西你想这永远都会很难，毕竟代码是一个一个敲出来的，不是想出来。</p>
+<p><span style="font-size:18px">在想一个广告栏，无非就是三张图片不停的变化，用线程去发送消息更新， 这就牵扯到线程安全和ANC问题.....<br>
+<br>
+</span></p>
+<p><span style="font-size:18px">回到这里，我想实现的无非就是添加数据 &nbsp;，保存数据，回复数据，其实大家马上可以想到数据库，是的。但是这里不用。&nbsp;</span></p>
+<p><span style="font-size:18px">让我们先来实现添加数据。</span></p>
+<p><span style="font-size:18px">数据是从Edittext中获取到的 &nbsp;有Edittext的出现必然就会出现是否为空啦，Textutils 你&#20540;得拥有。 三个输入项都要用&amp;&amp;是否非空 。</span></p>
+<p><span style="font-size:18px">好啦 这时候到了显示数据，大家都是在想用listview 显示数据 用adapter &nbsp; 但是其实用一个线性布局就可以实现了，布局直接AddView 就OK了 其实 这里大家可以思考下 既然线性布局可以这么简单的实现 那么为啥listview要那么复杂的实现。我相信谷歌工程师，进行大量的封装 和 继承，大家可以点开API看看，其实在安卓没有出现的时候，XML在java中是从来没有放过布局的，那时候java不擅长做GUI，只有才代码中实现.....</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	private void addStudent() {
+		String name = etName.getText().toString();
+		String sex = etSex.getText().toString();
+		String age = etAge.getText().toString();
+		
+		if(!TextUtils.isEmpty(name) 
+				&amp;&amp; !TextUtils.isEmpty(sex) 
+				&amp;&amp; !TextUtils.isEmpty(age)) {
+			studentList.add(new Student(name, sex, Integer.valueOf(age)));
+			TextView childView = new TextView(this);
+			childView.setTextSize(23);
+			childView.setTextColor(Color.BLACK);
+			childView.setText(&quot;　　&quot; + name + &quot;　　&quot; + sex + &quot;　　&quot; + age);
+			llStudentList.addView(childView);
+		} else {
+			Toast.makeText(this, &quot;请正确输入&quot;, 0).show();
+		}
+	}</pre>在刷新数据 不论是恢复数据，和保存数据，都是需要刷新界面，这个时候，一定会刷新数据的，SO，其实到后面相同代码就可以抽出来封装到一个类Or 方法</p>
+<p><span style="font-size:18px">刷新数据：先要Remove 所有数据，清空，这个是必须 &nbsp;然后再取出你保存在list集合的数据，可以for循环去除，也可以用foreach &nbsp;记住在循环里 顺便进行添加数据到线性布局中，</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	private void refreshStudentList() {
+		llStudentList.removeAllViews();
+		TextView childView;
+		for (Student student : studentList) {
+			childView = new TextView(this);
+			childView.setTextSize(23);
+			childView.setTextColor(Color.BLACK);
+			childView.setText(&quot;　　&quot; + student.getName() + &quot;　　&quot; + student.getSex() + &quot;　　&quot; + student.getAge());
+			llStudentList.addView(childView);
+		}
+	}</pre><br>
+好啦 该到大问题的时候了，保存数据，其实保存数据可以 数据库,SP 保存文件，SD卡，但是其原理还是 java中的FIle操作，不过谷歌封装了，这里大家可以自己选择，&nbsp;</p>
+<p><span style="font-size:18px">将list文件中的数据 去除 以xml形式保存在本地，这就是数据持久话的操作。 xml 拼装和解析 我就不讲了。</span></p>
+<p><span style="font-size:18px">所有代码</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.sp;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlSerializer;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.util.Xml;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+    private EditText etName;
+	private EditText etSex;
+	private EditText etAge;
+	private LinearLayout llStudentList;
+	private List&lt;Student&gt; studentList;
+	private String filePath;
+
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        init();
+    }
+
+	private void init() {
+		etName = (EditText) findViewById(R.id.et_name);
+		etSex = (EditText) findViewById(R.id.et_sex);
+		etAge = (EditText) findViewById(R.id.et_age);
+		
+		llStudentList = (LinearLayout) findViewById(R.id.ll_student_list);
+
+		findViewById(R.id.btn_save).setOnClickListener(this);
+		findViewById(R.id.btn_restore).setOnClickListener(this);
+		findViewById(R.id.btn_add_student).setOnClickListener(this);
+		
+		studentList = new ArrayList&lt;Student&gt;();
+		filePath = Environment.getExternalStorageDirectory().getPath() + &quot;/student.xml&quot;;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_save:
+			if(studentList.size() &gt; 0) {
+				if(saveStudent2Local()) {
+					Toast.makeText(this, &quot;保存成功&quot;, 0).show();
+				} else {
+					Toast.makeText(this, &quot;保存失败&quot;, 0).show();
+				}
+			} else {
+				Toast.makeText(this, &quot;当前没有数据&quot;, 0).show();
+			}
+			break;
+		case R.id.btn_restore:
+			if(restoreStudentFromLocal()) {
+				Toast.makeText(this, &quot;恢复成功&quot;, 0).show();
+			} else {
+				Toast.makeText(this, &quot;恢复失败&quot;, 0).show();
+			}
+			break;
+		case R.id.btn_add_student:
+			addStudent();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private boolean restoreStudentFromLocal() {
+		try {
+			XmlPullParser parser = Xml.newPullParser();
+			parser.setInput(new FileInputStream(filePath), &quot;utf-8&quot;);
+			
+			int eventType = parser.getEventType();
+			
+			studentList.clear();
+			
+			Student student = null;
+			String nodeName = null;
+			while(eventType != XmlPullParser.END_DOCUMENT) {
+				nodeName = parser.getName();
+				switch (eventType) {
+				case XmlPullParser.START_TAG:
+					if(&quot;student&quot;.equals(nodeName)) {
+						student = new Student();
+					} else if(&quot;name&quot;.equals(nodeName)) {
+						student.setName(parser.nextText());
+					} else if(&quot;sex&quot;.equals(nodeName)) {
+						student.setSex(parser.nextText());
+					} else if(&quot;age&quot;.equals(nodeName)) {
+						student.setAge(Integer.valueOf(parser.nextText()));
+					}
+					break;
+				case XmlPullParser.END_TAG:
+					if(&quot;student&quot;.equals(nodeName)) {
+						studentList.add(student);
+					}
+					break;
+				default:
+					break;
+				}
+				eventType = parser.next();
+			}
+			refreshStudentList();
+			
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private void refreshStudentList() {
+		llStudentList.removeAllViews();
+		TextView childView;
+		for (Student student : studentList) {
+			childView = new TextView(this);
+			childView.setTextSize(23);
+			childView.setTextColor(Color.BLACK);
+			childView.setText(&quot;　　&quot; + student.getName() + &quot;　　&quot; + student.getSex() + &quot;　　&quot; + student.getAge());
+			llStudentList.addView(childView);
+		}
+	}
+	
+	private boolean saveStudent2Local() {
+		try {
+			XmlSerializer serializer = Xml.newSerializer();
+			serializer.setOutput(new FileOutputStream(filePath), &quot;utf-8&quot;);
+			
+			serializer.startDocument(&quot;utf-8&quot;, true);
+			serializer.startTag(null, &quot;infos&quot;);
+			for (Student stu : studentList) {
+				serializer.startTag(null, &quot;student&quot;);
+				
+				serializer.startTag(null, &quot;name&quot;);
+				serializer.text(stu.getName());
+				serializer.endTag(null, &quot;name&quot;);
+
+				serializer.startTag(null, &quot;sex&quot;);
+				serializer.text(stu.getSex());
+				serializer.endTag(null, &quot;sex&quot;);
+
+				serializer.startTag(null, &quot;age&quot;);
+				serializer.text(String.valueOf(stu.getAge()));
+				serializer.endTag(null, &quot;age&quot;);
+				
+				serializer.endTag(null, &quot;student&quot;);
+			}
+			serializer.endTag(null, &quot;infos&quot;);
+			serializer.endDocument();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	private void addStudent() {
+		String name = etName.getText().toString();
+		String sex = etSex.getText().toString();
+		String age = etAge.getText().toString();
+		
+		if(!TextUtils.isEmpty(name) 
+				&amp;&amp; !TextUtils.isEmpty(sex) 
+				&amp;&amp; !TextUtils.isEmpty(age)) {
+			studentList.add(new Student(name, sex, Integer.valueOf(age)));
+			TextView childView = new TextView(this);
+			childView.setTextSize(23);
+			childView.setTextColor(Color.BLACK);
+			childView.setText(&quot;　　&quot; + name + &quot;　　&quot; + sex + &quot;　　&quot; + age);
+			llStudentList.addView(childView);
+		} else {
+			Toast.makeText(this, &quot;请正确输入&quot;, 0).show();
+		}
+	}
+}
+</pre><br>
+<br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

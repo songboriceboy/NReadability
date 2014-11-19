@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>快速开发之02——textview能有点击事件发生</div><br><div id="article_content" class="article_content">
+
+<p>有时候点击不止只有Button组件有，为了美观 textview也能有一个美观的效果</p>
+<p>而textview的点击事件的出现，只是为了一个能显示文字又能点击而有美观的事情发生，当然你也可以用 能显示文字的button来搞定</p>
+<p>先看效果图</p>
+<p><img src="31270389312529.jpg" alt=""><br>
+</p>
+<p><br>
+</p>
+<p>代码</p>
+<p><pre name="code" class="html">    &lt;TextView
+        android:background=&quot;@drawable/shape_selector&quot;
+        android:clickable=&quot;true&quot;
+        android:onClick=&quot;reEnterSetup&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginLeft=&quot;5dip&quot;
+        android:layout_marginTop=&quot;8dip&quot;
+        android:text=&quot;重新进入设置向导&quot;
+        android:textColor=&quot;#000000&quot;
+        android:textSize=&quot;20sp&quot; /&gt;</pre><br>
+首先</p>
+<p>第一步设置 能否点击</p>
+<p>android:clickable=&quot;true&quot;</p>
+<p>第二步增加背景属性</p>
+<p>android:background=&quot;@drawable/shape_selector&quot;<br>
+</p>
+<p>其实这里设计到了一个shape图形，不及先看&nbsp;</p>
+<p>shape_selector的xml代码<pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;item android:state_pressed=&quot;true&quot;
+          android:drawable=&quot;@drawable/gradient_box_pressed&quot; /&gt; &lt;!-- pressed --&gt;
+          
+    &lt;item android:state_focused=&quot;true&quot;
+          android:drawable=&quot;@drawable/gradient_box_pressed&quot; /&gt; &lt;!-- focused --&gt;
+          
+  
+    &lt;item android:drawable=&quot;@drawable/gradient_box&quot; /&gt; &lt;!-- default --&gt;
+&lt;/selector&gt;</pre><br>
+</p>
+<p>以上&#26684;式是shape图形要求的,这里不懂就得去看谷歌官方的说明了先看</p>
+<p>1.gradient_box_pressed<br>
+</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:shape=&quot;rectangle&quot; &gt;
+
+    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+    &lt;!--
+    渐变 
+    &lt;gradient android:startColor=&quot;#ff0000&quot;  android:endColor=&quot;#00ffff&quot;/&gt;
+    --&gt;
+
+
+    &lt;!-- 固定色 --&gt;
+    &lt;solid android:color=&quot;#44000000&quot; /&gt;
+
+   &lt;!--  &lt;stroke
+        android:dashWidth=&quot;3dip&quot;
+        android:width=&quot;2dip&quot;
+        android:color=&quot;#000000&quot;
+        android:dashGap=&quot;15dip&quot; /&gt; --&gt;
+
+&lt;/shape&gt;</pre>rectangle就是矩形 这是我们要求的形状,<br>
+</p>
+<p>2.gradient_box_pressed</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:shape=&quot;rectangle&quot; &gt;
+
+    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+    &lt;!--
+    渐变 
+    &lt;gradient android:startColor=&quot;#ff0000&quot;  android:endColor=&quot;#00ffff&quot;/&gt;
+    --&gt;
+
+
+    &lt;!-- 固定色 --&gt;
+    &lt;solid android:color=&quot;#44000000&quot; /&gt;
+
+   &lt;!--  &lt;stroke
+        android:dashWidth=&quot;3dip&quot;
+        android:width=&quot;2dip&quot;
+        android:color=&quot;#000000&quot;
+        android:dashGap=&quot;15dip&quot; /&gt; --&gt;
+
+&lt;/shape&gt;</pre><br>
+这是当你鼠标按着这里的变化</p>
+<p>3.gradient_box</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:shape=&quot;rectangle&quot; &gt;
+
+    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+    &lt;!--
+    渐变 
+    &lt;gradient android:startColor=&quot;#ff0000&quot;  android:endColor=&quot;#00ffff&quot;/&gt;
+    --&gt;
+
+
+    &lt;!-- 固定色 --&gt;
+    &lt;solid android:color=&quot;#ffffff&quot; /&gt;
+
+   &lt;!--  &lt;stroke
+        android:dashWidth=&quot;3dip&quot;
+        android:width=&quot;2dip&quot;
+        android:color=&quot;#000000&quot;
+        android:dashGap=&quot;15dip&quot; /&gt; --&gt;
+
+&lt;/shape&gt;</pre><br>
+好啦结束了，只要照搬基本就可以使用了</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/azViewpagexj1ggt/index.html">安卓Viewpage详解（1）——广告条</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf03zsssbqhdpd/index.html">快速开发03之手势识别器——滑动判断</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf04zdhdtypz/index.html">快速开发04之动画的统一配置</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf05zbzzfdsqysyyksfz/index.html">快速开发05之不做重复的事情——样式一样快速复制</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf06zMD5jmldsy/index.html">快速开发06之MD5加密类的使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf07zsrlzzf/index.html">快速开发07之输入流转字符</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf08zgsdcxTextviewzdxsnr/index.html">快速开发08之归属地查询——Textview自动显示内容</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf09zgsdcxxttgdddzdfw/index.html">快速开发09之归属地查询——系统提供的抖动振动服务</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf10zgsdcxzdsjkcxlhsjkbylw/index.html">快速开发10之归属地查询——自带数据库查询类和数据库不用联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf11zdcdjsjsxgndwndm/index.html">快速开发11之多次点击事件实现功能的万能代码</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf12zpmspandroiddphpxzjzh/index.html">快速开发12之屏幕适配—androiddp和px之间转换</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf13zkjqd/index.html">快速开发13之开机启动</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf14zcjkjfs/index.html">快速开发14之创建快捷方式</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz01buttondanxg/index.html">快速开发之01——button的按钮效果</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz02textviewnydjsjfs/index.html">快速开发之02——textview能有点击事件发生</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/jnzmqygAPPdJSONsjndd/index.html">教你怎么去一个APP的JSON数据，你懂的</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/sjcjhzSPdyhsgjl/index.html">数据持久化之SP的优化—送工具类</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

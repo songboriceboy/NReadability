@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>Java常用类库之Stringbuffer</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:24px">认识StringBuffer&nbsp;</span><br>
+<br>
+<br>
+<span style="font-size:18px">StringBuffer 是使用缓冲区的，本身也是操作字符串的但是与String类不同String内容一旦声明就不能改变。，<br>
+改变的只是内存地址的指向，而Stringbuffer的内容是可以改变的<br>
+</span>
+<p><span style="font-size:18px">对于Stringbuffer而已，本身就是一一个具体的操作类 所以不能像String那样采用赋&#20540;的方式进行对象实例化，必须通过构造方法</span></p>
+<p><span style="font-size:18px">实例一：字符串连接</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+public class GenericsDemo23{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;Hello &quot;) ;		// 向StringBuffer中添加内容
+		buf.append(&quot;World&quot;).append(&quot;!!!&quot;) ;// 可以连续调用append()方法
+		buf.append(&quot;\n&quot;) ;	// 添加一个转义字符
+		buf.append(&quot;数字 = &quot;).append(1).append(&quot;\n&quot;) ;	// 添加数字
+		buf.append(&quot;字符 = &quot;).append(&#39;C&#39;).append(&quot;\n&quot;);	 // 添加字符
+		buf.append(&quot;布尔 = &quot;).append(true) ;	// 添加布尔值
+		System.out.println(buf) ;			// 直接输出对象，调用toString()
+	}
+};</pre>实例二：在任意位置添加内容</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+public class GenericsDemo23{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;World!!&quot;) ;		// 添加内容
+		buf.insert(0,&quot;Hello &quot;) ;		// 在第一个内容之前添加内容
+		System.out.println(buf) ;
+		buf.insert(buf.length(),&quot;MLDN~&quot;) ;	// 在最后添加内容
+		System.out.println(buf) ;
+	}
+};</pre><br>
+结果&nbsp;</p>
+<p><span style="font-size:18px">Hello World!!<br>
+Hello World!!MLDN~</span></p>
+<p><span style="font-size:18px">实例三：字符串反转</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">public class GenericsDemo23{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;World!!&quot;) ;		// 添加内容
+		buf.insert(0,&quot;Hello &quot;) ;		// 在第一个内容之前添加内容
+		String str = buf.reverse().toString() ;	// 将内容反转后变为String类型
+		System.out.println(str) ;		// 将内容输出
+	}
+};</pre><br>
+结果 ：!!dlroW olleH</p>
+<p><span style="font-size:18px">实例四：替换指定范围内容</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+public class GenericsDemo23{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;Hello &quot;).append(&quot;World!!&quot;) ;	// 向StringBuffer添加内容
+		buf.replace(6,11,&quot;LiXingHua&quot;) ;		// 将world的内容替换
+		System.out.println(&quot;内容替换之后的结果：&quot; + buf) ;	// 输出内容
+	}
+};</pre>结果：内容替换之后的结果：Hello LiXingHua!!</p>
+<p><span style="font-size:18px">实例五：字符串截取</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+public class GenericsDemo23{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;Hello &quot;).append(&quot;World!!&quot;) ;// 向StringBuffer添加内容
+		buf.replace(6,11,&quot;LiXingHua&quot;) ;		// 将world的内容替换
+		String str = buf.substring(6,15) ;	// 截取指定范围的内容
+		System.out.println(&quot;内容替换之后的结果：&quot; + str) ;	// 输出内容
+	}
+};</pre><br>
+结果：内容替换之后的结果：LiXingHua</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">public class StringBufferDemo07{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;Hello &quot;).append(&quot;World!!&quot;) ;		// 向StringBuffer添加内容
+		buf.replace(6,11,&quot;LiXingHua&quot;) ;		// 将world的内容替换
+		String str = buf.delete(6,15).toString() ;	// 删除指定范围中的内容
+		System.out.println(&quot;删除之后的结果：&quot; + str) ;	// 输出内容
+	}
+};</pre><br>
+结果：删除之后的结果：Hello !!</p>
+<p><span style="font-size:18px">实例六：查询字符串</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+public class GenericsDemo23{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;	// 声明StringBuffer对象 
+		buf.append(&quot;Hello &quot;).append(&quot;World!!&quot;) ;		// 向StringBuffer添加内容
+		if(buf.indexOf(&quot;Hello&quot;)==-1){
+			System.out.println(&quot;没有查找到指定的内容&quot;) ;
+		}else{	// 不为01表示查找到内容
+			System.out.println(&quot;可以查找到指定的内容&quot;) ;
+		}
+	}
+};</pre><br>
+结果：可以查找到指定的内容<br>
+<br>
+</p>
+<p><span style="font-size:18px">String 和Stringbuffer的区别&nbsp;</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">public class StringBufferDemo09{
+	public static void main(String args[]){
+		String str1 = &quot;LiXingHua&quot; ;
+		for(int i=0;i&lt;100;i++){
+			str1 += i ;		// 不断修改String的内存引用，性能低
+		}
+		System.out.println(str1) ;
+	}
+};</pre><br>
+<pre name="code" class="java">package KownClass;
+public class StringBufferDemo09{
+	public static void main(String args[]){
+		StringBuffer buf = new StringBuffer() ;
+		buf.append(&quot;LiXingHua&quot;) ;
+		for(int i=0;i&lt;100;i++){
+			buf.append(i);		// StringBuffer可以修改，性能高
+		}
+		System.out.println(buf) ;
+	}
+};</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

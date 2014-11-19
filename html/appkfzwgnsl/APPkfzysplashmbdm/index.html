@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>APP开发之一splash模板代码</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">1.对于一个app开发 首先要做的是服务器端和客户端的协商 将接口确定下来 然后客户端根据接口文档进行 网络 业务类开发</span></p>
+<p><span style="font-size:24px">2.当然对UI框架来说最先开发应该是打开界面的splash界面</span></p>
+<p><span style="font-size:24px">splash界面的作用：</span></p>
+<p><span style="font-size:24px">（1）首先是确定联网操作 是不是连上网了 是否要设置网络</span></p>
+<p><span style="font-size:24px">（2）然后检测APP版本是否需要升级</span></p>
+<p><span style="font-size:24px">（3）是用ViewPage介绍自己的APP的特色&nbsp;</span></p>
+<p><span style="font-size:24px"><img src="51647368901796.jpg" alt=""><img src="49759196777547.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px">（4）然后在viewpage最后一页面进行登录</span></p>
+<p><span style="font-size:24px"><img src="27394169374133.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:18px; color:#ff0000">关于viewpage的下次我放到下一片文章里写，因为我觉的viewpage&#43;slidingmenu&#43;actionbar很多APP的框架里写比较好学习</span></p>
+<p><span style="font-size:24px">关于splash界面的要求 首先将你APP的logo展示给你用户看，这里要做到动画效果并进行迟钝2秒进行判断网络 然后进入引导页面的最后一页 使用户登录。<span style="white-space:pre"></span></span></p>
+<p>下面是模版代码 大家可以直接复制粘贴</p>
+<p><br>
+</p>
+<p>
+<pre name="code" class="java">package com.xiaoxin.DouBan;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.animation.AlphaAnimation;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.xiaoxin.WeiBo.R;
+
+public class SplashActivity extends Activity {
+	private TextView versionNumber;
+	private LinearLayout mLinearLayout;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.splash);
+		//整个layout的ID
+		mLinearLayout = (LinearLayout) this.findViewById(R.id.LinearLayout01);
+		//版本号的id
+		versionNumber = (TextView) this.findViewById(R.id.versionNumber);
+		//这里要通过方法得到配置文件的版本号添加到splash街面上去
+		versionNumber.setText(getVersion());
+		// 判断当前网络状态是否可用
+		if (isNetWorkConnection()) {
+			// splash 做一个动画,进入主界面
+			AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
+			aa.setDuration(2000);
+			mLinearLayout.setAnimation(aa);
+			mLinearLayout.startAnimation(aa);
+			// 通过handler 延时2秒 执行r任务
+			new Handler().postDelayed(new LoadMainTabTask(), 2000);
+		} else {
+			showSetNetworkDialog();
+		}
+
+	}
+	private class LoadMainTabTask implements Runnable{
+
+		@Override
+		public void run() {
+			Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+			startActivity(intent);
+			finish();
+			
+		}
+		
+	}
+
+	private void showSetNetworkDialog() {
+
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setTitle(&quot;设置网络&quot;);
+		builder.setMessage(&quot;网络错误请检查网络状态&quot;);
+		builder.setPositiveButton(&quot;设置网络&quot;, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent();
+				// 类名一定要包含名
+				if(android.os.Build.VERSION.SDK_INT &gt; 10 ){  
+				    startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));  
+				}else {  
+				    startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));  
+				}  
+				finish();
+			}
+		});
+		builder.setNegativeButton(&quot;取消&quot;, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+			}
+		});
+		builder.create().show();
+	}
+
+	private boolean isNetWorkConnection() {
+		ConnectivityManager manager=(ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo info=manager.getActiveNetworkInfo();
+		return (info!=null&amp;&amp;info.isConnected());
+	}
+
+	private String getVersion() {
+		try {
+			//通过包管理者拿到配置文件中的版本号
+			PackageInfo info = getPackageManager().getPackageInfo(
+					getPackageName(), 0);
+			return &quot;Version&quot; + info.versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			return &quot;Version&quot;;
+		}
+	}
+
+}
+</pre><br>
+当然layout大家就自己设置了
+<p>注意配置权限</p>
+<p>&nbsp; &nbsp; &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;<br>
+&nbsp; &nbsp; &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;<br>
+</p>
+<p><br>
+</p>
+<p>源代码&nbsp;</p>
+<p>http://download.csdn.net/detail/jack_king007/7856059<br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzslidingmenu+viewpage+taby+Fragmentzy/index.html">APP开发之slidingmenu+viewpage+tab页+Fragment之一</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzViewpage+Fragment+xlsx/index.html">APP开发之Viewpage+Fragment+下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzysplashmbdm/index.html">APP开发之一splash模板代码</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

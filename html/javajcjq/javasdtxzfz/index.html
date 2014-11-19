@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java三大特性之封装</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:24px">1.封装的产生目的&nbsp;<br>
+2.掌握封装的实现<br>
+3.掌握setter和getter 的定义</span><br>
+<br>
+<br>
+<span style="font-size:18px">为什么要封装？</span><br>
+<span style="color:#ff0000">封装就是保护内容<br>
+</span>
+<p><span style="color:#ff0000">保证某些属性或方法可以不被外面看见</span></p>
+<p><span style="color:#ff0000"><br>
+</span></p>
+<p><span style="color:#ff0000">看看下面的代码存在的问题：</span></p>
+<p><span style="color:#ff0000"><br>
+</span></p>
+<p><pre name="code" class="java">class Person{
+	String name ;			// 声明姓名属性
+	int age ;				// 声明年龄属性
+	public void tell(){
+		System.out.println(&quot;姓名：&quot; + name + &quot;，年龄：&quot; + age) ;
+	}
+};
+public class EncDemo01{
+	public static void main(String arsgh[]){
+		Person per = new Person() ;	// 声明并实例化对象
+		per.name = &quot;张三&quot; ;			// 为name属性赋值
+		per.age = -30 ;				// 为age属性赋值
+		per.tell() ;
+	}
+};</pre><br>
+这样的代码是不符合要求的，其根本原因就是可以被外部给改变</p>
+<p><br>
+</p>
+<p><span style="font-size:24px">2.实现封装</span></p>
+<p><span style="font-size:24px">为属性封装 ：private 属性类型 属性名字</span></p>
+<p><span style="font-size:24px">为方法封装 ：<span style="font-size:24px">private 方法返回&#20540; 方法名称（参数列表）{}</span></span></p>
+<p><span style="font-size:24px"><span style="font-size:24px"><br>
+</span></span></p>
+<p><pre name="code" class="java" style="font-size:24px;">class Person{
+	private String name ;			// 声明姓名属性
+	private int age ;				// 声明年龄属性
+	public void tell(){
+		System.out.println(&quot;姓名：&quot; + name + &quot;，年龄：&quot; + age) ;
+	}
+};
+public class EncDemo02{
+	public static void main(String arsgh[]){
+		Person per = new Person() ;	// 声明并实例化对象
+		per.name = &quot;张三&quot; ;			// 为name属性赋值
+		per.age = -30 ;				// 为age属性赋值
+		per.tell() ;
+	}
+};</pre><span style="font-size:14px">这样以后 你是无法访问的&nbsp;</span></p>
+<p><span style="font-size:14px"><br>
+</span></p>
+<p><span style="font-size:14px">被封装的属性如果需要被访问就需要编写setter及getter方法实现</span></p>
+<p><span style="font-size:14px"><br>
+</span></p>
+<p><span style="font-size:14px"></span><pre name="code" class="java">class Person{
+	private String name ;			// 声明姓名属性
+	private int age ;				// 声明年龄属性
+	public void setName(String n){	// 设置姓名
+		name = n ;
+	}
+	public void setAge(int a){		// 设置年龄
+		age = a ;
+	}
+	public String getName(){		// 取得姓名
+		return name ;
+	}
+	public int getAge(){			// 取得年龄
+		return age ;
+	}
+	public void tell(){
+		System.out.println(&quot;姓名：&quot; + name + &quot;，年龄：&quot; + age) ;
+	}
+};
+public class EncDemo03{
+	public static void main(String arsgh[]){
+		Person per = new Person() ;	// 声明并实例化对象
+		per.setName(&quot;张三&quot;) ;		// 调用setter设置姓名
+		per.setAge(-30) ;			// 调用setter设置年龄
+		per.tell() ;				// 输出信息
+	}
+};</pre><br>
+其实这样年龄为负&#20540;也是不好的 &nbsp;所以你可以在setter 方法中加入验证</p>
+<p><span style="font-size:14px"><br>
+</span><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

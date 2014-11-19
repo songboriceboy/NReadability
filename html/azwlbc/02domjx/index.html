@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>02dom解析</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">DOM是一种用于XML文档的对象模型，可用于直接访问XML文档的各个部分，通过DOM将XML文档作为一个树状的结构，这种树状的结构成为节点树</span></p>
+<p><br>
+</p>
+<p><img src="38780659600926.jpg" align="middle" alt=""><br>
+</p>
+<p><br>
+</p>
+<p>第一步 新建类DOM解析类</p>
+<p><pre name="code" class="java">package com.xiaoxin.xml.DOM;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.xiaoxin.xml.bean.Person;
+
+public class Dom {
+	public static List&lt;Person&gt; getPersons(InputStream inStream)
+			throws Exception {
+		// 1.用一个集合来放东西
+		List&lt;Person&gt; persons = new ArrayList&lt;Person&gt;();
+		// 2.DocumentBuilderFactory该对象将创建DocumentBuilder
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+
+		// 设置去掉空格的方法
+
+		factory.setIgnoringElementContentWhitespace(true);
+
+		// 3.DocumentBuilder 将实际进行解析以创建Document
+	
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		// 4.将文件路径进行解析
+		Document document = builder.parse(inStream);
+		// 5.返回文档的根元素
+		Element root = document.getDocumentElement();
+		// 6.取出某个特定的元素。一开始以为它的返回值是一个数组，结果，大错特错。它返回的是一个 DOM 对象，可以遍历，有 length
+		// 属性，但不是数组。
+
+		NodeList personNodes = root.getElementsByTagName(&quot;person&quot;);
+		//开始遍历整个XML
+		for (int i = 0; i &lt; personNodes.getLength(); i++) {
+			Element perElement = (Element) personNodes.item(i);
+			//对给定的Node返回给定名称的属性，并且是interger类型的
+			int id = new Integer(perElement.getAttribute(&quot;id&quot;));
+			Person person = new Person();
+			//设置ID的属性
+			person.setId(id);
+			NodeList childNodes = perElement.getChildNodes();
+			for (int y = 0; y &lt; childNodes.getLength(); y++) {
+				if (childNodes.item(y).getNodeType() == Node.ELEMENT_NODE)
+					;
+				{
+					if (&quot;name&quot;.equals(childNodes.item(y).getNodeName())) {
+						String name = childNodes.item(y).getFirstChild()
+								.getNodeValue();
+						person.setName(name);
+					} else if (&quot;age&quot;.equals(childNodes.item(y).getNodeName())) {
+						String age = childNodes.item(y).getFirstChild()
+								.getNodeValue();
+						person.setAge(new Short(age));
+					}
+				}
+			}
+			persons.add(person);
+		}
+		inStream.close();
+		return persons;
+
+	}
+}
+</pre><br>
+第二部 &nbsp;测试代码 与SAX测试代码是相差不大的</p>
+<p><pre name="code" class="java">package com.xiaoxin.xml.DOM;
+
+import java.io.InputStream;
+import java.util.List;
+
+import com.xiaoxin.xml.bean.Person;
+
+import android.test.AndroidTestCase;
+import android.util.Log;
+
+public class DomPersonService extends AndroidTestCase {
+	private static final String TAG = &quot;DomPersonService&quot;;
+
+	public void testDom() throws Throwable {
+		// 因为XML在src文件中 可以直接反射到路径 inputStream
+		InputStream inputStream = this.getClass().getClassLoader()
+				.getResourceAsStream(&quot;xiaoxin.xml&quot;);
+		List&lt;Person&gt;persons=Dom.getPersons(inputStream);
+		for(Person person:persons){
+			Log.i(TAG, person.toString());
+		}
+	}
+}
+</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

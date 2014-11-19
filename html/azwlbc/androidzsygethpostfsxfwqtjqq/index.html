@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>android之使用get和post方式向服务器提交请求</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:14px">通过get和post方式向服务器发送请求<br>
+<br>
+<br>
+<br>
+<br>
+首先说一下get和post的区别<br>
+<br>
+<br>
+get请求方式是将提交的参数拼接在url地址后面，例如http://www.baidu.com/index.jsp?num=23&amp;jjj=888;<br>
+但是这种形式对于那种比较隐私的参数是不适合的，而且参数的大小也是有限制的，一般是1K左右吧，对于上传文件<br>
+就不是很适合。<br>
+<br>
+<br>
+<br>
+<br>
+post请求方式是将参数放在消息体内将其发送到服务器，所以对大小没有限制，对于隐私的内容也比较合适。<br>
+</span>
+<p><span style="font-size:14px">如下Post请求</span></p>
+<p><span style="font-size:14px"><br>
+</span></p>
+<p><span style="font-size:14px">POST /LoginCheck HTTP/1.1<br>
+Accept: text/html, application/xhtml&#43;xml, */*<br>
+Referer: http://192.168.2.1/login.asp<br>
+Accept-Language: zh-CN<br>
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; BOIE9;ZHCN)<br>
+Content-Type: application/x-www-form-urlencoded<br>
+Accept-Encoding: gzip, deflate<br>
+Host: 192.168.2.1<br>
+Content-Length: 39<br>
+Connection: Keep-Alive<br>
+Cache-Control: no-cache<br>
+Cookie: language=en<br>
+<br>
+<br>
+Username=admin&amp;checkEn=0&amp;Password=admin //参数位置<br>
+在android中用get方式向服务器提交请求：<br>
+<br>
+<br>
+在android模拟器中访问本机中的tomcat服务器时，注意：不能写localhost，因为模拟器是一个单独的手机系统，所以要写真是的IP地址。<br>
+否则无法访问到服务器。<br>
+<br>
+<br>
+//要访问的服务器地址，下面的代码是要向服务器提交用户名和密码，提交时中文先要经过URLEncoder编码，因为模拟器默认的编码&#26684;式是utf-8<br>
+//而tomcat内部默认的编码&#26684;式是ISO8859-1，所以先将参数进行编码，再向服务器提交。<br>
+<br>
+</span></p>
+<p><span style="font-size:14px">GET</span></p>
+<p><span style="font-size:14px"></span><pre name="code" class="java">private String address = &quot;http://192.168.2.101:80/server/loginServlet&quot;;
+
+
+public boolean get(String username, String password) throws Exception {
+username = URLEncoder.encode(username);// 中文数据需要经过URL编码
+password = URLEncoder.encode(password);
+String params = &quot;username=&quot; + username + &quot;&amp;password=&quot; + password; 
+//将参数拼接在URl地址后面
+URL url = new URL(address + &quot;?&quot; + params);
+//通过url地址打开连接
+HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//设置超时时间
+conn.setConnectTimeout(3000);
+//设置请求方式
+conn.setRequestMethod(&quot;GET&quot;);
+//如果返回的状态码是200，则一切Ok，连接成功。
+return conn.getResponseCode() == 200;
+}
+</pre></p>
+<div id="article_content" class="article_content"><span style="font-size:14px">在android中通过post方式提交数据。<br>
+<br>
+<br>
+<span style="white-space:pre"></span>public boolean post(String username, String password) throws Exception {<br>
+<span style="white-space:pre"></span>username = URLEncoder.encode(username);<span style="white-space:pre"></span>// 中文数据需要经过URL编码<br>
+<span style="white-space:pre"></span>password = URLEncoder.encode(password);<br>
+<span style="white-space:pre"></span>String params = &quot;username=&quot; &#43; username &#43; &quot;&amp;password=&quot; &#43; password;
+<br>
+<span style="white-space:pre"></span>byte[] data = params.getBytes();<br>
+<span style="white-space:pre"></span><br>
+<span style="white-space:pre"></span>URL url = new URL(address);<br>
+<span style="white-space:pre"></span>HttpURLConnection conn = (HttpURLConnection) url.openConnection();<br>
+<span style="white-space:pre"></span>conn.setConnectTimeout(3000);<br>
+<span style="white-space:pre"></span>//这是请求方式为POST<br>
+<span style="white-space:pre"></span>conn.setRequestMethod(&quot;POST&quot;);<br>
+<span style="white-space:pre"></span>//设置post请求必要的请求头<br>
+<span style="white-space:pre"></span>conn.setRequestProperty(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);<span style="white-space:pre"></span>// 请求头, 必须设置<br>
+<span style="white-space:pre"></span>conn.setRequestProperty(&quot;Content-Length&quot;, data.length &#43; &quot;&quot;);<span style="white-space:pre"></span>// 注意是字节长度, 不是字符长度<br>
+<span style="white-space:pre"></span><br>
+<span style="white-space:pre"></span>conn.setDoOutput(true);<span style="white-space:pre"></span>// 准备写出<br>
+<span style="white-space:pre"></span>conn.getOutputStream().write(data);<span style="white-space:pre"></span>// 写出数据<br>
+<span style="white-space:pre"></span><br>
+<span style="white-space:pre"></span>return conn.getResponseCode() == 200;<br>
+<span style="white-space:pre"></span>}</span> </div>
+<br>
+<br>
+<p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

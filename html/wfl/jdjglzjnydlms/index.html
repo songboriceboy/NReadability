@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>简单几个例子，教你用单例模式</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">&nbsp; 程序员路上如果过多的停留在基础代码上，是对于自己的一种恶心，有时候我们要学会偷懒、 还记得我在写天气APP教程的时候。使用过得一个设计模式，但是只是觉得大家应该都知道也就没做过多的总结。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">单例模式：</span></p>
+<p><span style="font-size:18px; color:#FF0000">简单理解：此类使用单例，全局都可调用此类</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#FF0000">官方解释：单例模式确保一个类，只有一个实例，自行提供实例并向整个系统提供这个实例、</span></p>
+<p><span style="font-size:18px; color:#FF0000">&nbsp; 特点 ：1.一个类只能有一个实例</span></p>
+<p><span style="font-size:18px; color:#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.自己创建这个实例</span></p>
+<p><span style="font-size:18px; color:#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.整个系统都要使用这个实例<br>
+</span></p>
+<p><span style="font-size:18px">拿几个例子解释吧：</span></p>
+<p><span style="font-size:18px">windows里面的 回收站 整个系统都使用这个唯一的实例，而且回收站自定提供自己的实例。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">再拿我写的天气APP用到的单例模式，首先weatherDB，作为一个工具类，又是查询天气的，肯定要经常用到，根据设计原则，尽量减少new 出空间，减少内存空间的消耗，所以我也使用单例模式来解决，自己实例，全局可以调用。</span></p>
+<p><span style="font-size:18px">看看 我写的这个单例模式吧</span></p>
+<p><span style="font-size:18px">public <code>synchronized </code>static coolWeather getinstance(Context context){</span></p>
+<p><span style="font-size:18px">if(cooWeatherDb=null){</span></p>
+<p><span style="font-size:18px"><span style="font-size:18px">cooWeatherDb</span>=new CollweatherDb(context);<br>
+</span></p>
+<p><span style="font-size:18px">}</span></p>
+<p><span style="font-size:18px">return <span style="font-size:18px">cooWeatherDb</span>;<br>
+</span></p>
+<p><span style="font-size:18px">}</span></p>
+<p><span style="font-size:18px"><code><br>
+</code></span></p>
+<p><span style="font-size:18px"><code>回到正题：</code></span></p>
+<p><span style="font-size:18px"><code>单例有两种经常用：</code></span></p>
+<p><span style="font-size:18px"><code></code></span></p>
+<p><span style="font-size:18px"><code>1，饿汉式单例类</code></span></p>
+<div id="highlighter_360859">
+<table class=" " border="0" cellpadding="0" cellspacing="0" height="195" width="721">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>public</code> <code>class</code> <code>Singleton { </code></div>
+<div><code></code></div>
+<div><code>private</code> <code>Singleton(){} </code></div>
+<div><code></code></div>
+<div><code>//在自己内部定义自己一个实例，是不是很奇怪？ </code></div>
+<div><code>//注意这是private 只供内部调用 </code></div>
+<div><code></code></div>
+<div><code>private</code> <code>static</code> <code>Singleton instance = </code><code>new</code>
+<code>Singleton(); </code></div>
+<div><code></code></div>
+<div><code>//这里提供了一个供外部访问本class的静态方法，可以直接访问 </code></div>
+<div><code>public</code> <code>static</code> <code>Singleton getInstance() { </code>
+</div>
+<div><code>return</code> <code>instance; </code></div>
+<div><code>} </code></div>
+<div><code>}<br>
+<br>
+</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div id="highlighter_334965">
+<table class=" " border="0" cellpadding="0" cellspacing="0" height="203" width="725">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td>
+<p><span style="font-size:18px"><code>2，懒汉式单例类</code></span><br>
+</p>
+<div>
+<div><code>public</code> <code>class</code> <code>Singleton { </code></div>
+<div><code></code></div>
+<div><code>private</code> <code>static</code> <code>Singleton instance = null; </code>
+</div>
+<div><code></code></div>
+<div><code>public</code> <code>static</code> <code>synchronized Singleton getInstance() {
+</code></div>
+<div><code></code></div>
+<div><code>//这个方法比上面有所改进，不用每次都进行生成对象，只是第一次 </code></div>
+<div><code>//使用时生成实例，提高了效率！ </code></div>
+<div><code>if</code> <code>(instance==null) </code></div>
+<div><code>instance＝</code><code>new</code> <code>Singleton(); </code></div>
+<div><code>return</code> <code>instance; 　　} </code></div>
+<div><code></code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<span style="font-size:18px">第二中形式是lazy initialization，也就是说第一次调用时初始Singleton，以后就不用再生成了。<br>
+<br>
+注意到lazy initialization形式中的synchronized，这个synchronized很重要，如果没有synchronized，那么使用getInstance()是有可能得到多个Singleton实例。<br>
+一般来说第一种比较安全</span>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px">再看看我在彩票APP中用到的单例模式&nbsp;&nbsp; PS：只截取一部分代码</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">public class TitleManager {<br>
+&nbsp;&nbsp; &nbsp;// 显示和隐藏<br>
+<br>
+&nbsp;&nbsp; &nbsp;private static TitleManager instance = new TitleManager();<br>
+<br>
+&nbsp;&nbsp; &nbsp;private TitleManager() {<br>
+&nbsp;&nbsp; &nbsp;}<br>
+<br>
+&nbsp;&nbsp; &nbsp;public static TitleManager getInstance() {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;return instance;<br>
+&nbsp;&nbsp; &nbsp;}</span></p>
+<p><span style="font-size:18px">因为titleManager 在APP中要大量使用所以，将其全局化可以调用 也就是单例 我用的是饿汉单例形式
+<br>
+</span></p>
+<p><span style="font-size:18px">调用的时候&nbsp; 直接 方法名.getinstance 即可 <br>
+</span></p>
+<p><span style="font-size:18px">TitleManager manager = TitleManager.getInstance();</span></p>
+<p><span style="font-size:18px">博主 将在后面使用到单例模式 会继续更新这篇文章，让大家知道单例 应该啥时候用，虽然我已经说的比较应用场合了<br>
+</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/jdjglzjnydlms/index.html">简单几个例子，教你用单例模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

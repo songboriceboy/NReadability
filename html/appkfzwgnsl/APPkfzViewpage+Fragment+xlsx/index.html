@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>APP开发之Viewpage+Fragment+下拉刷新</div><br><div id="article_content" class="article_content">
+
+<p>之前看了很多了Viewpage， 我主要是想做一个在底部TAB滑动的效果不过之前 因为不知道怎么 点击和滑动到某一个TAB 就变色，一直没写出一个Demo，现在算是写出来了，也算对Viewpage有个交代了吧</p>
+<p>对于Viewpage的使用 你必须在布局中使用一个Viewpage<span style="white-space:pre"> </span></p>
+<p><pre name="code" class="java">    &lt;android.support.v4.view.ViewPager
+        android:id=&quot;@+id/iask_main_view_pager&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;0px&quot;
+        android:layout_weight=&quot;1&quot; &gt;
+    &lt;/android.support.v4.view.ViewPager&gt;</pre>然后在activity中开始使用</p>
+<p>1.定义一个viewpage</p>
+<p>private ViewPager pager;</p>
+<p>2.准备好适配器</p>
+<p>&nbsp;IAskFragmentAdapter fragmentAdapter = new IAskFragmentAdapter(getSupportFragmentManager()); &nbsp;&nbsp;</p>
+<p>3.然后设置点击事件 和滑动事件</p>
+<p>先看布局吧</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@+id/iask_manager_layout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:gravity=&quot;center_horizontal&quot;
+    android:orientation=&quot;vertical&quot;
+    &gt;
+
+    &lt;android.support.v4.view.ViewPager
+        android:id=&quot;@+id/iask_main_view_pager&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;0px&quot;
+        android:layout_weight=&quot;1&quot; &gt;
+    &lt;/android.support.v4.view.ViewPager&gt;
+    
+	&lt;LinearLayout 
+	    android:id=&quot;@+id/iask_bottom_layout&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;50dp&quot;
+        android:orientation=&quot;horizontal&quot;
+        android:background=&quot;@android:color/black&quot;
+        android:visibility=&quot;visible&quot;
+        android:layout_marginBottom=&quot;0dp&quot;
+        &gt;
+        	&lt;TextView
+        	   android:id=&quot;@+id/iask_ask_text&quot;
+               android:layout_width=&quot;wrap_content&quot;
+               android:layout_height=&quot;wrap_content&quot;
+               android:text=&quot;我要问&quot;
+               android:clickable=&quot;true&quot;
+            	android:focusable=&quot;true&quot;
+               android:textSize=&quot;18sp&quot;
+               android:gravity=&quot;center&quot;
+               android:layout_gravity=&quot;center&quot;
+           		android:layout_weight=&quot;1&quot;
+               android:background=&quot;@drawable/iask_bottom_tab_ask_pressed&quot;
+               android:textColor=&quot;#9a9a9a&quot;
+               /&gt;
+        &lt;TextView
+        	   android:id=&quot;@+id/iask_answer_text&quot;
+               android:layout_width=&quot;wrap_content&quot;
+               android:layout_height=&quot;wrap_content&quot;
+               android:text=&quot;我要答&quot;
+               android:layout_gravity=&quot;center&quot;
+               android:gravity=&quot;center&quot;
+               android:textSize=&quot;18sp&quot;
+               android:clickable=&quot;true&quot;
+               android:focusable=&quot;true&quot;
+               android:layout_weight=&quot;1&quot;
+               android:background=&quot;@drawable/iask_bottom_tab_answer_bg&quot;
+               android:textColor=&quot;#9a9a9a&quot;
+               /&gt;
+        &lt;TextView
+        	   android:id=&quot;@+id/iask_person_text&quot;
+               android:layout_width=&quot;wrap_content&quot;
+               android:layout_height=&quot;wrap_content&quot;
+               android:background=&quot;@drawable/iask_bottom_tab_person_bg&quot;
+               android:text=&quot;会员中心&quot;
+               android:clickable=&quot;true&quot;
+               android:focusable=&quot;true&quot;
+               android:layout_gravity=&quot;center&quot;
+               android:gravity=&quot;center&quot;
+               android:layout_weight=&quot;1&quot;
+               android:textSize=&quot;18sp&quot;
+               android:textColor=&quot;#9a9a9a&quot;
+               /&gt;
+    &lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;</pre><br>
+布局也很简单 也就是三个tab页 加一个viewpage&nbsp;</p>
+<p>然后就是业务逻辑</p>
+<p><br>
+</p>
+<p><pre name="code" class="java">package com.example.viewpagedemo;
+
+
+
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+
+import com.example.viewpagedemo.adapter.IAskFragmentAdapter;
+
+public class MainActivity extends FragmentActivity implements OnClickListener {
+	//定义一个viewpage
+	private ViewPager pager;
+	//定义第一个tab1
+	private TextView iask_ask_text;
+	//定义第二个tab1
+	private TextView iask_answer_text;
+	//定义第三个tab1
+	private TextView iask_person_text;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initViews();
+      //准备适配器，滑动三个fragment,所以需要将getSupportFragment放入得到Fragment
+        IAskFragmentAdapter fragmentAdapter = new IAskFragmentAdapter(getSupportFragmentManager());   
+        pager.setAdapter(fragmentAdapter);
+		pager.setOnPageChangeListener(changeListener);
+   
+    }
+	private void initViews() {
+		pager=(ViewPager) findViewById(R.id.iask_main_view_pager);
+		iask_answer_text=(TextView) findViewById(R.id.iask_answer_text);
+		iask_ask_text = (TextView) findViewById(R.id.iask_ask_text);
+		iask_person_text = (TextView) findViewById(R.id.iask_person_text);
+		
+		iask_ask_text.setOnClickListener(this);
+		iask_answer_text.setOnClickListener(this);
+		iask_person_text.setOnClickListener(this);
+	}
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.iask_ask_text:
+			pager.setCurrentItem(0);
+			//其他按钮回复到为普通状态，自己为按下状态
+			setIAskSelectedState();
+			
+			break;
+		case R.id.iask_answer_text:
+			pager.setCurrentItem(1);
+			
+			setIAskAnswerSelectedState();
+			
+			break;
+		case R.id.iask_person_text:
+			pager.setCurrentItem(2);
+			
+			setIAskPersonSelectedState();
+			break;
+		default:
+			break;
+		}
+	}
+	protected void setIAskPersonSelectedState() {
+		iask_person_text.setBackgroundResource(R.drawable.iask_bottom_tab_ask_pressed);
+		iask_answer_text.setBackgroundResource(R.drawable.iask_bottom_tab_answer_bg);
+		iask_ask_text.setBackgroundResource(R.drawable.iask_bottom_tab_answer_bg);
+	}
+
+	private void setIAskAnswerSelectedState() {
+		iask_answer_text.setBackgroundResource(R.drawable.iask_bottom_tab_ask_pressed);
+		iask_ask_text.setBackgroundResource(R.drawable.iask_bottom_tab_answer_bg);
+		iask_person_text.setBackgroundResource(R.drawable.iask_bottom_tab_answer_bg);
+	}
+
+	private void setIAskSelectedState() {
+		iask_ask_text.setBackgroundResource(R.drawable.iask_bottom_tab_ask_pressed);
+		iask_answer_text.setBackgroundResource(R.drawable.iask_bottom_tab_answer_bg);
+		iask_person_text.setBackgroundResource(R.drawable.iask_bottom_tab_answer_bg);
+	}
+private OnPageChangeListener changeListener = new OnPageChangeListener() {
+		
+		@Override
+		public void onPageSelected(int position) {
+			switch (position) {
+			case 0:
+				setIAskSelectedState();
+				break;
+			case 1:
+				setIAskAnswerSelectedState();
+				break;
+			case 2:
+				setIAskPersonSelectedState();
+				break;
+			default:
+				break;
+			}
+		}
+		
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+}
+</pre><br>
+其实主要的就是 点击切换状态 &nbsp;滑动切换状态 其实以前不知道怎么互动切换状态的 其实viewpage里面有个方法&nbsp;OnPageChangeListener的onPageSelected方法 切换也就是换了背景而已&nbsp;</p>
+<p>其实最主要的adapter 因为使用的是Fragment所以我们要将getSupportFragmentMannager放入&nbsp;</p>
+<p><br>
+</p>
+<p><pre name="code" class="java">package com.example.viewpagedemo.adapter;
+
+
+
+
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
+
+import com.example.viewpagedemo.Fragment.IAskAnswerFragment;
+import com.example.viewpagedemo.Fragment.IAskFragment;
+import com.example.viewpagedemo.Fragment.IAskPersonFragment;
+
+public class IAskFragmentAdapter extends FragmentPagerAdapter {
+
+	public IAskFragmentAdapter(FragmentManager fm) {
+		super(fm);
+	}
+	/**
+	 * 向外返回当前要显示的fragment
+	 */
+	@Override
+	public Fragment getItem(int position) {
+		Fragment f = null;
+		if (position == 0) {
+			f = new IAskFragment();
+		} else if (position == 1) {
+			f = new IAskAnswerFragment();
+		} else if (position == 2) {
+			f = new IAskPersonFragment();
+		}
+		
+		return f;
+	}
+
+	/**
+	 * 返回一共多少个数量
+	 */
+	@Override
+	public int getCount() {
+		return 3;
+	}
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		super.destroyItem(container, position, object);
+	}
+	@Override
+	public Object instantiateItem(ViewGroup container, int position) {
+		return super.instantiateItem(container, position);
+	}
+
+	
+	
+}
+</pre><br>
+<br>
+</p>
+<p><a target="_blank" href="http://download.csdn.net/detail/jack_king007/7870991">点击下载源码</a><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzslidingmenu+viewpage+taby+Fragmentzy/index.html">APP开发之slidingmenu+viewpage+tab页+Fragment之一</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzViewpage+Fragment+xlsx/index.html">APP开发之Viewpage+Fragment+下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/APPkfzysplashmbdm/index.html">APP开发之一splash模板代码</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

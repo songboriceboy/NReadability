@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓服务器端开发之一数据库的准备</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">最近学校来一批人培训学校的，我看了Oracle数据库的培训，我在想&#23612;玛这高级啊，直接对联企业级的开发，不过想了想平时自己开发怎么可能用那个数据库，学习成本又高。</span></p>
+<p><span style="font-size:24px">我们的猪脚：mysql，和navicat界面化操作软件。</span></p>
+<p><span style="font-size:24px">想起来我在学校老师叫我们的sql2005 哎 伤不起。</span></p>
+<p><span style="font-size:24px">对于mysql 基本命令行还是需要自己了解 &nbsp;启动服务命令</span></p>
+<p><span style="font-size:24px">开始-&gt;运行-&gt;cmd<br>
+停止：net stop mysql<br>
+启动：net start mysql<br>
+</span></p>
+<p><span style="font-size:24px">既然我都说了界面化软件 我就不多说命令了，后面的指令我会贴出来</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px">安装mysql 网上都有教程</span></p>
+<p><span style="font-size:24px">http://www.jb51.net/article/23876.htm</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px">在安装的时候 记得把自己的密码记住，不然你会很悲催的</span></p>
+<p><span style="font-size:24px">因为我准备的的教程是根据 一个网络商城 所写的 我把基本流程说一遍大家举一反三，基本能想出来</span></p>
+<p><span style="font-size:24px">1数据库和服务器端</span></p>
+<p><span style="font-size:24px">首先数据库的表必须是utf-8 跟服务器端编码&#26684;式是一样的，这样就不会造成乱码，我一开始用界面化软件建表，不能输入中文，这&#23612;玛很坑爹 有木有，无奈之下 用命令行吧</span></p>
+<p>先创建一个数据库 名字叫cv 和一个表<pre name="code" class="sql">	create database if not exists test;
+	use test;
+	create table help_id(
+		id int primary key auto_increment,
+		help_id int(20),
+		title varchar(20),
+		content varchar(255),
+		state int(20)
+	)default charset=utf8;</pre>然后自己在界面化软件看看是否创建成功&nbsp;</p>
+<p>以次类推 创建help表</p>
+<p><img src="10280666968026.jpg" alt=""><br>
+</p>
+<p><span style="font-size:24px">其实help_id要加入一个外键 大家可以在界面话软件中添加</span></p>
+<p><span style="font-size:24px"><img src="1503445680487.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px">再添加一些内容 help_id表</span></p>
+<p><span style="font-size:24px"><img src="3993128929589.jpg" alt=""></span></p>
+<p><span style="font-size:24px">help表</span></p>
+<p><span style="font-size:24px"><img src="13492509579917.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px">好啦，数据库就创建成功了，然后就开始第二章了 服务器端月数据库的连接了</span></p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

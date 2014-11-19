@@ -1,0 +1,572 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>彩票项目之协议分析，封装</div><br><div id="article_content" class="article_content">
+
+<p>说实话 听着这个视频 ，黑马的彩票视频 我看了五遍 关于协议的封装 我自己觉得很难懂 不过搞懂以后 我自己学到了很多。</p>
+<p><br>
+</p>
+<p>关于封装，也是因为项目 需要，不过确实对代码，结构优化了很多。 我自己在认真的总结。</p>
+<p><br>
+</p>
+<p>前一篇 已经把一个节点已经生成完了，</p>
+<p>再看 body这个节点 有着element这个子节点 然后 不会将所有的请求用到的叶子放到Element中 &nbsp;Element将作为所有请求的代表，Element所有请求的公共部分</p>
+<p>公共部分：<br>
+&nbsp;①每个请求都需要序列化自己<br>
+</p>
+<p>这 个element需要抽象或者作为一个接口 &nbsp;约束自己的孩子</p>
+<p>element</p>
+<p><pre name="code" class="java">package com.xiaoxin.CaiPiao.net.protocal;
+
+import org.xmlpull.v1.XmlSerializer;
+
+/**
+ * 请求数据的封装
+ * 
+ * @author Administrator
+ * 可以使用抽象或者接口约束自己的孩子
+ */
+public abstract class Element {
+	// 不会将所有的请求用到的叶子放到Element中
+	// Element将作为所有请求的代表，Element所有请求的公共部分
+	// 公共部分：
+	// ①每个请求都需要序列化自己
+	/**
+	 * 每个请求都需要序列化自己
+	 * @param serializer
+	 */
+	public abstract void serializerElement(XmlSerializer serializer);
+	// ②每个请求都有自己的标示
+	/**
+	 * 每个请求都有自己的标示
+	 * @return
+	 */
+	public abstract String getTransactionType();
+	
+	
+	
+	// 包含内容
+	// 序列化
+	// 特有：请求标示
+
+	// &lt;lotteryid&gt;118&lt;/lotteryid&gt;
+//	private Leaf lotteryid = new Leaf(&quot;lotteryid&quot;);
+	// &lt;issues&gt;1&lt;/issues&gt;
+//	private Leaf issues = new Leaf(&quot;issues&quot;, &quot;1&quot;);
+	
+	
+
+//	public Leaf getLotteryid() {
+//		return lotteryid;
+//	}
+
+//	/**
+//	 * 序列化请求
+//	 */
+//	public void serializerElement(XmlSerializer serializer) {
+//		try {
+//			serializer.startTag(null, &quot;element&quot;);
+//			lotteryid.serializerLeaf(serializer);
+//			issues.serializerLeaf(serializer);
+//			serializer.endTag(null, &quot;element&quot;);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+//	/**
+//	 * 获取请求的标示
+//	 */
+//	public String getTransactionType() {
+//		return &quot;12002&quot;;
+//	}
+
+}
+</pre>其实这么做很方便 以后代码的维护 和更新 &nbsp;因为在子孩子里面只需要继承element &nbsp;子孩子要求如下</p>
+<p><br>
+<br>
+</p>
+<p>①必须继承Element<br>
+如：获取当前销售期请求<br>
+public class CurrentIssueElement extends Element<br>
+②处理Element的两个方法<br>
+需要结合接口文档，获取当前销售期请求<br>
+// &lt;lotteryid&gt;118&lt;/lotteryid&gt;<br>
+private Leaf lotteryid = new Leaf(&quot;lotteryid&quot;);<br>
+// &lt;issues&gt;1&lt;/issues&gt;<br>
+private Leaf issues = new Leaf(&quot;issues&quot;, &quot;1&quot;);<br>
+<br>
+<br>
+@Override<br>
+public void serializerElement(XmlSerializer serializer) {<br>
+<span style="white-space:pre"></span>try {<br>
+<span style="white-space:pre"></span>serializer.startTag(null, &quot;element&quot;);<br>
+<span style="white-space:pre"></span>lotteryid.serializerLeaf(serializer);<br>
+<span style="white-space:pre"></span>issues.serializerLeaf(serializer);<br>
+<span style="white-space:pre"></span>serializer.endTag(null, &quot;element&quot;);<br>
+<span style="white-space:pre"></span>} catch (Exception e) {<br>
+<span style="white-space:pre"></span>e.printStackTrace();<br>
+<span style="white-space:pre"></span>}<br>
+<span style="white-space:pre"></span>}<br>
+<span style="white-space:pre"></span><br>
+<span style="white-space:pre"></span><br>
+<span style="white-space:pre"></span>@Override<br>
+<span style="white-space:pre"></span>public String getTransactionType() {<br>
+<span style="white-space:pre"></span>return &quot;12002&quot;;<br>
+<span style="white-space:pre"></span>}<br>
+</p>
+<p><br>
+</p>
+<p>然后再看下子孩子CurrentIssueElement .java</p>
+<p><pre name="code" class="java">package com.xiaoxin.CaiPiao.net.protocal.element;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import com.xiaoxin.CaiPiao.net.protocal.Element;
+import com.xiaoxin.CaiPiao.net.protocal.Leaf;
+
+public class CurrentIssueElement extends Element{
+	// &lt;lotteryid&gt;118&lt;/lotteryid&gt;
+		private Leaf lotteryid = new Leaf(&quot;lotteryid&quot;);
+		// &lt;issues&gt;1&lt;/issues&gt;
+		private Leaf issues = new Leaf(&quot;issues&quot;, &quot;1&quot;);
+	@Override
+	public void serializerElement(XmlSerializer serializer) {
+		try {
+			serializer.startTag(null, &quot;element&quot;);
+			lotteryid.serializerLeaf(serializer);
+			issues.serializerLeaf(serializer);
+			serializer.endTag(null, &quot;element&quot;);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public String getTransactionType() {
+		return &quot;12002&quot;;
+	}
+
+	public Leaf getLotteryid() {
+		return lotteryid;
+	}
+
+}
+</pre>可以看的出来 子孩子制作了 &nbsp;包含内容 以及序列化 这样子 便于以后协议的修改和添加</p>
+<p>看了这里 我们需要看看body 内容 因为<span style="white-space:pre"> </span>&nbsp;因为body 要把element子节点 封装进去 序列化</p>
+<p><pre name="code" class="java">		/**
+		 * &lt;body&gt;
+		            &lt;elements&gt;
+		                  &lt;element&gt;
+		                         &lt;lotteryid&gt;118&lt;/lotteryid&gt;
+		                         &lt;issues&gt;1&lt;/issues&gt;
+		                  &lt;/element&gt;
+		            &lt;/elements&gt; 
+		     &lt;/body&gt;
+		 */</pre><br>
+<pre name="code" class="java">package com.xiaoxin.CaiPiao.net.protocal;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.xmlpull.v1.XmlSerializer;
+
+import android.util.Xml;
+
+import com.xiaoxin.CaiPiao.ConstantValue;
+import com.xiaoxin.CaiPiao.utils.DES;
+
+/**
+ * 消息体结点封装
+ * @author Administrator
+ *
+ */
+public class Body {
+	//因为不止一个elements内容 所以 需要一个集合来接受
+	private List&lt;Element&gt; elements=new ArrayList&lt;Element&gt;();
+	
+	/*********************处理服务器回复*************************/
+	private String serviceBodyInsideDESInfo;//服务器端回复的body中的DES加密的信息
+	private Oelement oelement=new Oelement();
+	
+	public Oelement getOelement() {
+		return oelement;
+	}
+	public String getServiceBodyInsideDESInfo() {
+		return serviceBodyInsideDESInfo;
+	}
+	public void setServiceBodyInsideDESInfo(String serviceBodyInsideDESInfo) {
+		this.serviceBodyInsideDESInfo = serviceBodyInsideDESInfo;
+	}
+	/*********************处理服务器回复*************************/
+	
+	
+	
+	public List&lt;Element&gt; getElements() {
+		return elements;
+	}
+	/**
+	 * 序列化请求
+	 */
+	public void serializerBody(XmlSerializer serializer) {
+		/**
+		 * &lt;body&gt;
+		            &lt;elements&gt;
+		                  &lt;element&gt;
+		                         &lt;lotteryid&gt;118&lt;/lotteryid&gt;
+		                         &lt;issues&gt;1&lt;/issues&gt;
+		                  &lt;/element&gt;
+		            &lt;/elements&gt; 
+		     &lt;/body&gt;
+		 */
+		
+		try {
+			serializer.startTag(null, &quot;body&quot;);
+			serializer.startTag(null, &quot;elements&quot;);
+			
+			for(Element item:elements){
+				item.serializerElement(serializer);
+			}
+			
+			serializer.endTag(null, &quot;elements&quot;);
+			serializer.endTag(null, &quot;body&quot;);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 获取到完整的body
+	 * @return
+	 */
+	public String getWholeBody()
+	{
+		StringWriter writer=new StringWriter();
+		
+		XmlSerializer temp=Xml.newSerializer();
+		try {
+			temp.setOutput(writer);
+			this.serializerBody(temp);
+			// output will be flushed
+			temp.flush();
+			return writer.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 获取body里面的DES加密数据
+	 * @return
+	 */
+	public String getBodyInsideDESInfo()
+	{
+		// 加密数据
+		String wholeBody = getWholeBody();
+		String orgDesInfo=StringUtils.substringBetween(wholeBody, &quot;&lt;body&gt;&quot;, &quot;&lt;/body&gt;&quot;);
+		
+		// 加密
+		// 加密调试——2天
+		// ①加密算法实现不同
+		// ②加密的原始数据不同
+		
+		DES des=new DES();
+		return des.authcode(orgDesInfo, &quot;DECODE&quot;, ConstantValue.DES_PASSWORD);
+	}
+}
+</pre><br>
+message.xml 终结点 有一个attribute属性&nbsp;</p>
+<p><pre name="code" class="java">package com.xiaoxin.CaiPiao.net.protocal;
+
+import java.io.StringWriter;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import android.util.Xml;
+
+import com.xiaoxin.CaiPiao.ConstantValue;
+
+
+
+/**
+ * 协议封装
+ * 
+ * @author Administrator
+ * 
+ */
+public class Message {
+	private Header header = new Header();
+	private Body body = new Body();
+	
+	
+
+	public Header getHeader() {
+		return header;
+	}
+
+	public Body getBody() {
+		return body;
+	}
+
+	/**
+	 * 序列化协议
+	 */
+	public void serializerMessage(XmlSerializer serializer) {
+		try {
+			// &lt;message version=&quot;1.0&quot;&gt;
+			serializer.startTag(null, &quot;message&quot;);
+			// MUST follow a call to startTag() immediately
+			serializer.attribute(null, &quot;version&quot;, &quot;1.0&quot;);
+
+			header.serializerHeader(serializer, body.getWholeBody());// 获取完整的body
+//			body.serializerBody(serializer);
+			serializer.startTag(null, &quot;body&quot;);
+			serializer.text(body.getBodyInsideDESInfo());
+			serializer.endTag(null, &quot;body&quot;);
+
+			serializer.endTag(null, &quot;message&quot;);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 获取请求的xml文件
+	 * 
+	 * @return
+	 */
+	public String getXml(Element element) {
+		if (element == null) {
+			throw new IllegalArgumentException(&quot;element is null&quot;);
+		}
+		// 请求标示需要设置，请求内容需要设置
+		header.getTransactiontype().setTagValue(element.getTransactionType());
+		body.getElements().add(element);
+
+		// 序列化
+		XmlSerializer serializer = Xml.newSerializer();
+		StringWriter writer = new StringWriter();
+		// This method can only be called just after setOutput
+		try {
+			serializer.setOutput(writer);
+			serializer.startDocument(ConstantValue.ENCONDING, null);
+			this.serializerMessage(serializer);
+			serializer.endDocument();
+
+			return writer.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
+	
+	
+
+	// 需要处理的问题：
+	// ①MD5处理时需要完整的明文body
+	// ②请求标示需要设置，请求内容需要设置
+	// ③加密body里面的数据
+
+	// ④Element通用
+
+}
+</pre><br>
+生成xml的代码就简单了</p>
+<p><pre name="code" class="java">package com.xiaoxin.CaiPiao.test;
+
+import java.io.StringWriter;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import com.xiaoxin.CaiPiao.ConstantValue;
+import com.xiaoxin.CaiPiao.net.protocal.Message;
+import com.xiaoxin.CaiPiao.net.protocal.element.CurrentIssueElement;
+import com.xiaoxin.CaiPiao.utils.BeanFactory;
+
+import android.test.AndroidTestCase;
+import android.util.Log;
+import android.util.Xml;
+
+
+
+public class XmlTest extends AndroidTestCase {
+	private static final String TAG = &quot;XmlTest&quot;;
+
+	public void createXMl() {
+		Message message = new Message();
+		CurrentIssueElement element = new CurrentIssueElement();
+		element.getLotteryid().setTagValue(&quot;118&quot;);
+		String xml = message.getXml(element);
+		Log.i(TAG, xml);
+	}
+
+	public void createXMl2() {
+		// 序列化
+		XmlSerializer serializer = Xml.newSerializer();
+		StringWriter writer = new StringWriter();
+		// This method can only be called just after setOutput
+		try {
+			serializer.setOutput(writer);
+			serializer.startDocument(ConstantValue.ENCONDING, null);
+
+			Message message = new Message();
+			message.serializerMessage(serializer);
+
+			serializer.endDocument();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void createXMl1() {
+		// 序列化
+		XmlSerializer serializer = Xml.newSerializer();
+		StringWriter writer = new StringWriter();
+		// This method can only be called just after setOutput
+		try {
+			//生成一个XML
+			serializer.setOutput(writer);
+			serializer.startDocument(ConstantValue.ENCONDING, null);
+
+			serializer.startTag(null, &quot;message&quot;);
+			serializer.startTag(null, &quot;header&quot;);
+
+			serializer.startTag(null, &quot;agenterid&quot;);
+			serializer.text(ConstantValue.AGENTERID);
+			serializer.endTag(null, &quot;agenterid&quot;);
+
+			serializer.startTag(null, &quot;agenterid&quot;);
+			serializer.text(ConstantValue.AGENTERID);
+			serializer.endTag(null, &quot;agenterid&quot;);
+
+			serializer.startTag(null, &quot;agenterid&quot;);
+			serializer.text(ConstantValue.AGENTERID);
+			serializer.endTag(null, &quot;agenterid&quot;);
+
+			serializer.endTag(null, &quot;header&quot;);
+			serializer.startTag(null, &quot;body&quot;);
+			serializer.endTag(null, &quot;body&quot;);
+			serializer.endTag(null, &quot;message&quot;);
+
+			serializer.endDocument();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 存在问题：
+		// 项目组形势开发：5人，100请求
+
+		// 无法预估
+		// ①开发、维护成本高——代码冗余，极易出错
+		// ②交接代码：开发、沟通成本
+		// ③生成了五个封装协议的版本代码
+		// ④协议变更了
+
+		// 预估 :
+		// 学习协议：5*0.5天
+		// 学习协议结果的交流：5*0.5天
+
+		// 风险管理——规避风险、时间影响最小化
+
+		// 单独抽一人学习协议，抽取出一个协议封装的版本（公共）
+		// 协议 不同之处需要交由其他开发人员处理
+
+	}
+
+	/*public void testUserLogin() {
+		// UserEngineImpl impl=new UserEngineImpl();
+		// UserEngineImpl1
+		// User user=new User();
+		// user.setUsername(&quot;13200000000&quot;);
+		// user.setPassword(&quot;0000000&quot;);
+		// Message login = impl.login(user);
+		// Log.i(TAG, login.getBody().getOelement().getErrorcode());
+
+		UserEngine engine = BeanFactory.getImpl(UserEngine.class);
+
+		User user = new User();
+		user.setUsername(&quot;13200000000&quot;);
+		user.setPassword(&quot;0000000&quot;);
+		Message login = engine.login(user);
+		Log.i(TAG, login.getBody().getOelement().getErrorcode());
+	}*/
+}
+</pre><br>
+<br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

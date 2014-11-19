@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>Hanlde消息处理机制的复习——网络图片下载</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">安卓为了提高用户体验，在主线程是不允许过多的线程执行的，主线程又叫UI线程，所以呢，再初学安卓的时候，大家都只有用new thread（new runnble）去开启子线程去更新，但是呢</span>，<span style="font-size:18px">子线程又不运行子线程更新UI，，所以呢，问题来了。</span></p>
+<p><span style="font-size:18px">大家就想了，我都开了子线程去执行耗时操作了，你还不准我更新UI，怎么办呢</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">就像我现在要写的Demo，下载图片，我开启线程去请求网络，然后图片被下载了，我要用Imageview设置图片了， 你有不准我去更新UI，那我就从新通知主线程更新吧，这时候我们就像能不能发个消息给主线程，把图片发送给他，让他更新呢，这个是可以有的。其实在安卓有专门负责这一块的，异步......</span></p>
+<p><span style="font-size:18px">好啦，这个时候，安卓有专门的消息机制handler <br>
+</span></p>
+<p><span style="font-size:18px">1.子线程利用handler发送一条信息 <br>
+</span></p>
+<p>你想想安卓有那么多的消息要发送，多了就要排队不是............Looper（消息队列）</p>
+<p>2.消息就被放在消息队列中，如果轮到你了，他就会调用handlemessage方法处理消息。</p>
+<p>3.你需要的是在子线程 实例化 Message对象&nbsp;&nbsp; <br>
+</p>
+<p>4.Message 有 what 特征码 和obj&nbsp; 你要发送的内容<br>
+</p>
+<p><img src="9257438915788.jpg" alt=""><br>
+</p>
+<p><span style="font-size:18px"><br>
+这一节是复习消息机制，其他内容我就不叙说了。 <br>
+</span></p>
+<p><span style="font-size:18px">同时在安卓里有专门负责处理图片的类 bitmap&nbsp; <br>
+</span></p>
+<p><span style="font-size:18px">BitmapFactory.decodeStream(is);能从流中解析出图片 得到一个bitmap图像，然后用Message发送到 主线程进行 更新</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.itheima.imageiewer;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+	protected static final int UPDATE_UI = 1;
+	protected static final int ERROR = 2;
+	private ImageView iv_beauty;
+	private EditText et_path;
+
+	// 主线程创建消息处理器
+	Handler handler = new Handler() {
+		// 但有新消息时调用
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == UPDATE_UI) {
+				// 获取消息对象
+				Bitmap bitmap = (Bitmap) msg.obj;
+				// 更新UI
+				iv_beauty.setImageBitmap(bitmap);
+			} else if (msg.what == ERROR) {
+				// Toast也是属于UI的更新
+				Toast.makeText(getApplicationContext(), &quot;图片获取失败！&quot;, 0).show();
+			}
+		}
+	};
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		this.iv_beauty = (ImageView) this.findViewById(R.id.iv_beauty);
+		this.et_path = (EditText) this.findViewById(R.id.et_path);
+	}
+
+	public void watch(View view) {
+		final String path = this.et_path.getText().toString().trim();
+		if (TextUtils.isEmpty(path)) {
+			Toast.makeText(this, &quot;路径不能为空&quot;, 0).show();
+		} else {
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						URL url = new URL(path);
+						HttpURLConnection connection = (HttpURLConnection) url
+								.openConnection();
+						// 设置请求方式
+						connection.setRequestMethod(&quot;GET&quot;);
+						// 设置超时时间
+						connection.setConnectTimeout(10000);
+
+						// connection.setRequestProperty(field, newValue)
+
+						int code = connection.getResponseCode();
+						if (code == 200) {
+							InputStream is = connection.getInputStream();
+							Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+							// 告诉主线程一个消息，帮我更新ui，内容：bitmap
+							Message msg = new Message();
+							// 消息的代号，是一个int类型
+							msg.what = UPDATE_UI;
+							// 要传递的消息对象
+							msg.obj = bitmap;
+							// 利用handler发送消息
+							handler.sendMessage(msg);
+						} else {
+							Message msg = new Message();
+							msg.what = ERROR;
+							handler.sendMessage(msg);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						/*
+						 * Runs the specified action on the UI thread. If the
+						 * current thread is the UI thread, then the action is
+						 * executed immediately. If the current thread is not
+						 * the UI thread, the action is posted to the event
+						 * queue of the UI thread.
+						 */
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								Toast.makeText(MainActivity.this, &quot;加载失败&quot;, 0)
+										.show();
+							}
+						});
+					}
+				}
+
+			}.start();
+
+		}
+	}
+}
+</pre>记住加权限哦<br>
+<br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px"></span><br>
+</p>
+<span id="pv-float-bar-container" style="top:1667px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual"></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier"></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

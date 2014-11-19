@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>内容提供者复习——短信备份</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">&nbsp;对于上一节的相亲神器，大家应该知道怎么用内容提供者去得到系统的数据 进行开发了</span>。</p>
+<p><br>
+</p>
+<p><span style="font-size:18px">其实对于大部分的URI 可以百度去得到，但是我建议自己倒弄出源码 自己去研究下。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><span style="font-size:24px">短信URI&nbsp;&nbsp; content://sms/&nbsp;
+<br>
+</span></span></p>
+<p><span style="font-size:18px">短信的数据库第一个是id ，第二个是address （地址）第三个日期 （date）第四个type（类型）第五个是body（内容）</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">demo的思路主要是 拿到接口以后 直接查询&nbsp; 然后序列化到本地 储存起来 保存在SD卡 ，记住加权限还有读取短信的权限</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p>先看实体类吧&nbsp; 因为查询到结果需要储存起来</p>
+<p><pre name="code" class="java">package com.example.backSms.entrys;
+
+public class Smsinfo {
+	private int id;
+	private int type;
+	private String address;
+	private String body;
+	private long date;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getBody() {
+		return body;
+	}
+	public void setBody(String body) {
+		this.body = body;
+	}
+	public long getDate() {
+		return date;
+	}
+	public void setDate(long date) {
+		this.date = date;
+	}
+	public Smsinfo(int id, int type, String address, String body, long date) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.address = address;
+		this.body = body;
+		this.date = date;
+	}
+	@Override
+	public String toString() {
+		return &quot;Smsinfo [id=&quot; + id + &quot;, type=&quot; + type + &quot;, address=&quot; + address
+				+ &quot;, body=&quot; + body + &quot;, date=&quot; + date + &quot;]&quot;;
+	}
+	public Smsinfo() {
+		super();
+	}
+	
+}
+</pre><br>
+然后是主体类<br>
+</p>
+<p><pre name="code" class="java">&lt;pre name=&quot;code&quot; class=&quot;java&quot;&gt;package com.example.backSms;
+
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import com.example.backSms.entrys.Smsinfo;
+
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Xml;
+import android.view.View;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+    }
+     /**备份短信
+     * @param view
+     */
+    public void btn(View view){
+    	 //查处所有短信
+    	Uri uri = Uri.parse(&quot;content://sms/&quot;);
+    	ContentResolver resolver = getContentResolver();
+    	Cursor cursor = resolver.query(uri, new String[]{&quot;_id&quot;,&quot;address&quot;,&quot;date&quot;,&quot;type&quot;,&quot;body&quot;}, null, null, null);
+    	if (cursor!=null&amp;&amp;cursor.getCount()&gt;0) {
+    		Smsinfo smsinfo=null;
+    		List&lt;Smsinfo&gt;list=new ArrayList&lt;Smsinfo&gt;();
+    		while (cursor.moveToNext()) {
+    			smsinfo=new Smsinfo();
+    			smsinfo.setId(cursor.getInt(0));
+    			smsinfo.setAddress(cursor.getString(1));
+    			smsinfo.setDate(cursor.getLong(2));
+    			smsinfo.setType(cursor.getInt(3));
+    			smsinfo.setBody(cursor.getString(4));
+    			list.add(smsinfo);
+			}
+			cursor.close();
+			//2.序列化到本地
+			writeTolocal(list);
+		}
+     }
+    private void writeTolocal(List&lt;Smsinfo&gt;smsinfos){
+    	XmlSerializer serializer=Xml.newSerializer();//得到序列化对象
+    	//指定输出位置
+    	try {
+			FileOutputStream fos=new FileOutputStream(&quot;/mnt/sdcard/sms.xml&quot;);
+			serializer.setOutput(fos,&quot;utf-8&quot;);
+			serializer.startDocument(&quot;utf-8&quot;, true);
+			serializer.startTag(null, &quot;smss&quot;);
+			for (Smsinfo smsinfo : smsinfos) {
+				serializer.startTag(null, &quot;sms&quot;);
+				serializer.attribute(null, &quot;id&quot;, String.valueOf(smsinfo.getId()));
+				serializer.startTag(null, &quot;address&quot;);
+				serializer.text(smsinfo.getAddress());
+				serializer.endTag(null, &quot;address&quot;);
+				
+				serializer.startTag(null, &quot;date&quot;);
+				serializer.text(String.valueOf(smsinfo.getDate()));
+				serializer.endTag(null, &quot;date&quot;);
+				
+				serializer.startTag(null, &quot;type&quot;);
+				serializer.text(String.valueOf(smsinfo.getType()));
+				serializer.endTag(null, &quot;type&quot;);
+				
+				serializer.startTag(null, &quot;body&quot;);
+				serializer.text(smsinfo.getBody());
+				serializer.endTag(null, &quot;body&quot;);
+				
+				serializer.endTag(null, &quot;sms&quot;);
+			}
+			serializer.endTag(null, &quot;smss&quot;);
+			serializer.endDocument();
+			Toast.makeText(this, &quot;序列化备份成功&quot;, 3000).show();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Toast.makeText(this, &quot;备份失败&quot;, 3000).show();
+			e.printStackTrace();
+		}
+    	
+    }
+}
+</pre><br>
+<br>
+</p>
+<pre></pre>
+<br>
+<br>
+<p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>天气APP的实战（1）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px; color:#ff0000">一直想找个机会&nbsp;把所有知识点，融合在一起，安卓知识点，说多也不多，说少也不少，要精通还需多总结。——温故而知新</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size:14px">看了再多视频，看的越多，越发现自己知道很少，需要学习还有很多，说真话。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size:14px">做茶百科的时候，发现自己<span style="font-family:'Times New Roman'">json</span><span style="font-family:宋体">，</span><span style="font-family:'Times New Roman'">XML</span><span style="font-family:宋体">不够熟练，到现在发现&nbsp;</span><span style="font-family:'Times New Roman'">adapter</span><span style="font-family:宋体">不太熟练。</span></span></p>
+<p><span style="font-size:14px">结果又回到起点，重新看书，其实每次都能完成一个<span style="font-family:'Times New Roman'">APP</span><span style="font-family:宋体">的原因，是因为我</span><span style="font-family:'Times New Roman'">CV</span><span style="font-family:宋体">战士的功力深厚么，</span></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size:18px; color:#ff0000">安卓说简单就是</span></p>
+<p><span style="font-size:18px; color:#ff0000">1.UI&nbsp;<span style="font-family:宋体">界面肯定是要有的</span></span></p>
+<p><span style="font-size:18px; color:#ff0000">2.数据<span style="font-family:Times New Roman">-</span><span style="font-family:宋体">网络数据的解析</span><span style="font-family:Times New Roman">-XML</span><span style="font-family:宋体">解析，</span><span style="font-family:Times New Roman">json</span><span style="font-family:宋体">解析</span></span></p>
+<p><span style="font-size:18px; color:#ff0000">3.数据的持久化，一个<span style="font-family:Times New Roman">APP</span><span style="font-family:宋体">的数据&nbsp;你可以缓存起来，下次调用，这里开始提高用户体验。</span></span></p>
+<p><span style="font-size:18px; color:#ff0000">4.说道了用户体验的话，这里就会涉及到定位了，也就是<span style="font-family:Times New Roman">LBS</span><span style="font-family:宋体">，百度定位。</span></span></p>
+<p>&nbsp;</p>
+<p><span style="color:#999999">我也是想用郭大神写的一个例子，温故知新。<span style="font-family:'Times New Roman'">CoolWeather</span></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size:18px">做一个<span style="font-family:Times New Roman">APP</span><span style="font-family:宋体">，一开始不能把框架&nbsp;架的太高，最后自己无法做出来。</span></span></p>
+<p><span style="font-size:18px"><span style="font-family:宋体"><br>
+</span></span></p>
+<p><span style="font-size:24px">所以先做：功能分析</span></p>
+<p><span style="font-size:24px">（1）能罗列出所有省，市，县</span></p>
+<p><span style="font-size:24px">（2）可以查看全国任意城市的天气消息</span></p>
+<p><span style="font-size:24px">（3）可以自由自由的切换城市，去看其他城市的天气</span></p>
+<p><span style="font-size:24px">（4）提供手动更新一集后台自动更新的功能。&nbsp;</span></p>
+<p><span style="font-size:24px">休息10分钟 在写~</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/fxsjwsdgx/index.html">复习手机卫士的构想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPszecjbhbdjg/index.html">天气APP实战二（创建表和包的结构）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPdsz1/index.html">天气APP的实战（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl1lw/index.html">练手小项目之新闻类（1）联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl2Fragmentdlzlj/index.html">练手小项目之新闻类（2）Fragment的另种理解</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl3tjggl/index.html">练手小项目之新闻类（3）添加广告栏</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl4Listviewtphp/index.html">练手小项目之新闻类（4）Listview图片混排</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

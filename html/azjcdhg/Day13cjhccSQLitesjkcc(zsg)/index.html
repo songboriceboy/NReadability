@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>Day13持久化存储——SQLite数据库存储(增删改)</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">MyDatabaseHelper</span></p>
+<p><pre name="code" class="java" style="font-size:24px;">&lt;span style=&quot;font-size:18px; font-family: Arial, Helvetica, sans-serif;&quot;&gt;&lt;/span&gt;&lt;pre name=&quot;code&quot; class=&quot;java&quot;&gt;package com.example.demotest;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class MyDatabaseHelper extends SQLiteOpenHelper {
+
+	private static final String DATABASENAME = &quot;mldn.db&quot; ;	// 数据库名称
+	private static final int DATABASEVERSION = 1 ;	// 数据库名称
+	private static final String TABLENAME = &quot;mytab&quot; ;	// 数据表名称
+	public MyDatabaseHelper(Context context) {
+		super(context, DATABASENAME, null, DATABASEVERSION);// 调用父类构造
+	}
+	@Override
+	public void onCreate(SQLiteDatabase db) {		// 创建数据表
+		String sql = &quot;CREATE TABLE &quot; + TABLENAME + &quot; (&quot; + 
+			&quot;id			INTEGER 		PRIMARY KEY ,&quot; + 
+			&quot;name		VARCHAR(50)		NOT NULL ,&quot; + 
+			&quot;birthday	DATE			NOT NULL)&quot;;// SQL语句
+		db.execSQL(sql) ;				// 执行SQL语句
+	}
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		String sql = &quot;DROP TABLE IF EXISTS &quot; + TABLENAME ;	// SQL语句
+		db.execSQL(sql);				// 执行SQL语句
+		this.onCreate(db); 				// 创建表
+	}
+	public void insert(String name, String birthday) {
+		SQLiteDatabase db = super.getWritableDatabase(); 		// 取得数据库操作对象
+		String sql = &quot;INSERT INTO &quot; + TABLENAME + &quot; (name,birthday) VALUES (&#39;&quot;
+				+ name + &quot;&#39;,&#39;&quot; + birthday + &quot;&#39;)&quot;; 	// SQL语句
+		db.execSQL(sql);					// 执行SQL语句
+		db.close() ;					// 关闭数据库操作
+	}
+	public void update(int id, String name, String birthday) {
+		SQLiteDatabase db = super.getWritableDatabase(); 		// 取得数据库操作对象
+		String sql = &quot;UPDATE &quot; + TABLENAME + &quot; SET name=&#39;&quot; + name
+				+ &quot;&#39;,birthday=&#39;&quot; + birthday + &quot;&#39; WHERE id=&quot; + id; // SQL语句
+		db.execSQL(sql); 					// 执行SQL语句
+		db.close() ;					// 关闭数据库操作
+	}
+	public void delete(int id) {
+		SQLiteDatabase db = super.getWritableDatabase(); 		// 取得数据库操作对象
+		String sql = &quot;DELETE FROM &quot; + TABLENAME + &quot; WHERE id=&quot; + id;
+		db.execSQL(sql) ;					// 执行SQL语句
+		db.close() ;	
+	}
+
+}
+</pre><br>
+<br>
+</p>
+<pre></pre>
+<pre name="code" class="java" style="font-size:24px;">&lt;span style=&quot;font-size:18px; font-family: Arial, Helvetica, sans-serif;&quot;&gt;在类中定义了三个数据库更新的方法，insert，update，delete&lt;/span&gt;</pre>
+<p>
+<p><span style="font-size:18px">布局为三个按钮去增删改</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;fill_parent&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/insertBut&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_marginTop=&quot;74dp&quot;
+        android:text=&quot;增加数据&quot; /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/updateBut&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/button1&quot;
+        android:layout_below=&quot;@+id/button1&quot;
+        android:layout_marginTop=&quot;29dp&quot;
+        android:text=&quot;修改数据&quot; /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/deleteBut&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignLeft=&quot;@+id/button2&quot;
+        android:layout_below=&quot;@+id/button2&quot;
+        android:layout_marginTop=&quot;32dp&quot;
+        android:text=&quot;删除数据&quot; /&gt;
+
+&lt;/RelativeLayout&gt;</pre><br>
+<pre name="code" class="java">package com.example.demotest;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+public class MainActivity extends Activity {
+	private static int count = 0 ;				// 计数统计
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);			// 父类onCreate()
+        super.setContentView(R.layout.activity_main);			// 默认布局管理器
+        final MyDatabaseHelper helper = new MyDatabaseHelper(this) ;	// 数据库操作对象
+        helper.getWritableDatabase() ;
+		Button insertBut = (Button) super.findViewById(R.id.insertBut);	// 取得按钮
+		Button updateBut = (Button) super.findViewById(R.id.updateBut);	// 取得按钮
+		Button deleteBut = (Button) super.findViewById(R.id.deleteBut);	// 取得按钮
+		insertBut.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				helper.insert(&quot;李兴华&quot; + count ++ , &quot;1979-08-12&quot;) ;	// 增加数据
+			}}) ;
+		updateBut.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				helper.update(1, &quot;MLDN&quot;, &quot;1981-06-27&quot;) ;	// 更新已有数据
+			}}) ;
+		deleteBut.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				helper.delete(3) ;		// 删除数据
+			}}) ;
+    }
+}</pre><br>
+<br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

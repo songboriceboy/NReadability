@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目之新闻类（4）Listview图片混排</div><br><div id="article_content" class="article_content">
+
+<p><img src="10034875627904.jpg" alt=""></p>
+<p>这就图片混排的效果</p>
+<p>先解析数据吧&nbsp; 还是和上一篇一样的 HttpUtils的工具类 所以直接调用进行解析</p>
+<p>看看json数据的结构</p>
+<p><img src="27781086990171.jpg" alt=""></p>
+<p>json数据分四层 <br>
+</p>
+<p>第一层 解析出特征码&nbsp; 如果连接成功后解析 paramz 里面的内容 并创建</p>
+<p>&nbsp;&nbsp;&nbsp; JSONObject jsonObject2 = JSONObject<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.parseObject(jsonObject.getString(&quot;paramz&quot;));<br>
+</p>
+<p>第二层 从paramz里面解析出feeds&nbsp;&nbsp; gen<br>
+</p>
+<p>String strJSONArray = jsonObject2<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.getString(&quot;feeds&quot;);</p>
+<p>并且feeds 是一个数组 这时候需要一个集合来接收里面的内容 同时创立实体类&nbsp;&nbsp; 实体类是根据json的数据结构来创立 其中 其中feeds 里面还有一个层datas 因为不是数据所以要用&nbsp; private NewsData data; 同时也要建立一个集合来接受数据<br>
+</p>
+<p>
+<pre name="code" class="java">package com.example.android20_lzhxw.beans;
+/**
+ * 新闻实体类：将来会被用在List的item上的数据
+ * 添加getters  setters
+ * 添加构造方法：有（全部）参数构造方法、无参构造
+ * 重写toString()：类名和所有属性的值
+ * @author cj
+ */
+public class News {
+	private String id,oid,category;
+	private NewsData data;
+//	 &quot;id&quot;: 168553,
+//     &quot;oid&quot;: 166138,
+//     &quot;category&quot;: &quot;article&quot;,
+//     &quot;data&quot;:
+	
+	public News(String id, String oid, String category, NewsData data) {
+		super();
+		this.id = id;
+		this.oid = oid;
+		this.category = category;
+		this.data = data;
+	}
+	
+	public News() {
+		super();
+	}
+	
+
+	@Override
+	public String toString() {
+		return &quot;News [id=&quot; + id + &quot;, oid=&quot; + oid + &quot;, category=&quot; + category
+				+ &quot;, data=&quot; + data + &quot;]&quot;;
+	}
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getOid() {
+		return oid;
+	}
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public NewsData getData() {
+		return data;
+	}
+	public void setData(NewsData data) {
+		this.data = data;
+	}
+	
+}
+</pre>在建立NewsData实体类， 根绝NewsDatajson结构继续建立实体类内容，因为里面还有一层json数据 所以&nbsp;&nbsp; 要用private ArrayList&lt;Pic&gt; pics; 来
+<p>
+<p><br>
+</p>
+<p>
+<pre name="code" class="java">package com.example.android20_lzhxw.beans;
+
+import java.util.ArrayList;
+/**
+ * News这个类data属性对应类
+ * 添加getters  setters 
+ * 构造方法
+ * 重写toString
+ * @author cj
+ */
+public class NewsData {
+	private String subject,summary,cover,format,changed;
+	private ArrayList&lt;Pic&gt; pics;
+	
+	public NewsData() {
+		super();
+	}
+	public NewsData(String subject, String summary, String cover,
+			String format, String changed, ArrayList&lt;Pic&gt; pics) {
+		super();
+		this.subject = subject;
+		this.summary = summary;
+		this.cover = cover;
+		this.format = format;
+		this.changed = changed;
+		this.pics = pics;
+	}	
+	
+	@Override
+	public String toString() {
+		return &quot;NewsData [subject=&quot; + subject + &quot;, summary=&quot; + summary
+				+ &quot;, cover=&quot; + cover + &quot;, format=&quot; + format + &quot;, changed=&quot;
+				+ changed + &quot;, pics=&quot; + pics + &quot;]&quot;;
+	}
+	
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+	public String getCover() {
+		return cover;
+	}
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	public String getChanged() {
+		return changed;
+	}
+	public void setChanged(String changed) {
+		this.changed = changed;
+	}
+	public ArrayList&lt;Pic&gt; getPics() {
+		return pics;
+	}
+	public void setPics(ArrayList&lt;Pic&gt; pics) {
+		this.pics = pics;
+	}
+	
+//	 &quot;subject&quot;: &quot;西南民族大学展示查寝“战利品”&quot;,
+//     &quot;summary&quot;: &quot;据大河网微博11月5日报道，今天，西南民族大学校方把近期“查寝战利品”游街示众了，看着这些电饭煲和热得快……太惨烈了！！你曾经被收缴过什么东西？图片来源：大河网微博&quot;,
+//     &quot;cover&quot;: &quot;/Attachs/Map/4247/6c44136651e4414bbab014d48c95a80a_cover_padmini.JPG&quot;,
+//     &quot;format&quot;: &quot;map&quot;,
+//     &quot;changed&quot;: &quot;2014-11-05 15:56:54&quot;,
+//     &quot;pics&quot;: 
+	
+}
+然后建立pic实体类 
+ &lt;pre name=&quot;code&quot; class=&quot;java&quot;&gt;package com.example.android20_lzhxw.beans;
+
+/**
+ * 有三张的item的实体类： 添加getters setters 、构造方法  、 重写toString（）
+ * 
+ * @author cj
+ * 
+ */
+public class Pic {
+	private String id, photo, subject;
+
+	// &quot;id&quot;: 39284,
+	// &quot;photo&quot;:
+	// &quot;/Attachs/Map/4247/591b5988aa52435da45722d31897caf3_cover_padmini.JPG&quot;,
+	// &quot;subject&quot;: &quot;
+
+
+	public Pic() {
+		super();
+	}
+
+	public Pic(String id, String photo, String subject) {
+		super();
+		this.id = id;
+		this.photo = photo;
+		this.subject = subject;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return &quot;Pic [id=&quot; + id + &quot;, photo=&quot; + photo + &quot;, subject=&quot; + subject
+				+ &quot;]&quot;;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+}
+</pre><br>
+<br>
+<p>
+<pre></pre>
+实体类建立好以后直接用fastjson进行解析 放入实体内即可List&lt;News&gt; list = JSONArray.parseArray(&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;strJSONArray, News.class);
+<p>
+<p>得到一个集合数据&nbsp; </p>
+<p>根据MVC 模式 </p>
+<p>现在 还差一个C&nbsp; 也就是Baseadapter&nbsp; 可以看到的是 data里面有一个category我们就是根据他来确定一个条目是 图片还是文字 然后进行填充内容个</p>
+<p>Baseadapter 传入了两个数据一个是context 和一个集合数据</p>
+<p>其中注意的是</p>
+<p>Baseadapter 里面新增了两个方法 一个是</p>
+<p>&nbsp;&nbsp;&nbsp; /** 返回列表中item视图的样式的个数 */&nbsp;&nbsp; &nbsp;@Override&nbsp;&nbsp; &nbsp;public int getViewTypeCount() {&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;return 2;&nbsp;&nbsp; &nbsp;}&nbsp;&nbsp;&nbsp; /** 指定将要被创建的item的View的type */&nbsp;&nbsp; &nbsp;@Override&nbsp;&nbsp; &nbsp;public int getItemViewType(int position) {&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;News news = datas.get(position);&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if (&quot;article&quot;.equals(news.getCategory()))
+ {&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;return VIEWTYPE_ARTICAL;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;} else if (&quot;map&quot;.equals(news.getCategory())) {&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;return VIEWTYPE_MAP;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;return super.getItemViewType(position);&nbsp;&nbsp; &nbsp;}好啦 看全部的Basedapter吧</p>
+<p>
+<pre name="code" class="java">package com.example.android20_lzhxw.adapters;
+
+import java.util.List;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.android20_lzhxw.R;
+import com.example.android20_lzhxw.beans.News;
+import com.example.android20_lzhxw.utils.AppURLFinal;
+import com.example.android20_lzhxw.utils.ImageLoader;
+
+public class LVBaseAdapter extends BaseAdapter {
+	private Context context;
+	private List&lt;News&gt; datas;
+	private final int VIEWTYPE_ARTICAL = 0;
+	private final int VIEWTYPE_MAP = 1;
+
+	public LVBaseAdapter(Context context, List&lt;News&gt; datas) {
+		super();
+		this.context = context;
+		this.datas = datas;
+	}
+
+	@Override
+	public int getCount() {
+		return datas == null ? 0 : datas.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return datas.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	/** 返回列表中item视图的样式的个数 */
+	@Override
+	public int getViewTypeCount() {
+		return 2;
+	}
+
+	/** 指定将要被创建的item的View的type */
+	@Override
+	public int getItemViewType(int position) {
+		News news = datas.get(position);
+		if (&quot;article&quot;.equals(news.getCategory())) {
+			return VIEWTYPE_ARTICAL;
+		} else if (&quot;map&quot;.equals(news.getCategory())) {
+			return VIEWTYPE_MAP;
+		}
+		return super.getItemViewType(position);
+	}
+
+	/***
+	 * 返回视图View有两种：需要定义两种布局来生成相应的item 如果View的复用：得判断View的type，决定Holder的使用
+	 */
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		News news = datas.get(position);
+		switch (getItemViewType(position)) {
+		case 0://Artical布局
+			ArticalHolder articalHolder;
+			if(convertView==null){
+				convertView=View.inflate(context, R.layout.item_artical_lv, null);
+				articalHolder = new ArticalHolder();
+				articalHolder.imgv_artical=(ImageView) convertView.findViewById(R.id.imgv_ArticalItem);
+				articalHolder.txtvSubject_artical=(TextView) convertView.findViewById(R.id.txtvSubject_ArticalItem);
+				articalHolder.txtvSummary_artical=(TextView) convertView.findViewById(R.id.txtvSummary_ArticalItem);
+				convertView.setTag(articalHolder);
+			}else{
+				articalHolder=(ArticalHolder) convertView.getTag();
+			}
+			articalHolder.imgv_artical.setImageResource(R.drawable.ic_launcher);
+			articalHolder.txtvSubject_artical.setText(news.getData().getSubject());
+			articalHolder.txtvSummary_artical.setText(news.getData().getSummary());
+			ImageLoader.loadImg(AppURLFinal.URL_IMGBASE+news.getData().getCover(), articalHolder.imgv_artical, context);
+			break;
+		case 1://Map布局
+			MapHolder mapHolder;
+			if(convertView==null){
+				convertView=View.inflate(context, R.layout.item_map_lv, null);
+				mapHolder=new MapHolder();
+				mapHolder.txtv_map=(TextView) convertView.findViewById(R.id.txtvSubject_mapItem);
+				mapHolder.imgv1_map=(ImageView) convertView.findViewById(R.id.imgv1_mapItem);
+				mapHolder.imgv2_map=(ImageView) convertView.findViewById(R.id.imgv2_mapItem);
+				mapHolder.imgv3_map=(ImageView) convertView.findViewById(R.id.imgv3_mapItem);
+				convertView.setTag(mapHolder);
+			}else{
+				mapHolder=(MapHolder) convertView.getTag();
+			}
+			mapHolder.txtv_map.setText(news.getData().getSubject());
+
+			mapHolder.imgv1_map.setImageResource(R.drawable.ic_launcher);
+			ImageLoader.loadImg(AppURLFinal.URL_IMGBASE+news.getData().getPics().get(0).getPhoto(), mapHolder.imgv1_map, context);
+			
+			mapHolder.imgv2_map.setImageResource(R.drawable.ic_launcher);
+			ImageLoader.loadImg(AppURLFinal.URL_IMGBASE+news.getData().getPics().get(1).getPhoto(), mapHolder.imgv2_map, context);
+
+			mapHolder.imgv3_map.setImageResource(R.drawable.ic_launcher);
+			ImageLoader.loadImg(AppURLFinal.URL_IMGBASE+news.getData().getPics().get(2).getPhoto(), mapHolder.imgv3_map, context);
+
+			break;
+		default:
+			break;
+		}
+		return convertView;
+	}
+
+	class ArticalHolder {
+		ImageView imgv_artical;
+		TextView txtvSubject_artical, txtvSummary_artical;
+	}
+
+	class MapHolder {
+		TextView txtv_map;
+		ImageView imgv1_map, imgv2_map, imgv3_map;
+	}
+
+}
+</pre><br>
+<span style="font-size:18px"><a target="_blank" target="_blank" href="http://download.csdn.net/detail/jack_king007/8134949">点击下载源码</a></span><br>
+<p>
+<span id="pv-float-bar-container" style="top:625.783px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual"></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier"></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span><span id="pv-float-bar-container" style=""><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual"></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier"></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/fxsjwsdgx/index.html">复习手机卫士的构想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPszecjbhbdjg/index.html">天气APP实战二（创建表和包的结构）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPdsz1/index.html">天气APP的实战（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl1lw/index.html">练手小项目之新闻类（1）联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl2Fragmentdlzlj/index.html">练手小项目之新闻类（2）Fragment的另种理解</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl3tjggl/index.html">练手小项目之新闻类（3）添加广告栏</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl4Listviewtphp/index.html">练手小项目之新闻类（4）Listview图片混排</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

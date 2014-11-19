@@ -1,0 +1,522 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓Viewpage详解（1）——广告条</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">今天老师讲解Viewpage，讲解的不是很好，因为总是不拿安卓其他的东西进行对比，只是拿着谷歌官方文档翻译，当然有个好处，基本使用我们还是会的。</span></p>
+<p><span style="font-size:18px">自己思考，学习一个新的东西，我会拿旧东西，进行对比，然后进行总结。其实要说用法和原理都是类&#20284;的，就是listview只不过一个是竖向展示数据，一个横向展示数据。都需要一个适配器去接待数据，然后去展示。</span></p>
+<p><span style="font-size:18px">要想使用就要在viewpage中定义出来， 其实一看viewpage 就不是谷歌自己开发出来的， 因为是别人封装的，后面谷歌就把他放入了V4扩展包里。</span></p>
+<p><br>
+<span style="font-size:18px"></span><pre name="code" class="html">    &lt;android.support.v4.view.ViewPager
+        android:id=&quot;@+id/viewpager&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;200dp&quot; /&gt;</pre><br>
+<img src="52176958620331.jpg" alt=""></p>
+<p><span style="font-size:18px">一个合&#26684;的广告条是可以</span></p>
+<p><span style="font-size:18px">1.可以滑动</span></p>
+<p><span style="font-size:18px">2.可以自己滑动</span></p>
+<p><span style="font-size:18px">3.可以被点击查看内容//(没有加入)</span></p>
+<p><span style="font-size:18px">好啦 我们再说这个APP 应该怎么开始 用最基本的MVC模式</span></p>
+<p><span style="font-size:18px">1.数据从哪里来-----图片和文字</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	// 图片资源ID
+	private final int[] imageIds = { R.drawable.a, R.drawable.b, R.drawable.c,
+			R.drawable.d, R.drawable.e };
+
+    //图片标题集合
+	private final String[] imageDescriptions = {
+			&quot;猜猜我是干嘛的&quot;,
+			&quot;大学各种无聊...&quot;,
+			&quot;萌弟弟给我说晚安&quot;,
+			&quot;来晒晒照了，有没有处朋友的&quot;,
+			&quot;有不有暖男&quot;
+	};</pre><br>
+2.数据应该放到哪里去展示，</p>
+<p><span style="font-size:18px">因为大家可以再看 APP的截图，里面是有有个小点的。 是可以用shape来绘制的 背景用selector
+<br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; &gt;
+    
+    &lt;item android:drawable=&quot;@drawable/point_nomal&quot;  android:state_enabled=&quot;false&quot;/&gt;
+    &lt;item android:drawable=&quot;@drawable/point_focured&quot;  android:state_enabled=&quot;true&quot;/&gt;
+
+&lt;/selector&gt;</pre><br>
+被选中</p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:shape=&quot;oval&quot; &gt;
+    
+    &lt;size  android:width=&quot;5dp&quot; android:height=&quot;5dp&quot;/&gt;
+    &lt;solid android:color=&quot;#55000000&quot;/&gt;
+
+&lt;/shape&gt;</pre><br>
+<pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:shape=&quot;oval&quot; &gt;
+    &lt;!--     oval是绘制一个圆形图 --&gt;
+    &lt;size  android:width=&quot;5dp&quot; android:height=&quot;5dp&quot;/&gt;
+    &lt;solid android:color=&quot;#aaFFFFFF&quot;/&gt;
+
+&lt;/shape&gt;</pre><br>
+如果这里不太清楚可以去重新学习下自定控件.......~~~~~</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">			//添加指示点
+			ImageView point =new ImageView(this);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			
+			params.rightMargin = 20;
+			point.setLayoutParams(params);</pre>&nbsp;&nbsp;&nbsp; point.setBackgroundResource(R.drawable.point_bg);<br>
+<br>
+</p>
+<p><span style="font-size:18px; color:#CC0000">然后将图片和Point一起用for循环放入 集合</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	imageList = new ArrayList&lt;ImageView&gt;();
+		for (int i = 0; i &lt;imageIds.length; i++) {
+			
+			
+			//初始化图片资源
+			ImageView image = new ImageView(this);
+			image.setBackgroundResource(imageIds[i]);
+			imageList.add(image);
+			
+			//添加指示点
+			ImageView point =new ImageView(this);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			
+			params.rightMargin = 20;
+			point.setLayoutParams(params);
+			
+			point.setBackgroundResource(R.drawable.point_bg);
+			if(i==0){
+				point.setEnabled(true);
+			}else{
+				point.setEnabled(false);
+			}
+			pointGroup.addView(point);
+		}</pre><br>
+默认显示第一张图片和 聚焦的点&nbsp;&nbsp; <span style="color:#CC0000">现在的集合 装着图片和点 慢慢的走向下一步了 <br>
+</span></p>
+<p><span style="font-size:18px"><span style="color:#CC0000">2.数据要在哪里装载设置给viewpage&nbsp; 答案是 pageadapter&nbsp;
+<br>
+里面有四个方法：</span></span></p>
+<p><span style="font-size:18px"><span style="color:#CC0000">1.getCount()&nbsp;&nbsp; 获得页面的总数</span></span></p>
+<p><span style="font-size:18px"><span style="color:#CC0000">2.instantiateItem &nbsp;获得相应位置上的view</span></span></p>
+<p><span style="font-size:18px"><span style="color:#CC0000">3.isViewFromObject 判断 view和object的对应关系
+<br>
+4.destroyItem &nbsp;销毁对应位置上的object<br>
+</span></span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">private class MyPagerAdapter extends PagerAdapter {
+
+		@Override
+		/**
+		 * 获得页面的总数
+		 */
+		public int getCount() {
+			return Integer.MAX_VALUE;
+		}
+
+		@Override
+		/**
+		 * 获得相应位置上的view
+		 * container  view的容器，其实就是viewpager自身
+		 * position 	相应的位置
+		 */
+		public Object instantiateItem(ViewGroup container, int position) {
+			
+			
+			// 给 container 添加一个view
+			container.addView(imageList.get(position%imageList.size()));
+			//返回一个和该view相对的object
+			return imageList.get(position%imageList.size());
+		}
+
+		@Override
+		/**
+		 * 判断 view和object的对应关系 
+		 */
+		public boolean isViewFromObject(View view, Object object) {
+			if(view == object){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		@Override
+		/**
+		 * 销毁对应位置上的object
+		 */
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
+			object = null;
+		}
+	}
+</pre><br>
+&nbsp;然后设置给 viewpage&nbsp; <br>
+</p>
+<p><span style="font-size:18px">&nbsp;viewPager.setAdapter(new MyPagerAdapter());</span></p>
+<p><span style="font-size:18px">然后怎么设置无线循环呢&nbsp; <br>
+</span></p>
+<p><span style="font-size:18px">&nbsp;viewPager.setCurrentItem(Integer.MAX_VALUE/2 - (Integer.MAX_VALUE/2%imageList.size())) ;</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">viewpage还有一个pagechangelistener 再滑动的时候设置图片和Point</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java"> viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+
+			@Override
+			/**
+			 * 页面切换后调用 
+			 * position  新的页面位置
+			 */
+			public void onPageSelected(int position) {
+				
+				position = position%imageList.size();
+				
+				//设置文字描述内容
+				iamgeDesc.setText(imageDescriptions[position]);
+				
+				//改变指示点的状态
+				//把当前点enbale 为true 
+				pointGroup.getChildAt(position).setEnabled(true);
+				//把上一个点设为false
+				pointGroup.getChildAt(lastPosition).setEnabled(false);
+				lastPosition = position;
+				
+			}
+			
+			@Override
+			/**
+			 * 页面正在滑动的时候，回调
+			 */
+			public void onPageScrolled(int position, float positionOffset,
+					int positionOffsetPixels) {
+			}
+			
+			@Override
+			/**
+			 * 当页面状态发生变化的时候，回调
+			 */
+			public void onPageScrollStateChanged(int state) {
+				
+			}
+		});</pre><br>
+<br>
+</p>
+<p><span style="font-size:18px">怎么让它实现 自动播发呢 在oncreate 里面加入</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java"> /*
+		  * 自动循环：
+		  * 1、定时器：Timer
+		  * 2、开子线程 while  true 循环
+		  * 3、ColckManager 
+		  * 4、 用handler 发送延时信息，实现循环
+		  */
+		 isRunning = true;
+		 handler.sendEmptyMessageDelayed(0, 2000);</pre>用handler 发送消息 进行无限循环</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	/**
+	 * 判断是否自动滚动
+	 */
+	private boolean isRunning = false;
+	
+	private Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			
+			//让viewPager 滑动到下一页
+			viewPager.setCurrentItem(viewPager.getCurrentItem()+1);
+			if(isRunning){
+				handler.sendEmptyMessageDelayed(0, 2000);
+			}
+		};
+	};
+	
+	protected void onDestroy() {
+		
+		isRunning = false;
+	};</pre><br>
+现在贴全部代码吧</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.Adsafe;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+	private ViewPager viewPager;
+
+	private LinearLayout pointGroup;
+
+	private TextView iamgeDesc;
+
+	// 图片资源ID
+	private final int[] imageIds = { R.drawable.a, R.drawable.b, R.drawable.c,
+			R.drawable.d, R.drawable.e };
+
+    //图片标题集合
+	private final String[] imageDescriptions = {
+			&quot;猜猜我是干嘛的&quot;,
+			&quot;大学各种无聊...&quot;,
+			&quot;萌弟弟给我说晚安&quot;,
+			&quot;来晒晒照了，有没有处朋友的&quot;,
+			&quot;有不有暖男&quot;
+	};
+	
+	
+	private ArrayList&lt;ImageView&gt; imageList;
+
+	/**
+	 * 上一个页面的位置
+	 */
+	protected int lastPosition;
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		viewPager = (ViewPager) findViewById(R.id.viewpager);
+		pointGroup = (LinearLayout) findViewById(R.id.point_group);
+		iamgeDesc = (TextView) findViewById(R.id.image_desc);
+		iamgeDesc.setText(imageDescriptions[0]);
+		
+		
+		imageList = new ArrayList&lt;ImageView&gt;();
+		for (int i = 0; i &lt;imageIds.length; i++) {
+			
+			
+			//初始化图片资源
+			ImageView image = new ImageView(this);
+			image.setBackgroundResource(imageIds[i]);
+			imageList.add(image);
+			
+			//添加指示点
+			ImageView point =new ImageView(this);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			
+			params.rightMargin = 20;
+			point.setLayoutParams(params);
+			
+			point.setBackgroundResource(R.drawable.point_bg);
+			if(i==0){
+				point.setEnabled(true);
+			}else{
+				point.setEnabled(false);
+			}
+			pointGroup.addView(point);
+		}
+		
+		 viewPager.setAdapter(new MyPagerAdapter());
+		 
+		 viewPager.setCurrentItem(Integer.MAX_VALUE/2 - (Integer.MAX_VALUE/2%imageList.size())) ;
+		 
+		 viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+
+			@Override
+			/**
+			 * 页面切换后调用 
+			 * position  新的页面位置
+			 */
+			public void onPageSelected(int position) {
+				
+				position = position%imageList.size();
+				
+				//设置文字描述内容
+				iamgeDesc.setText(imageDescriptions[position]);
+				
+				//改变指示点的状态
+				//把当前点enbale 为true 
+				pointGroup.getChildAt(position).setEnabled(true);
+				//把上一个点设为false
+				pointGroup.getChildAt(lastPosition).setEnabled(false);
+				lastPosition = position;
+				
+			}
+			
+			@Override
+			/**
+			 * 页面正在滑动的时候，回调
+			 */
+			public void onPageScrolled(int position, float positionOffset,
+					int positionOffsetPixels) {
+			}
+			
+			@Override
+			/**
+			 * 当页面状态发生变化的时候，回调
+			 */
+			public void onPageScrollStateChanged(int state) {
+				
+			}
+		});
+		 
+		 /*
+		  * 自动循环：
+		  * 1、定时器：Timer
+		  * 2、开子线程 while  true 循环
+		  * 3、ColckManager 
+		  * 4、 用handler 发送延时信息，实现循环
+		  */
+		 isRunning = true;
+		 handler.sendEmptyMessageDelayed(0, 2000);
+	}
+	
+	/**
+	 * 判断是否自动滚动
+	 */
+	private boolean isRunning = false;
+	
+	private Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			
+			//让viewPager 滑动到下一页
+			viewPager.setCurrentItem(viewPager.getCurrentItem()+1);
+			if(isRunning){
+				handler.sendEmptyMessageDelayed(0, 2000);
+			}
+		};
+	};
+	
+	protected void onDestroy() {
+		
+		isRunning = false;
+	};
+
+	private class MyPagerAdapter extends PagerAdapter {
+
+		@Override
+		/**
+		 * 获得页面的总数
+		 */
+		public int getCount() {
+			return Integer.MAX_VALUE;
+		}
+
+		@Override
+		/**
+		 * 获得相应位置上的view
+		 * container  view的容器，其实就是viewpager自身
+		 * position 	相应的位置
+		 */
+		public Object instantiateItem(ViewGroup container, int position) {
+			
+			
+			// 给 container 添加一个view
+			container.addView(imageList.get(position%imageList.size()));
+			//返回一个和该view相对的object
+			return imageList.get(position%imageList.size());
+		}
+
+		@Override
+		/**
+		 * 判断 view和object的对应关系 
+		 */
+		public boolean isViewFromObject(View view, Object object) {
+			if(view == object){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		@Override
+		/**
+		 * 销毁对应位置上的object
+		 */
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
+			object = null;
+		}
+	}
+
+}
+</pre><br>
+<a target="_blank" href="http://download.csdn.net/detail/jack_king007/8122675">点击下载源码</a><br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<span id="pv-float-bar-container" style="top:1002px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/azViewpagexj1ggt/index.html">安卓Viewpage详解（1）——广告条</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf03zsssbqhdpd/index.html">快速开发03之手势识别器——滑动判断</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf04zdhdtypz/index.html">快速开发04之动画的统一配置</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf05zbzzfdsqysyyksfz/index.html">快速开发05之不做重复的事情——样式一样快速复制</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf06zMD5jmldsy/index.html">快速开发06之MD5加密类的使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf07zsrlzzf/index.html">快速开发07之输入流转字符</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf08zgsdcxTextviewzdxsnr/index.html">快速开发08之归属地查询——Textview自动显示内容</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf09zgsdcxxttgdddzdfw/index.html">快速开发09之归属地查询——系统提供的抖动振动服务</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf10zgsdcxzdsjkcxlhsjkbylw/index.html">快速开发10之归属地查询——自带数据库查询类和数据库不用联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf11zdcdjsjsxgndwndm/index.html">快速开发11之多次点击事件实现功能的万能代码</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf12zpmspandroiddphpxzjzh/index.html">快速开发12之屏幕适配—androiddp和px之间转换</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf13zkjqd/index.html">快速开发13之开机启动</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf14zcjkjfs/index.html">快速开发14之创建快捷方式</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz01buttondanxg/index.html">快速开发之01——button的按钮效果</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz02textviewnydjsjfs/index.html">快速开发之02——textview能有点击事件发生</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/jnzmqygAPPdJSONsjndd/index.html">教你怎么去一个APP的JSON数据，你懂的</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/sjcjhzSPdyhsgjl/index.html">数据持久化之SP的优化—送工具类</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

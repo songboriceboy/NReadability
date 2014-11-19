@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>理解Java对象序列化</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px">转载&nbsp;http://www.blogjava.net/jiangshachina/archive/2012/02/13/369898.html</span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px">关于Java序列化的文章早已是汗牛充栋了，本文是对我个人过往学习，理解及应用Java序列化的一个总结。此文内容涉及Java序列化的基本原理，以及多种方法对序列化形式进行定制。在撰写本文时，既参考了Thinking in Java, Effective Java，JavaWorld，developerWorks中的相关文章和其它网络资料，也加入了自己的实践经验与理解，文、码并茂，希望对大家有所帮助</span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><br>
+</span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px; font-size:12pt">1. 什么是Java对象序列化</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px; font-size:12pt">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; Java平台允许我们在内存中创建可复用的Java对象，但一般情况下，只有当JVM处于运行时，这些对象才可能存在，即，这些对象的生命周期不会比JVM的生命周期更长。但在现实应用中，就可能要求在JVM停止运行之后能够保存(持久化)指定的对象，并在将来重新读取被保存的对象。Java对象序列化就能够帮助我们实现该功能。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 使用Java对象序列化，在保存对象时，会把其状态保存为一组字节，在未来，再将这些字节组装成对象。必须注意地是，对象序列化保存的是对象的&quot;状态&quot;，即它的成员变量。由此可知，对象序列化不会关注类中的静态变量。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 除了在持久化对象时会用到对象序列化之外，当使用RMI(远程方法调用)，或在网络中传递对象时，都会用到对象序列化。Java序列化API为处理对象序列化提供了一个标准机制，该API简单易用，在本文的后续章节中将会陆续讲到。</span><br>
+</span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><br>
+</span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="line-height:19px; font-size:12pt">2.
+ 简单示例</span></span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">在Java中，只要一个类实现了java.io.Serializable接口，那么它就可以被序列化。此处将创建一个可序列化的类Person，本文中的所有示例将围绕着该类或其修改版。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; Gender类，是一个枚举类型，表示性别</span><br>
+</span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"></span></span></span></span><pre name="code" class="java">public enum Gender {
+    MALE, FEMALE
+}</pre><br>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">如果熟悉Java枚举类型的话，应该知道每个枚举类型都会默认继承类java.lang.Enum，而该类实现了Serializable接口，所以枚举类型对象都是默认可以被序列化的。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; Person类，实现了Serializable接口，它包含三个字段：name，String类型；age，Integer类型；gender，Gender类型。另外，还重写该类的toString()方法，以方便打印Person实例中的内容。</span><br>
+</p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">Person实例中的内容。</span><br>
+</span></span></span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"></span></span></span></span></span></span><pre name="code" class="java">public class Person implements Serializable {
+
+    private String name = null;
+
+    private Integer age = null;
+
+    private Gender gender = null;
+
+    public Person() {
+        System.out.println(&quot;none-arg constructor&quot;);
+    }
+
+    public Person(String name, Integer age, Gender gender) {
+        System.out.println(&quot;arg constructor&quot;);
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;[&quot; + name + &quot;, &quot; + age + &quot;, &quot; + gender + &quot;]&quot;;
+    }
+}</pre><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">SimpleSerial，是一个简单的序列化程序，它先将一个Person对象保存到文件person.out中，然后再从该文件中读出被存储的Person对象，并打印该对象。</span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"></span></span></span></span></span></span><pre name="code" class="java">public class SimpleSerial {
+
+    public static void main(String[] args) throws Exception {
+        File file = new File(&quot;person.out&quot;);
+
+        &lt;span style=&quot;color:#ff0000;&quot;&gt;ObjectOutputStream&lt;/span&gt; oout = new ObjectOutputStream(new FileOutputStream(file));
+        Person person = new Person(&quot;John&quot;, 101, Gender.MALE);
+        oout.writeObject(person);
+        oout.close();
+
+        ObjectInputStream oin = new ObjectInputStream(new FileInputStream(file));
+        Object newPerson = oin.readObject(); // 没有强制转换到Person类型
+        oin.close();
+        System.out.println(newPerson);
+    }
+}</pre>注解：</p>
+<pre id="best-content-294241052" class="best-text mb-10"><span style="color:#ff0000">ObjectOutputStream</span> 将 Java 对象的基本数据类型和图形写入 OutputStream。可以使用 ObjectInputStream 读取（重构）对象。通过在流中使用文件可以实现对象的持久存储。如果流是网络套接字流，则可以在另一台主机上或另一个进程中重构对象</pre>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">上述程序的输出的结果为：</span>
+<p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; line-height:16px"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="line-height:15px; font-size:13px; font-family:Verdana,Geneva,Arial,Helvetica,sans-serif">[John,&nbsp;</span><span style="line-height:15px; font-size:13px; font-family:Verdana,Geneva,Arial,Helvetica,sans-serif">31</span><span style="line-height:15px; font-size:13px; font-family:Verdana,Geneva,Arial,Helvetica,sans-serif">,&nbsp;MALE]</span></span></span></span></span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="line-height:15px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;
+ &nbsp;此时必须注意的是，当重新读取被保存的Person对象时，并没有调用Person的任何构造器，看起来就像是直接使用字节将Person对象还原出来的。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">当Person对象被保存到person.out文件中之后，我们可以在其它地方去读取该文件以还原对象，但必须确保该读取程序的CLASSPATH中包含有Person.class(哪怕在读取Person对象时并没有显示地使用Person类，如上例所示)，否则会抛出ClassNotFoundException。</span></span></span></span></span></span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="line-height:16px"><br>
+</span></span></span></span></span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="line-height:19px; font-size:12pt">3.
+ Serializable的作用</span></span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 为什么一个类实现了Serializable接口，它就可以被序列化呢？在上节的示例中，使用ObjectOutputStream来持久化对象，在该类中有如下代码：</span></span></span></span></span></span></span></span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="line-height:16px"></span></span></span></span></span></span></span><pre name="code" class="java">private void writeObject0(Object obj, boolean unshared) throws IOException {
+    
+    if (obj instanceof String) {
+        writeString((String) obj, unshared);
+    } else if (cl.isArray()) {
+        writeArray(obj, desc, unshared);
+    } else if (obj instanceof Enum) {
+        writeEnum((Enum) obj, desc, unshared);
+    } else if (obj instanceof Serializable) {
+        writeOrdinaryObject(obj, desc, unshared);
+    } else {
+        if (extendedDebugInfo) {
+            throw new NotSerializableException(cl.getName() + &quot;\n&quot;
+                    + debugInfoStack.toString());
+        } else {
+            throw new NotSerializableException(cl.getName());
+        }
+    }
+    
+}</pre><br>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">从上述代码可知，如果被写对象的类型是String，或数组，或Enum，或Serializable，那么就可以对该对象进行序列化，否则将抛出NotSerializableException。</span><br>
+<br>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="line-height:19px; font-size:12pt">4. 默认序列化机制</span></span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 如果仅仅只是让某个类实现Serializable接口，而没有其它任何处理的话，则就是使用默认序列化机制。使用默认机制，在序列化对象时，不仅会序列化当前对象本身，还会对该对象引用的其它对象也进行序列化，同样地，这些其它对象引用的另外对象也将被序列化，以此类推。所以，如果一个对象包含的成员变量是容器类对象，而这些容器所含有的元素也是容器类对象，那么这个序列化的过程就会较复杂，开销也较大。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="line-height:19px; font-size:12pt">5. 影响序列化</span></span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 在现实应用中，有些时候不能使用默认序列化机制。比如，希望在序列化过程中忽略掉敏感数据，或者简化序列化过程。下面将介绍若干影响序列化的方法。</span></p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">5.1
+ transient关键字</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 当某个字段被声明为transient后，默认序列化机制就会忽略该字段。此处将Person类中的age字段声明为transient，如下所示，</span><br>
+</span></span></span></span></span></span></span><pre name="code" class="java">public class Person implements Serializable {
+    
+    transient private Integer age = null;
+    
+}</pre><br>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">再执行SimpleSerial应用程序，会有如下输出：</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+</p>
+<div style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px; background-color:rgb(238,238,238); border:1px solid rgb(204,204,204); padding:4px 5px 4px 4px; width:1041.734375px; word-break:break-all">
+<span style="line-height:15px">arg&nbsp;constructor<br>
+[John,&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">null</span><span style="line-height:15px">,&nbsp;MALE]</span></div>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">可见，age字段未被序列化。</span><br>
+<p>
+<p><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif"><span style="font-size:18px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px"><span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">5.2
+ writeObject()方法与readObject()方法</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 对于上述已被声明为transitive的字段age，除了将transitive关键字去掉之外，是否还有其它方法能使它再次可被序列化？方法之一就是在Person类中添加两个方法：writeObject()与readObject()，如下所示：</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+</span></span></span></span></span></span></span></p>
+<div style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px; background-color:rgb(238,238,238); border:1px solid rgb(204,204,204); padding:4px 5px 4px 4px; width:1041.734375px; word-break:break-all">
+<span style="line-height:15px; color:rgb(0,0,255)">public</span><span style="line-height:15px">&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">class</span><span style="line-height:15px">&nbsp;Person&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">implements</span><span style="line-height:15px">&nbsp;Serializable&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="23202825942864.gif" alt=""><br>
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">transient</span><span style="line-height:15px">&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">private</span><span style="line-height:15px">&nbsp;Integer&nbsp;age&nbsp;</span><span style="line-height:15px">=</span><span style="line-height:15px">&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">null</span><span style="line-height:15px">;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="23202825942864.gif" alt=""><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">private</span><span style="line-height:15px">&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">void</span><span style="line-height:15px">&nbsp;writeObject(ObjectOutputStream&nbsp;out)&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">throws</span><span style="line-height:15px">&nbsp;IOException&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out.defaultWriteObject();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out.writeInt(age);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">private</span><span style="line-height:15px">&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">void</span><span style="line-height:15px">&nbsp;readObject(ObjectInputStream&nbsp;in)&nbsp;</span><span style="line-height:15px; color:rgb(0,0,255)">throws</span><span style="line-height:15px">&nbsp;IOException,&nbsp;ClassNotFoundException&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in.defaultReadObject();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;age&nbsp;</span><span style="line-height:15px">=</span><span style="line-height:15px">&nbsp;in.readInt();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}</span></div>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">在writeObject()方法中会先调用ObjectOutputStream中的defaultWriteObject()方法，该方法会执行默认的序列化机制，如5.1节所述，此时会忽略掉age字段。然后再调用writeInt()方法显示地将age字段写入到ObjectOutputStream中。readObject()的作用则是针对对象的读取，其原理与writeObject()方法相同。</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">&nbsp;&nbsp;&nbsp; 再次执行SimpleSerial应用程序，则又会有如下输出：</span><br style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">
+<div style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px; background-color:rgb(238,238,238); border:1px solid rgb(204,204,204); padding:4px 5px 4px 4px; width:1041.734375px; word-break:break-all">
+<span style="line-height:15px">arg&nbsp;constructor<br>
+[John,&nbsp;</span><span style="line-height:15px">31</span><span style="line-height:15px">,&nbsp;MALE]</span></div>
+<span style="font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:13px; line-height:16px">必须注意地是，writeObject()与readObject()都是private方法，那么它们是如何被调用的呢？毫无疑问，是使用反射。详情可见ObjectOutputStream中的writeSerialData方法，以及ObjectInputStream中的readSerialData方法。</span><br>
+<p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java基础之反射（2class类的使用）</div><br><div id="article_content" class="article_content">
+
+本章主旨： 可以使用class类完成对象的实例化操作<br>
+<span style="white-space:pre"></span>可以通过construct类调用有参构造方法完成对象的实例化操作<br>
+<span style="white-space:pre"></span>class主要反射的源头 不光可以取得对象所在类的信息也可以通过class方法进行对象实例化操作<br>
+<p><span style="white-space:pre"></span>正常情况下使用new关键字为对象实例化，如果现在已经实例化好了Class对象则就可以通过提供的</p>
+<p>以下代码进行演示 必须是无参构造</p>
+<p><pre name="code" class="java">package KownClass;
+
+class person {
+	private String name;// name属性
+	private int age; // age属性
+	public String getName() {
+		return name;
+	}
+//	其中必须存在无参构造
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	@Override
+	public String toString() {
+		return &quot;person [name=&quot; + name + &quot;, age=&quot; + age + &quot;]&quot;;
+	}
+
+}
+
+public class test1 {
+	public static void main(String[] args) {
+		Class&lt;?&gt; c = null;// 指定泛型
+		// 以下的操作形式是在开发中最常用的一种形式
+		try {
+			// 传入完整的包名 名称实例化对象
+			c = Class.forName(&quot;KownClass.person&quot;);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		person per=null;//声明person 对象
+		try {
+			per=(person) c.newInstance();//实例化对象
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		per.setName(&quot;JDK&quot;);
+		per.setAge(22);
+		System.out.println(per);//内容输出 调用tostring
+	}
+}
+</pre><span style="font-size:18px"><span style="background-color:rgb(255,255,255)"><span style="color:#ff0000">可以发现即使不使用关键字new 对象也可以进行实例化操作 反射的作用 因为 &nbsp; &nbsp; &nbsp;&nbsp;</span></span></span></p>
+<p><span style="font-size:18px"><span style="background-color:rgb(255,255,255)"><span style="color:#ff0000">&nbsp;<span style="white-space:pre">
+</span>per=(person) c.newInstance();//已经实例化对象</span></span></span></p>
+<p>
+<p><span style="font-size:18px"><span style="color:#ff0000"><br>
+</span></span></p>
+<p><span style="font-size:18px"><span style="color:#ff0000"><br>
+</span></span></p>
+<p><span style="font-size:18px"><span style="color:#ff0000"><span style="white-space:pre"></span>在使用有参构造方法时<br>
+<span style="white-space:pre"></span>1.通过class为getConstruct取得本类方法的全部方法<br>
+<span style="white-space:pre"></span>2.向构造方法传递一个对象数组进去，里面包含着构造方法的各个参数<br>
+<span style="white-space:pre"></span>3.之后通过construct实例化对象<br>
+</span></span><br>
+</p>
+<p><pre name="code" class="java">package KownClass;
+
+import java.lang.reflect.Constructor;
+
+class person {
+	private String name;// name属性
+	private int age; // age属性
+
+	public String getName() {
+		return name;
+	}
+
+	public person(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;person [name=&quot; + name + &quot;, age=&quot; + age + &quot;]&quot;;
+	}
+
+}
+
+public class test1 {
+	public static void main(String[] args) {
+		Class&lt;?&gt; c = null;// 指定泛型
+		// 以下的操作形式是在开发中最常用的一种形式
+		try {
+			// 传入完整的包名 名称实例化对象
+			c = Class.forName(&quot;KownClass.person&quot;);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		person per = null;// 声明person 对象
+		//1.向构造方法传递一个对象数组进去，
+		Constructor&lt;?&gt;cons[]=null;
+		/*	之	后通过construct实例化对象*/
+		cons=c.getConstructors();
+		try {
+			//2.里面包含着构造方法的各个参数
+			per = (person)cons[0].newInstance(&quot;JDK&quot;,22);// 实例化对象
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*per.setName(&quot;JDK&quot;);
+		per.setAge(22);*/
+		System.out.println(per);// 内容输出 调用tostring
+	}
+}
+</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

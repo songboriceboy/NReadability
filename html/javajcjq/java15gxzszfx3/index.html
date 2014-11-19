@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java15高新知识之泛型（3）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">（1）泛型接口的使用</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:18px">之前的所有操作都是在类中直接使用泛型操作的 那么java来说也可以直接在接口中定义及使用泛型</span></p>
+<p><span style="font-size:18px"><img src="31903256763921.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">泛型在接口中实现的两种形式</span></p>
+<p><span style="font-size:18px">定义子类：在子类的定义上声明泛型类型</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass;
+interface Info&lt;T&gt;{		// 在接口上定义泛型
+	public T getVar() ;	// 定义抽象方法，抽象方法的返回值就是泛型类型
+}
+class InfoImpl&lt;T&gt; implements Info&lt;T&gt;{	// 定义泛型接口的子类
+	private T var ;				// 定义属性
+	public InfoImpl(T var){		// 通过构造方法设置属性内容
+		this.setVar(var) ;	
+	}
+	public void setVar(T var){
+		this.var = var ;
+	}
+	public T getVar(){
+		return this.var ;
+	}
+};
+public class GenericsDemo23{
+	public static void main(String arsg[]){
+		Info&lt;String&gt; i = null;		// 声明接口对象
+		i = new InfoImpl&lt;String&gt;(&quot;李兴华&quot;) ;	// 通过子类实例化对象
+		System.out.println(&quot;内容：&quot; + i.getVar()) ;
+	}
+};</pre>如果现在实现接口的子类不想使用泛型声明 则在实现接口的时候直接指定具体的操作类型 这一种更加常用</p>
+<p><span style="font-size:18px"><img src="30956317904280.jpg" alt=""><br>
+<br>
+</span></p>
+<p>
+<p><span style="font-size:24px">（3）泛型方法</span></p>
+<p><span style="font-size:24px"><img src="51316005837651.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">class Demo{//[访问权限]&lt;泛型标志&gt;泛型标志 方法名称
+	&lt;span style=&quot;white-space:pre&quot;&gt;		&lt;/span&gt;public &lt;T&gt; T fun(T t){	// 可以接收任意类型的数据
+		&lt;span style=&quot;white-space:pre&quot;&gt;	&lt;/span&gt;return t ;			// 直接把参数返回
+	}
+};
+public class GenericsDemo26{
+	public static void main(String args[]){
+		Demo d = new Demo()	;	// 实例化Demo对象
+		String str = d.fun(&quot;李兴华&quot;) ; //	传递字符串
+		int i = d.fun(30) ;		// 传递数字，自动装箱
+		System.out.println(str) ;	// 输出内容
+		System.out.println(i) ;		// 输出内容
+	}
+};</pre><br>
+(4)泛型数组</p>
+<p><span style="font-size:24px">使用泛型的时候 也可以传递一个泛型数组</span></p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">package KownClass;
+public class GenericsDemo23{
+	public static void main(String args[]){
+		Integer i[] = fun1(1,2,3,4,5,6) ;	// 返回泛型数组
+		fun2(i) ;
+	}
+	public static &lt;T&gt; T[] fun1(T...arg){	// 接收可变参数
+		return arg ;			// 返回泛型数组
+	}
+	public static &lt;T&gt; void fun2(T param[]){	// 输出
+		System.out.print(&quot;接收泛型数组：&quot;) ;
+		//param里装着数组 用foreach一个一个输出按着泛型
+		for(T t:param){
+			System.out.print(t + &quot;、&quot;) ;
+		}
+	}
+};</pre><br>
+（5）泛型的嵌套设置</p>
+<p><span style="font-size:24px"></span><pre name="code" class="java">package KownClass;
+class Info&lt;T,V&gt;{		// 接收两个泛型类型
+	private T var ;
+	private V value ;
+	public Info(T var,V value){
+		this.setVar(var) ;
+		this.setValue(value) ;
+	}
+	public void setVar(T var){
+		this.var = var ;
+	}
+	public void setValue(V value){
+		this.value = value ;
+	}
+	public T getVar(){
+		return this.var ;
+	}
+	public V getValue(){
+		return this.value ;
+	}
+};
+class Demo&lt;S&gt;{
+	private S info ;
+	public Demo(S info){
+		this.setInfo(info) ;
+	}
+	public void setInfo(S info){
+		this.info = info ;
+	}
+	public S getInfo(){
+		return this.info ;
+	}
+};
+public class GenericsDemo23{
+	public static void main(String args[]){
+		Demo&lt;Info&lt;String,Integer&gt;&gt; d = null ;		// 将Info作为Demo的泛型类型
+		Info&lt;String,Integer&gt; i = null ;	// Info指定两个泛型类型
+		i = new Info&lt;String,Integer&gt;(&quot;李兴华&quot;,30) ;	 // 实例化Info对象
+		d = new Demo&lt;Info&lt;String,Integer&gt;&gt;(i) ;	// 在Demo类中设置Info类的对象
+		System.out.println(&quot;内容一：&quot; + d.getInfo().getVar()) ;
+		System.out.println(&quot;内容二：&quot; + d.getInfo().getValue()) ;
+	}
+};</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

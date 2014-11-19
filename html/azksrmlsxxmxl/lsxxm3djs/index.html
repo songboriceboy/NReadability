@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目（3）倒计时</div><br><div id="article_content" class="article_content">
+
+<p>正好想复习线程，就整个例子，练习练习&nbsp; 先看布局，我在解释思路</p>
+<p><img src="86637430318.jpg" alt=""></p>
+<p>一个Edittext 输入倒计时间&nbsp;</p>
+<p>一个button 获取用户输入时间 显示在textview<br>
+</p>
+<p>一个textview 显示 倒计的时间</p>
+<p>开始计时是一个button 主要开启一个timertask 更新textview的时间</p>
+<p>停止即使也是一个button 主要停止timertask</p>
+<p>&lt;------------------------------------------------------------------------布局-------------------------------------------------------------------------&gt;</p>
+<p><pre name="code" class="html">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot;
+    android:layout_height=&quot;match_parent&quot;
+   &gt;
+
+
+    &lt;EditText
+        android:id=&quot;@+id/inputtime&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:ems=&quot;10&quot; &gt;
+        &lt;requestFocus /&gt;
+    &lt;/EditText&gt;
+    
+    &lt;Button
+        android:id=&quot;@+id/gettime&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;获取倒计时时间&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/time&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+         /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/starttime&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;开始计时&quot; /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/stoptime&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;停止计时&quot; /&gt;
+
+&lt;/LinearLayout&gt;
+</pre>&lt;------------------------------------------------------------------------布局-------------------------------------------------------------------------&gt;<br>
+<br>
+</p>
+<p>再想想 用户输入时间，然后button获取时间 然后显示在textview很好实现 ，怎么让他一秒秒减少呢，这时候timer就出现了</p>
+<p><br>
+</p>
+<p>//Timer是一种定时器工具，用来在一个后台线程计划执行指定任务。它可以计划执行一个任务一次或反复多次。</p>
+<p>//TimerTask一个抽象类，它的子类代表一个可以被Timer计划的任务。</p>
+<p>这个时候 减少时间解决了，怎么更新UI呢，这时候handler出现了，他是安卓的消息机制能解决线程无法更新UI的问题只需要发送一个msg</p>
+<p>————————————————————————————————————java代码——————————————————————————————————</p>
+<p>1.先初始化控件 并设置点击事件</p>
+<p><pre name="code" class="java">    /**
+     * 初始化控件
+     */
+    private void initView(){
+    	inputtime = (EditText) findViewById(R.id.inputtime);
+        getTime = (Button) findViewById(R.id.gettime);
+        startTime = (Button) findViewById(R.id.starttime);
+        stopTime = (Button) findViewById(R.id.stoptime);
+        time = (TextView) findViewById(R.id.time);
+        getTime.setOnClickListener(this);
+        startTime.setOnClickListener(this);
+        stopTime.setOnClickListener(this);
+    }</pre><br>
+-----------------------------------------------------------------------</p>
+<p>2.点击事件的处理 <br>
+</p>
+<p><pre name="code" class="java">	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.gettime:
+			//从用户输入的时间设置到textview
+			time.setText(inputtime.getText().toString());
+			//int转成String
+			i = Integer.parseInt(inputtime.getText().toString());
+			break;
+
+		case R.id.starttime:
+			//开始计时
+			startTime();
+			break;
+		case R.id.stoptime:
+			//停止计时
+			stopTime();
+			break;
+		}
+	}</pre>--------------------------------------------------------------------计时的业务 已经UI得更新<br>
+3.<pre name="code" class="java">public void startTime(){
+		//1.获得timer类实例
+		timer = new Timer();
+		//2.获得TimerTask类实例
+		task = new TimerTask() {
+		//3.run方法执行线程任务	
+			@Override
+			public void run() {
+		//4.用户输入的事件 开始自减		
+				i--;
+		//5.启用安卓消息机制进行UI更新 		
+				Message  message = mHandler.obtainMessage();
+				message.arg1 = i;
+		//6.发送消息给handlermessge进行操作		
+				mHandler.sendMessage(message);
+			}
+		};
+		//7.等待1秒以后开始执行
+		timer.schedule(task, 1000);
+	}</pre><br>
+-------------------------------------------------------handler代码-----------------------------------------------------------</p>
+<p><pre name="code" class="java">	private Handler mHandler = new Handler(){
+		public void handleMessage(Message msg) {
+			//8.UI更新
+			time.setText(msg.arg1+&quot;&quot;);
+			//9.继续开始计时,等待结束
+			startTime();
+		};
+	};</pre><br>
+----------------------------------------------------------timer 停止</p>
+<p><pre name="code" class="java">	public void stopTime(){
+		timer.cancel();
+	}</pre><br>
+----------------------------------------------------------End<pre name="code" class="java">package com.jikexueyuan.counttime;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+
+public class MainActivity extends Activity implements OnClickListener{
+	
+	private EditText inputtime;
+	private Button getTime,startTime,stopTime;
+	private TextView time;
+	private int i = 0;
+	//Timer是一种定时器工具，用来在一个后台线程计划执行指定任务。
+	//它可以计划执行一个任务一次或反复多次。
+	private Timer timer = null;
+	//TimerTask一个抽象类，它的子类代表一个可以被Timer计划的任务。
+	private TimerTask task = null;
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //初始化控件
+        initView();
+    }
+    
+    /**
+     * 初始化控件
+     */
+    private void initView(){
+    	inputtime = (EditText) findViewById(R.id.inputtime);
+        getTime = (Button) findViewById(R.id.gettime);
+        startTime = (Button) findViewById(R.id.starttime);
+        stopTime = (Button) findViewById(R.id.stoptime);
+        time = (TextView) findViewById(R.id.time);
+        getTime.setOnClickListener(this);
+        startTime.setOnClickListener(this);
+        stopTime.setOnClickListener(this);
+    }
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.gettime:
+			//从用户输入的时间设置到textview
+			time.setText(inputtime.getText().toString());
+			//int转成String
+			i = Integer.parseInt(inputtime.getText().toString());
+			break;
+
+		case R.id.starttime:
+			//开始计时
+			startTime();
+			break;
+		case R.id.stoptime:
+			//停止计时
+			stopTime();
+			break;
+		}
+	}
+	
+	private Handler mHandler = new Handler(){
+		public void handleMessage(Message msg) {
+			//8.UI更新
+			time.setText(msg.arg1+&quot;&quot;);
+			//9.继续开始计时,等待结束
+			startTime();
+		};
+	};
+	
+	public void startTime(){
+		//1.获得timer类实例
+		timer = new Timer();
+		//2.获得TimerTask类实例
+		task = new TimerTask() {
+		//3.run方法执行线程任务	
+			@Override
+			public void run() {
+		//4.用户输入的事件 开始自减		
+				i--;
+		//5.启用安卓消息机制进行UI更新 		
+				Message  message = mHandler.obtainMessage();
+				message.arg1 = i;
+		//6.发送消息给handlermessge进行操作		
+				mHandler.sendMessage(message);
+			}
+		};
+		//7.等待1秒以后开始执行
+		timer.schedule(task, 1000);
+	}
+	
+	public void stopTime(){
+		timer.cancel();
+	}
+    
+}
+</pre><br>
+--------------------------------------------------------------------------------<br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<span id="pv-float-bar-container" style="top:254px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm(1)znltjqr/index.html">练手小项目(1)——智能聊天机器人</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzszgjm/index.html">练手小项目（2）生活小助手周公解梦</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzsxzyscx/index.html">练手小项目（2）生活小助手星座运势查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzssfzcx/index.html">练手小项目（2）生活小助手身份证查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm3djs/index.html">练手小项目（3）倒计时</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/gddtjc_poissyjxs/index.html">高德地图教程_poi搜索以及显示</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程新闻Item的布局复习（3）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">以前总是想去追求UI的美化，最后才知道最重要的是功能实现，但是UI的样式美化还是要需要掌握，能让你少写很多代码。</span></p>
+<p><span style="font-size:18px">这一节主要是讲listview里面的item加入并且自己加入假数据 <br>
+</span></p>
+<p><span style="font-size:18px">界面</span></p>
+<p><span style="font-size:18px"><img src="30997819902340.jpg" alt=""></span></p>
+<p><span style="font-size:18px">因为是布局 我主要讲解样式美化 <br>
+</span></p>
+<p><span style="font-size:18px">最外层是一个相对布局 <br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+	android:id=&quot;@+id/newslist_item_layout&quot;
+	android:layout_width=&quot;fill_parent&quot;
+	android:layout_height=&quot;82.0dip&quot;
+	android:background=&quot;@drawable/newslist_item_selector&quot;
+	android:descendantFocusability=&quot;blocksDescendants&quot;
+	android:marqueeRepeatLimit=&quot;marquee_forever&quot;&gt;</pre><br>
+1.高度因为是条目 我们就自己定了一个高度，如果不喜欢可以自己更改 <br>
+</p>
+<p><span style="font-size:18px">2.</span>background 调用了一个selector属性 <br>
+</p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;selector
+	xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+	&lt;item
+		android:state_pressed=&quot;false&quot;
+		android:drawable=&quot;@drawable/newslist_item_background&quot; /&gt;
+	&lt;item
+		android:state_pressed=&quot;true&quot;
+		android:drawable=&quot;@drawable/list_selected_background&quot; /&gt;
+	&lt;item
+		android:state_focused=&quot;true&quot;
+		android:drawable=&quot;@drawable/list_selected_background&quot; /&gt;
+	&lt;item
+		android:drawable=&quot;@drawable/newslist_item_background&quot; /&gt;
+&lt;/selector&gt;
+
+同时里面还有color里面还有  newslist_item_background
+&lt;pre name=&quot;code&quot; class=&quot;html&quot;&gt;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;item type=&quot;drawable&quot; name=&quot;main_background&quot;&gt;#ffe7e7e7&lt;/item&gt;
+    &lt;item type=&quot;drawable&quot; name=&quot;white&quot;&gt;#ffffffff&lt;/item&gt;
+    &lt;item type=&quot;drawable&quot; name=&quot;newslist_item_background&quot;&gt;#FFE7E7E7&lt;/item&gt;
+    &lt;item type=&quot;drawable&quot; name=&quot;news_list_item_background&quot;&gt;#ffe7e7e7&lt;/item&gt;
+&lt;/resources&gt;</pre><br>
+这就是实现了点击 条目变色的高级效果<br>
+</p>
+<pre></pre>
+3.android:descendantFocusability=&quot;blocksDescendants&quot;<span style="font-size:18px">&nbsp; ViewGroup阻止其子View接收焦点
+<br>
+</span>
+<p>
+<p><span style="font-size:18px">4.marqueeRepeatLimit 主要走马灯效果 现在展现不出来</span></p>
+<p><span style="font-size:18px">全部布局 <br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!-- 
+	1.android:descendantFocusability：ViewGroup阻止其子View接收焦点
+
+--&gt; 
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+	android:id=&quot;@+id/newslist_item_layout&quot;
+	android:layout_width=&quot;fill_parent&quot;
+	android:layout_height=&quot;82.0dip&quot;
+	android:background=&quot;@drawable/newslist_item_selector&quot;
+	android:descendantFocusability=&quot;blocksDescendants&quot;
+	android:marqueeRepeatLimit=&quot;marquee_forever&quot;&gt;
+	&lt;RelativeLayout
+		android:id=&quot;@+id/newslist_item_info_layout&quot;
+		android:layout_width=&quot;fill_parent&quot;
+		android:layout_height=&quot;82.0dip&quot;
+		android:layout_marginRight=&quot;20.0dip&quot;&gt;
+		&lt;TextView
+			android:id=&quot;@+id/newslist_item_title&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:layout_marginLeft=&quot;14.0dip&quot;
+			android:layout_marginTop=&quot;4.0dip&quot;
+			android:layout_marginRight=&quot;10.0dip&quot;
+			android:layout_alignParentLeft=&quot;true&quot;
+			android:textSize=&quot;18.0dip&quot;
+			android:textStyle=&quot;bold&quot;
+			android:textColor=&quot;@color/newslist_item_title_selector&quot;
+			android:text=&quot;我是title &quot;
+			android:singleLine=&quot;true&quot;
+			android:marqueeRepeatLimit=&quot;marquee_forever&quot; /&gt;
+		&lt;TextView
+			android:id=&quot;@+id/newslist_item_digest&quot;
+			android:layout_width=&quot;fill_parent&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:layout_below=&quot;@id/newslist_item_title&quot;
+			android:layout_marginLeft=&quot;14.0dip&quot;
+			android:layout_marginTop=&quot;2.0dip&quot;
+			android:layout_marginRight=&quot;10.0dip&quot;
+			android:textSize=&quot;12.0dip&quot;
+			android:textColor=&quot;@color/newslist_item_digest_selector&quot;
+			android:ellipsize=&quot;end&quot;
+			android:text=&quot;摘要...&quot;
+			android:lines=&quot;2&quot;
+			android:marqueeRepeatLimit=&quot;marquee_forever&quot; /&gt;
+		&lt;TextView
+			android:id=&quot;@+id/newslist_item_source&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:layout_alignParentLeft=&quot;true&quot;
+			android:layout_below=&quot;@id/newslist_item_digest&quot;
+			android:layout_marginLeft=&quot;14.0dip&quot;
+			android:layout_marginRight=&quot;10.0dip&quot;
+			android:layout_marginBottom=&quot;4.0dip&quot;
+			android:textSize=&quot;10.0dip&quot;
+			android:textColor=&quot;@color/newslist_item_source_selector&quot;
+			android:text=&quot;来源：&quot;
+			android:marqueeRepeatLimit=&quot;marquee_forever&quot; /&gt;
+		&lt;TextView
+			android:id=&quot;@+id/newslist_item_ptime&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:layout_alignBottom=&quot;@id/newslist_item_source&quot;
+			android:layout_marginRight=&quot;2.0dip&quot;
+			android:layout_alignParentRight=&quot;true&quot;
+			android:textSize=&quot;10.0dip&quot;
+			android:textColor=&quot;@color/newslist_item_source_selector&quot;
+			android:text=&quot;5分钟前&quot;
+			android:singleLine=&quot;true&quot;
+			android:marqueeRepeatLimit=&quot;marquee_forever&quot; /&gt;
+	&lt;/RelativeLayout&gt;
+	&lt;Button
+		android:id=&quot;@+id/newslist_item_go_detail&quot;
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot;
+		android:background=&quot;@drawable/newslist_item_go_detail_selector&quot;
+		android:layout_marginRight=&quot;2.0dip&quot;
+		android:layout_toLeftOf=&quot;@id/newslist_item_info_layout&quot;
+		android:layout_alignParentRight=&quot;true&quot;
+		android:layout_centerVertical=&quot;true&quot; 
+		/&gt;
+&lt;/RelativeLayout&gt;	
+</pre>后面布局 相信大家举一方三 都看得懂的</p>
+<p><span style="font-size:18px">然后我们在添加代码 将数据填充进去</span></p>
+<p><span style="font-size:18px">一个listview 为了方便，我们选择了simpleadapter 。</span></p>
+<p><span style="font-size:18px">我还是负责点 说下 simpleadapter吧 他是一个适配器，第一个参数是当前填充的activity 第二个参数是 一个map集合你需要填充的数据 就有了 这一段代码的出现</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	List&lt;HashMap&lt;String, String&gt;&gt; newsData=new ArrayList&lt;HashMap&lt;String,String&gt;&gt;();
+		//加载10条假数据
+		for(int i=0;i&lt;10;i++){
+			HashMap&lt;String, String&gt; hashMap = new HashMap&lt;String, String&gt;();
+			hashMap.put(&quot;newslist_item_title&quot;,&quot;小新新闻客户端教程发布啦&quot; );
+			hashMap.put(&quot;newslist_item_digest&quot;,&quot;小新新闻客户端教程发布啦&quot; );
+			hashMap.put(&quot;newslist_item_source&quot;, &quot;来源：小新工作室&quot;);
+			hashMap.put(&quot;newslist_item_ptime&quot;, &quot;2014-11-12 10:21:22&quot;);
+			newsData.add(hashMap);
+		}</pre><br>
+第三个也就一个数组 其中放了你要填充的数据&nbsp;&nbsp; 和第四个是有关系&nbsp; 第四个参数也是一个数组 想对应你要填充到那个组件里面去</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">//显示新闻列表
+		List&lt;HashMap&lt;String, String&gt;&gt; newsData=new ArrayList&lt;HashMap&lt;String,String&gt;&gt;();
+		//加载10条假数据
+		for(int i=0;i&lt;10;i++){
+			HashMap&lt;String, String&gt; hashMap = new HashMap&lt;String, String&gt;();
+			hashMap.put(&quot;newslist_item_title&quot;,&quot;小新新闻客户端教程发布啦&quot; );
+			hashMap.put(&quot;newslist_item_digest&quot;,&quot;小新新闻客户端教程发布啦&quot; );
+			hashMap.put(&quot;newslist_item_source&quot;, &quot;来源：小新工作室&quot;);
+			hashMap.put(&quot;newslist_item_ptime&quot;, &quot;2014-11-12 10:21:22&quot;);
+			newsData.add(hashMap);
+		}
+		SimpleAdapter newsListAdapter = new SimpleAdapter(this, newsData, R.layout.newslist_item, 
+				new String[]{&quot;newslist_item_title&quot;,&quot;newslist_item_digest&quot;,&quot;newslist_item_source&quot;,&quot;newslist_item_ptime&quot;}, 
+				new int[]{R.id.newslist_item_title,R.id.newslist_item_digest,R.id.newslist_item_source,R.id.newslist_item_ptime});
+		ListView newslist = (ListView)findViewById(R.id.newslist);
+		
+		newslist.setAdapter(newsListAdapter);</pre><br>
+End</p>
+<p><span style="font-size:18px"><a target="_blank" href="http://download.csdn.net/detail/jack_king007/8117329">点击打开链接</a><br>
+</span></p>
+<span id="pv-float-bar-container" style="top:353px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

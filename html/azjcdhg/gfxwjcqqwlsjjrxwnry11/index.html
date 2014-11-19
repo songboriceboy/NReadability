@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程——请求网络数据加入新闻内容页（11）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">还记得我在学校做第一个做的APP，外卖APP，我身边的大牛，跟我说一句，你把你的那个页面的数据，传给我。</span></p>
+<p><span style="font-size:18px">那个时候我才学安卓2个月，对于Intent的用法或者对于他的认识不是很深刻最后在百度《安卓，怎么传递数据》</span></p>
+<p><span style="font-size:18px">结果Intent出现了。</span></p>
+<p><span style="font-size:18px; color:#FF0000">Intent为啥出现？</span></p>
+<p><span style="font-size:18px; color:#FF0000">当一个activity跳转的到另一个activity要考谁呢，新手都知道Intent，但是其实传递数据还真不是Intent的专利。这时候我就换下背景。</span></p>
+<p><span style="font-size:18px; color:#FF0000">你要去你亲戚家过节，看完亲人，你妈说你顺便把&#31036;物带过去，帮我带个平安................</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#FF0000">其实在某个时候，安卓学完UI还真是又回到了java，还记的<span class="biTitle"></span></span></p>
+<div class="biContent"><a target="_blank" target="_blank" href="http://baike.baidu.com/view/3600579.htm">埃克尔<span style="color:#FF0000">在java编程思想中说道 万物皆对象 你以为真是你自己浅薄的理解那样么，计算机因为是一个最接近科学的一门课程，就代表着你很难用人话来描述。</span></a><br>
+<br>
+<span style="color:#000000">我所能理解的解释，用生活中的实例去理解安卓所有知识点，对象是用来服务生活的，而不是将他无限接近科学的。<br>
+<br>
+所以Intent在跳转的时候，也能传递数据。<br>
+<span style="font-size:14px">1.&#20540;由A.class传递到B.class<br>
+<span style="color:#CC0000">A.class中：</span></span><br>
+</span><pre name="code" class="java">Intent intent = new Intent();
+ //设置传递方向 
+intent.setClass(A.this,B.class); 
+//绑定数据 
+intent.putExtra(&quot;username1&quot;,username); &lt;a target=_blank href=&quot;http://download.csdn.net/detail/jack_king007/8126471&quot;&gt;点击下载源码&lt;/a&gt;
+intent.putExtra(&quot;userpwd1&quot;userpwd);
+ /*或者绑定成一捆数据 
+Bundle data = new Bundle(); 
+data.putString(&quot;username1&quot;,username); 
+data.putString(&quot;userpwd1&quot;,userpwd);
+intent.putExtras(data); 
+*/ 
+//启动activity 
+this.startActivity(intent); 
+</pre>对于Bundle 和Intent传递数据呢，我&#20284;乎记得有人这么形象的描述 Intent的是 你去超市买东西，超市没给你袋子<br>
+Boundle 就是给了你一个袋子，你可以一起带走。<br>
+<br>
+<span style="color:#CC0000">B.class中：</span><br>
+Intent intent = getIntent(); <br>
+//获取数据 <br>
+String username = intent.getStringExtra(&quot;username1&quot;); <br>
+String userpwd = intent.getStringExtra(&quot;userpwd1&quot;); <br>
+/* Bundle data = intent.getExtras(); <br>
+String username = intent.getString(&quot;username1&quot;); <br>
+String userpwd = intent.getString(&quot;userpwd1&quot;); */ <br>
+<br>
+所以呢 看得出 我去超市买东西 是想拿袋子打包一起拿走的 所以我用的是bundle<br>
+<br>
+好了回到教程中 ，我们要获取<br>
+跟帖数&nbsp; commentcount<br>
+新闻标题 mCatName<br>
+position<br>
+而新闻体标题需要用一个全局变量String 来储存 private String mCatName;&nbsp; 然后再gridview里面获取到<br>
+&nbsp;&nbsp;&nbsp;<span style="color:#FF0000"> mCatName = categories.get(position).get(&quot;category_title&quot;).getTitle();<br>
+跟帖数 需要在 解析数据的时候 解析出来<br>
+&nbsp;&nbsp;&nbsp; hashMap.put(&quot;newslist_item_comments&quot;, newsObject.getString(&quot;commentcount&quot;));<br>
+<br>
+然后开始传递 <br>
+</span><pre name="code" class="java">	//把需要的信息放到Intent中
+				intent.putExtra(&quot;newsDate&quot;, mNewsData);
+				intent.putExtra(&quot;position&quot;, position);
+				intent.putExtra(&quot;categoryName&quot;, mCatName);
+				startActivity(intent);</pre><br>
+好啦 现在应该传&#20540;到了 新闻内容类了 然后后面基本上就是复制给UI&nbsp; 然后进行JSON解析新闻内容到本地<br>
+<br>
+<br>
+<pre name="code" class="java">	/**
+	 * 获取新闻详细信息
+	 * @return
+	 */
+	private String getNewsBody()
+	{
+		String retStr = &quot;网络连接失败，请稍后再试&quot;;
+		String url=&quot;http://192.168.1.12:8080/web/getNews?nid=&quot;+mNid;
+		try
+		{
+			String json = HttpUtils.getData(url);
+			JSONObject jsonObject = new JSONObject(json);
+			//获取返回码，0表示成功
+			int retCode = jsonObject.getInt(&quot;ret&quot;);
+			if (0 == retCode)
+			{
+				JSONObject dataObject = jsonObject.getJSONObject(&quot;data&quot;);
+				JSONObject newsObject = dataObject.getJSONObject(&quot;news&quot;);
+				retStr = newsObject.getString(&quot;body&quot;);
+			}
+
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return retStr;
+	}
+	</pre><br>
+<a target="_blank" href="http://download.csdn.net/detail/jack_king007/8126471">点击下载源码</a><br>
+<br>
+<a target="_blank" target="_blank" href="http://baike.baidu.com/view/3600579.htm"><span style="color:#FF0000"></span></a></div>
+<p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

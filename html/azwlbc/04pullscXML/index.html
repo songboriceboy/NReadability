@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>04pull生成XML</div><br><div id="article_content" class="article_content">
+
+<pre class="java" name="code">package com.example.lession04_pull.service;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlSerializer;
+import android.os.Environment;
+import android.util.Xml;
+
+import com.example.lession04_pull.domain.Person;
+
+public class PullXmlService {
+	
+	public Person currentPerson;
+
+	public List&lt;Person&gt; readXml(InputStream is){
+		//声明返回值
+		List&lt;Person&gt; persons=null;
+		//首先利用Xml.newPullParser()获取解析对象
+		XmlPullParser xmlPullParser=Xml.newPullParser();
+		try{
+			// 解析文件
+			xmlPullParser.setInput(is, &quot;UTF-8&quot;);
+			//获取解析的事件类型
+			int eventType=xmlPullParser.getEventType();
+			//判断文件解析的是否完毕
+			while(eventType!=XmlPullParser.END_DOCUMENT){
+				switch (eventType) {
+				case XmlPullParser.START_DOCUMENT:
+					persons=new ArrayList&lt;Person&gt;();
+					break;
+
+				case XmlPullParser.START_TAG:
+					String tagName=xmlPullParser.getName();
+					if(&quot;person&quot;.equals(tagName)){
+						//创建person对象
+						currentPerson=new Person();
+						currentPerson.setId(Integer.parseInt(xmlPullParser
+								.getAttributeValue(null, &quot;id&quot;)));
+					}else if(&quot;name&quot;.equals(tagName)){
+						currentPerson.setName(xmlPullParser.nextText());
+					}else if(&quot;age&quot;.equals(tagName)){
+						currentPerson.setAge(new Short(xmlPullParser.nextText()));
+					}
+					break;
+				case XmlPullParser.END_TAG:
+					if(&quot;person&quot;.equals(xmlPullParser.getName()) &amp;&amp; currentPerson!=null){
+						//把person对象放到集合中去
+						persons.add(currentPerson);
+						currentPerson=null;
+					}
+					break;
+				}
+				eventType=xmlPullParser.next();
+			}
+			is.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return persons;
+	}
+	
+	
+	
+	// 写入
+		public boolean write(List&lt;Person&gt; persons) {
+			// 采用pull解析进行实现
+
+			if (Environment.getExternalStorageState().equals(
+					Environment.MEDIA_MOUNTED)) {
+
+				// 获取sdcard目录 文件对象
+				File sdCardDir = Environment.getExternalStorageDirectory();
+				// 创建文件
+				File file = new File(sdCardDir, &quot;mycsdn.xml&quot;);
+
+				XmlSerializer serializer = Xml.newSerializer();
+
+				FileOutputStream fos = null;
+				try {
+					// 根据文件对象创建一个文件的输出流对象
+					fos = new FileOutputStream(file);
+					// 设置输出的流及编码
+					serializer.setOutput(fos, &quot;UTF-8&quot;);
+					// 设置文件的开始
+					serializer.startDocument(&quot;UTF-8&quot;, true);
+					// persons标签开始
+					serializer.startTag(null, &quot;persons&quot;);
+					for (Person person : persons) {
+						// person标签的开始
+						serializer.startTag(null, &quot;person&quot;);
+						// 设置person标签的属性
+						serializer.attribute(&quot;null&quot;, &quot;id&quot;, person.getId() + &quot;&quot;);
+
+						// 设置person标签的子标签 name
+						serializer.startTag(null, &quot;name&quot;);
+						serializer.text(person.getName());
+						serializer.endTag(null, &quot;name&quot;);
+
+						// 设置person标签的子标签的age
+						serializer.startTag(null, &quot;age&quot;);
+						serializer.text(person.getAge() + &quot;&quot;);
+						serializer.endTag(null, &quot;age&quot;);
+
+						// person标签的结束
+						serializer.endTag(null, &quot;person&quot;);
+					}
+
+					// persons标签的结束
+					serializer.endTag(null, &quot;persons&quot;);
+					// 文件的结束
+					serializer.endDocument();
+
+					fos.flush();
+					fos.close();
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			return false;
+		}
+
+}</pre><br>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

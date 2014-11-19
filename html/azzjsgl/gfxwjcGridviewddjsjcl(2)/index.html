@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程Gridview的点击事件处理(2)</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">再次申明本教程是借鉴了若水新闻教程，我写本篇文章不在意商业传播，在于复习安卓基础</span></p>
+<p><span style="font-size:18px">先看UI界面 <br>
+</span></p>
+<p><span style="font-size:18px"><img src="5570927791602.jpg" alt=""></span></p>
+<p><span style="font-size:18px">在上一文章，只是简单的将主界面的实现，其中有很多BUG，如点击后背景没有换，其实每一次在实现UI界面的时候，总是想把UI美化，就把UI结构复杂化了，我在讲述下UI结构 标题栏 是有一个&nbsp; HorizontalScrollView 是包括一个线性布局，然后将一个gridview填充进去。而gridview 需要用SimpleAdapter&nbsp; 去填充数据 ，在确定点时间处理的时候，有点难办&nbsp;
+<br>
+</span></p>
+<p><span style="font-size:18px">我们重写simpledapter的方法 在getview方法中 会有个聚点设置view <br>
+</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.SundayNews.adapter;
+
+import java.util.List;
+import java.util.Map;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import com.example.SundayNews.R;
+
+
+public class CustomSimpleAdapter extends SimpleAdapter
+{
+
+	public CustomSimpleAdapter(Context context, List&lt;? extends Map&lt;String, ?&gt;&gt; data, int resource, String[] from, int[] to)
+	{
+		super(context, data, resource, from, to);
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
+		View v = super.getView(position, convertView, parent);
+		//更新第一个TextView的背景
+		if (position==0)
+		{
+			TextView categoryTitle = (TextView)v;
+			categoryTitle.setBackgroundResource(R.drawable.categorybar_item_background);
+			categoryTitle.setTextColor(0XFFFFFFFF);
+		}
+		return v;
+	}
+}
+</pre><br>
+然后再点击事件中加入设置 ，先恢复颜色 <br>
+</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">	category.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position,
+					long id) {
+				TextView categoryTitle;
+				//恢复每个单元格背景色
+				for (int i = 0; i &lt; parent.getChildCount(); i++)
+				{
+					categoryTitle = (TextView) (parent.getChildAt(i));
+					categoryTitle.setBackgroundDrawable(null);
+					categoryTitle.setTextColor(0XFFADB2AD);
+				}
+				//设置选择单元格的背景色
+				categoryTitle = (TextView) (parent.getChildAt(position));
+				categoryTitle.setBackgroundResource(R.drawable.categorybar_item_background);
+				categoryTitle.setTextColor(0XFFFFFFFF);
+				
+				Toast.makeText(MainActivity.this, categoryTitle.getText(), Toast.LENGTH_LONG).show();
+				
+			}
+			
+		});</pre><br>
+end&nbsp; <br>
+</p>
+<p><span style="font-size:18px"><a target="_blank" target="_blank" href="http://download.csdn.net/detail/jack_king007/8117257">源码下载</a><br>
+</span></p>
+<span id="pv-float-bar-container" style="top:272px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/androidzdmyhbasel/index.html">android之代码优化（base类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/day2zdydhk/index.html">day2自定义对话框</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/zwazkfzbbdxrjqsgh/index.html">作为安卓开发者必备的小软件（全是干货）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/gfxwjcGridviewddjsjcl(2)/index.html">高仿新闻教程Gridview的点击事件处理(2)</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

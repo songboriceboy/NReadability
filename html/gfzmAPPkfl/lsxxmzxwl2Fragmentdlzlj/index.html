@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目之新闻类（2）Fragment的另种理解</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">我也不讲其他的，其实对于Fragment我一直有个疑惑，为毛要开启一个事务呢，一直思索不得起果。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">其实看到事务，我就想起来了，数据库，回滚，添加，remove，这跟Fragment 是一个道理。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">Fragment是一种轻量级的activity 不需要在配置文件注册，那他不是XML 他是代码呀，安卓的四大组件为啥都要注册，因为他跟系统息息相关，Fragment官方解释 activity的碎片。从事务我又想到了数据库。数据库的事务开启，是在内存中开辟了一个空间进行事务处理，那我是否可以这么理解</span></p>
+<p><span style="font-size:18px">Fragment就是在activity上面开启了一个空间进行事务处理，这个空间是依附在activity上面的</span></p>
+<p><pre name="code" class="java">		//获取到Fragment的管理对象
+		FragmentManager manager = getSupportFragmentManager();
+		//开启一个事务
+		FragmentTransaction ft = manager.beginTransaction();
+		//把Fragment添加进Activity
+		ft.add(R.id.container, new TTFragment());
+		//提交
+		ft.commit();.
+&lt;img src=&quot;http://img.blog.csdn.net/20141108075643730?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19LaW5nMDA3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center&quot; alt=&quot;&quot; /&gt;
+</pre><br>
+这么去理解是不是就想通了................</p>
+<p>Mainactivity.java</p>
+<p><pre name="code" class="java">package com.example.android20_lzhxw;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
+/**
+ * 把Fragment添加到Activity：
+ * 	getFragmentMenager()  begin...():FragmentTransaction
+ * 	add()
+ */
+public class MainActivity extends FragmentActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		//获取到Fragment的管理对象
+		FragmentManager manager = getSupportFragmentManager();
+		//开启一个事务
+		FragmentTransaction ft = manager.beginTransaction();
+		//把Fragment添加进Activity
+		ft.add(R.id.container, new TTFragment());
+		//提交
+		ft.commit();
+	}
+
+}
+</pre><br>
+<br>
+</p>
+<p><br>
+<span style="font-size:18px"></span></p>
+<span id="pv-float-bar-container" style="top:938px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual"></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier"></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/fxsjwsdgx/index.html">复习手机卫士的构想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPszecjbhbdjg/index.html">天气APP实战二（创建表和包的结构）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPdsz1/index.html">天气APP的实战（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl1lw/index.html">练手小项目之新闻类（1）联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl2Fragmentdlzlj/index.html">练手小项目之新闻类（2）Fragment的另种理解</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl3tjggl/index.html">练手小项目之新闻类（3）添加广告栏</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl4Listviewtphp/index.html">练手小项目之新闻类（4）Listview图片混排</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

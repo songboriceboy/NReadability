@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓服务器端之二服务器的建立</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">以前总是不知道怎么建立服务器，安卓没有服务器是等于一具尸体，有了服务器就有了灵魂，就成了一个活人，能跟我们对话。</span></p>
+<p><span style="font-size:24px">正话：以前不知道为什么要学javaee，我觉得应该服务器端有关，现在才知道怎么建立服务器跟安卓端数据交互，是我智商太低了，领悟的太慢了么。</span></p>
+<p><span style="font-size:24px">1.建立一个dynamic web project，选择tomcat服务&nbsp;</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px">2.建立一个servlet&nbsp;</span></p>
+<p><span style="font-size:24px">相信学过javaee 是知道一个单独servlet就可以处理数据的交互的 连接为/help&nbsp;</span></p>
+<p><span style="font-size:24px">其实我项目中有几个工具架包 连通数据库 &nbsp;数据库查询的 dbUtils 都是操作数据库，其他的都是操作json</span></p>
+<p><span style="font-size:24px"><img src="37578126093828.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px">先看一个bean</span></p>
+<p><span style="font-size:24px"></span></p>
+<pre name="code" class="java">package com.xiaoxin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapListHandler;
+
+import com.xiaoxin.utils.DataSourceManager;
+
+/**
+ * 帮助处理
+ * @author Administrator
+ *
+ */
+public class HelpDaoImpl {
+	private QueryRunner runner=new QueryRunner(DataSourceManager.getDataSource());
+	/**
+	 * 获取帮助列表
+	 * @param version
+	 */
+	public List&lt;Map&lt;String, Object&gt;&gt; getHelpList(int version){
+		//dbutils
+		//配置信息
+		//查询-QueryRunnnn r
+		String sql=&quot;SELECT id,title FROM help WHERE state=1 and version&gt;?&quot;;
+		try {
+//			MapListHandler 返回一个map集合
+			return runner.query(sql, new MapListHandler(), version);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+}
+</pre>然后一个Test 看下数据
+<p>
+<p><span style="font-size:24px"></span></p>
+<pre name="code" class="java">package com.xiaoxin.test;
+
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
+import com.xiaoxin.dao.HelpDaoImpl;
+
+public class HelpTest {
+	@Test
+	public void testGetHelpList(){
+		HelpDaoImpl daoImpl=new HelpDaoImpl();
+		List&lt;Map&lt;String,Object&gt;&gt; helpList = daoImpl.getHelpList(1);
+		System.out.println(&quot;&quot;);
+	}
+}
+</pre>查询结果
+<p>
+<p><span style="font-size:24px"><img src="396376810189522.jpg" alt=""><br>
+<br>
+</span></p>
+<p>这说明第一步跟数据库是成功的连接了，并查询出了数据</p>
+<p>然后通过servlet进行操作</p>
+<p><br>
+</p>
+<p><pre name="code" class="java">package com.xiaoxin.servlet;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.collections.map.HashedMap;
+
+import com.xiaoxin.dao.HelpDaoImpl;
+import com.xiaoxin.utils.CommonUtil;
+
+/**
+ * Servlet implementation class HelpServlet
+ */
+public class HelpServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println(&quot;测试&quot;);
+		data(request,response);
+	}
+
+	private void data(HttpServletRequest request, HttpServletResponse response) {
+		//数据库查询
+		int version=0;
+		try{
+		version = Integer.parseInt(request.getParameter(&quot;version&quot;));
+		}catch(Exception e){
+			
+		}
+		
+		//数据库操作
+		HelpDaoImpl daoImpl=new HelpDaoImpl();
+		List&lt;Map&lt;String,Object&gt;&gt; helpList = daoImpl.getHelpList(version);
+		Map&lt;String,Object&gt;data=new HashMap&lt;String,Object&gt;();
+		data.put(&quot;response&quot;, &quot;help&quot;);
+		data.put(&quot;version&quot;, &quot;12&quot;);
+		data.put(&quot;helpList&quot;, helpList);
+		
+//		JSONObject object=JSONObject.fromObject(data);
+//		System.out.println(object.toString());
+//		response.getWriter().write(object.toString());
+//		response.getWriter().flush();</pre><pre name="code" class="java">&lt;span style=&quot;white-space:pre&quot;&gt;		&lt;/span&gt;//工具类 等于上面四句话
+		CommonUtil.renderJson(response, data);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+}
+</pre><br>
+源码里还有一个很好理解的例子</p>
+<p><a target="_blank" href="http://download.csdn.net/detail/jack_king007/7931341">源码下载</a><br>
+</p>
+<p><br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java基础之对象的多态性</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:18px">要求 <span style="white-space:pre"></span>掌握对象的向上转型及向下转型的使用<br>
+<span style="white-space:pre"></span>掌握对象转型的限制<br>
+<span style="white-space:pre"></span><br>
+<span style="white-space:pre"></span>多态性在两种主要体现<br>
+<span style="white-space:pre"></span>1.方法的重载和覆写<br>
+<span style="white-space:pre"></span>2.对象的多态<br>
+<span style="white-space:pre"></span><br>
+</span>
+<p><span style="font-size:18px"><span style="white-space:pre"></span>掌握了多态性之后 可以直接应用在抽象类和接口上</span></p>
+<p><span style="font-size:18px"><img src="45006965277436.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">说了那么多 还是放一个实体理解下</span></p>
+<p><span style="font-size:18px"></span></p>
+<pre name="code" class="java">package KownClass;
+
+class A{					// 定义类A
+	public void fun1(){		// 定义fun1()方法
+		System.out.println(&quot;A --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun2(){
+		this.fun1() ;		// 调用fun1()方法
+	}
+};
+class B extends A{
+	public void fun1(){		// 此方法被子类覆写了
+		System.out.println(&quot;B --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun3(){
+		System.out.println(&quot;B --&gt; public void fun3(){}&quot;) ;
+	}
+};
+public class test1{
+	public static void main(String asrgs[]){
+		/*子类对象--》父类对象 
+		父类  父类对象=子类实例*/
+		B b = new B() ;		// 实例化子类对象
+		//因为b是继承了A 所以是A的子类
+		A a = b ;			// 向上转型关系
+		a.fun1() ;			// 此方法被子类覆写过
+		a.fun2() ;
+	}
+};</pre><br>
+<img src="262198744898.jpg" alt=""><br>
+<p>
+<p><br>
+</p>
+<p><span style="font-size:18px">对于以上的程序，是用过其子类进行父类对象的实例化操作的，则如果调用的方法被子类覆写过，<br>
+则肯定调用被读写过的方法<br>
+注意点：<span style="color:#cc0000">转型之后，因为操作的父类对象，所以无法找到在子类新定义的方法的</span><br>
+</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#cc0000">接下来是向下转型 将父类对象变为子类对象。向下转型需要强制手段</span></p>
+<p><span style="font-size:18px"></span></p>
+<pre name="code" class="java">&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;&lt;/span&gt;</pre><pre name="code" class="java">package KownClass;
+
+
+class A{					// 定义类A
+	public void fun1(){		// 定义fun1()方法
+		System.out.println(&quot;A --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun2(){
+		this.fun1() ;		// 调用fun1()方法
+	}
+};
+class B extends A{
+	public void fun1(){		// 此方法被子类覆写了
+		System.out.println(&quot;B --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun3(){
+		System.out.println(&quot;B --&gt; public void fun3(){}&quot;) ;
+	}
+};
+public class test1{
+	public static void main(String asrgs[]){
+	/*	向下转型时，必须明确的指明要转型的子类类型，&lt;span style=&quot;font-family: Arial, Helvetica, sans-serif;&quot;&gt;*/&lt;/span&gt;
+		A a = new B() ;	// 向上转型关系
+		//子类 子类对象=（子类）父类实例
+		B b = (B)a ;		// 发生了向下转型关系
+		b.fun1() ;
+		b.fun2() ;
+		b.fun3() ;
+	}
+};
+</pre><br>
+<img src="26749958083989.jpg" alt=""><br>
+<br>
+<p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">因为有了向下转型所以fun3也可以被调用 同时如果要有向下转型就必须要有一个向上转型来建立关系 不然会报错</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">同时还要讲一下一个关键字instances of 可以判断是不是自己的子类 对于向下转型最好增加验证</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">class A{					// 定义类A
+	public void fun1(){		// 定义fun1()方法
+		System.out.println(&quot;A --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun2(){
+		this.fun1() ;		// 调用fun1()方法
+	}
+};
+class B extends A{
+	public void fun1(){		// 此方法被子类覆写了
+		System.out.println(&quot;B --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun3(){
+		System.out.println(&quot;B --&gt; public void fun3(){}&quot;) ;
+	}
+};
+class C extends A{
+	public void fun1(){		// 此方法被子类覆写了
+		System.out.println(&quot;C --&gt; public void fun1(){}&quot;) ;
+	}
+	public void fun5(){
+		System.out.println(&quot;C --&gt; public void fun5(){}&quot;) ;
+	}
+};
+public class InstanceofDemo02{
+	public static void main(String asrgs[]){
+		fun(new B()) ;
+		fun(new C()) ;
+	}
+	public static void fun(A a){
+		a.fun1() ;
+		if(a instanceof B){
+			B b = (B) a ;
+			b.fun3() ;
+		}
+		if(a instanceof C){
+			C c = (C) a ;
+			c.fun5() ;
+		}
+	}
+};</pre><br>
+<br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

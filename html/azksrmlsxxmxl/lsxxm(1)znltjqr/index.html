@@ -1,0 +1,677 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目(1)——智能聊天机器人</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">我一直坚信着，即使一个最简单的APP，也有他的难点，如果一个复杂的APP你无法做出来，那肯定是你基础不扎实，我身边的人总是问我，安卓为什么学了有忘记了，总是学不好，有些东西记不住，<span style="color:#FF0000">其实这不能怪你，如果别人开发了那么久的东西，你一下子就学会了，你让谷歌怎么活。</span></span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">篇幅有限，如果读者看不懂的话，可以复习下基础，我尽量将代码简单化了。&nbsp; 先看效果图 <br>
+</span></p>
+<p><span style="font-size:18px; color:#CC0000">如果你是初学安卓，这个APP你可能要半小时 <br>
+</span></p>
+<p><span style="font-size:18px"><span style="color:#CC0000">如果你是有经验的开发者，OK，你可能看一遍就能将自己的开发类带入，10分钟不到就搞定。</span><br>
+</span></p>
+<p><br>
+</p>
+<p><img src="15719566920195.jpg" align="middle" alt=""></p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#666666">开发步骤：</span></p>
+<p><span style="font-size:18px; color:#FF0000">1. 先去图灵机器人注册KEY</span></p>
+<p><span style="font-size:18px; color:#666666">http://www.tuling123.com/</span></p>
+<p><span style="font-size:18px; color:#FF0000">2.准备好联网操作，将联网工具类放入</span></p>
+<p><span style="font-size:18px; color:#666666">PS：这里是我自己的联网工具类，如果喜欢可以收藏</span></p>
+<p><span style="font-size:18px; color:#666666"><span style="color:#FF0000">3.准备json解析
+</span><br>
+</span></p>
+<p><span style="font-size:18px; color:#666666">json解析并不复杂，所以只是用了自带json解析了<br>
+</span></p>
+<p><span style="font-size:18px; color:#666666"><span style="color:#CC0000">4.UI准备
+<br>
+</span></span></p>
+<p><span style="font-size:18px; color:#666666"><span style="color:#CC0000"></span><br>
+</span></p>
+<p><span style="font-size:18px; color:#FF0000">5.业务逻辑准备 </span><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:24px">第一步 你先去 图灵机器人的官网申请key 这个不复杂，因为可以QQ登录 如果不想申请 那就用我的呗</span></p>
+<p><br>
+</p>
+<p>key = 349baa5d2bd5d2d7612e4f2c1fcd973d&nbsp;&nbsp;&nbsp; <br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:24px">第二步&nbsp; 联网获取json&nbsp; </span><br>
+</p>
+<p><br>
+</p>
+<p>其实这个请求数据，没什么区别的，看看他的请求示例</p>
+<p><pre name="code" class="java">private String url=&quot;http://www.tuling123.com/openapi/api?key=349baa5d2bd5d2d7612e4f2c1fcd973d&amp;info=&quot;;</pre><br>
+后面加入你的输入的信息 即可&nbsp; <br>
+</p>
+<p>联网：1.Httpclient&nbsp; 2. Httpconnection 3.Xutils 4.各种工具类。</p>
+<p><br>
+</p>
+<p>一个开发者，随着开发的东西越来越来多，积累的工具也越来越多，在这个小Demo 里 你可以使用自己的工具类&nbsp; <br>
+</p>
+<p>我的联网工具类，是自己封装的&nbsp; 你可以在自带加入线程，用的是Httpconnection联网，然后根据IO操作 转成String&nbsp; 通过接口放回String类型。
+<br>
+</p>
+<p><pre name="code" class="java">package com.example.AiComputer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteOrder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+
+/**
+ * 封装的 网络 + 线程
+ */
+public class HttpUtils {
+
+	// 使用线程池来下载图片，同一时刻，最多有3个线程在运行
+	private static ExecutorService execuotrs = Executors.newFixedThreadPool(3);
+
+	interface OnBitmapNetWorkResponse {
+		public void ok(Bitmap bitmap);
+
+		public void error(String error);
+	}
+
+	public static void RequestBitmapNetWork(final String path,
+			final OnBitmapNetWorkResponse response) {
+		
+		final Handler handler = new Handler();
+
+		execuotrs.execute(new Runnable() {
+			@Override
+			public void run() {
+				boolean isNetWorkOK = false;
+				try {
+					URL url = new URL(path);
+					HttpURLConnection openConnection = (HttpURLConnection) url
+							.openConnection();
+					openConnection.setConnectTimeout(5000);
+					openConnection.connect();
+					if (openConnection.getResponseCode() == 200) {
+						InputStream inputStream = openConnection
+								.getInputStream();
+						final Bitmap bitmap = BitmapFactory
+								.decodeStream(inputStream);
+
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								response.ok(bitmap);
+							}
+						});
+
+						inputStream.close();
+						isNetWorkOK = true;
+					}
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if (!isNetWorkOK) {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								response.error(&quot;服务器不在服务区内！&quot;);
+							}
+						});
+
+					}
+
+				}
+
+			}
+		});
+	}
+
+	public interface OnNetWorkResponse {
+		public void ok(String response);
+
+		public void error(String error);
+	}
+
+	public static void RequestNetWork(final String path,
+			final OnNetWorkResponse response) {
+		//实例化handler 
+		final Handler hanlder = new Handler();
+
+		new Thread() {
+			public void run() {
+				//标志位
+				boolean isWorkOK = false;
+				
+				InputStream inputStream = null;
+				ByteArrayOutputStream outStream = null;
+				try {
+					URL url = new URL(path);
+					System.out.println(&quot;=======path=========&quot;+path);
+					
+					HttpURLConnection connection = (HttpURLConnection) url
+							.openConnection();
+					connection.setConnectTimeout(5000);
+					connection.setDoInput(true);
+					connection.connect();
+
+					if (connection.getResponseCode() == 200) {
+						inputStream = connection.getInputStream();
+						outStream = new ByteArrayOutputStream();
+
+						byte[] b = new byte[1024];
+						int len = 0;
+						while ((len = inputStream.read(b)) != -1) {
+							outStream.write(b, 0, len);
+						}
+						outStream.flush();
+						final String result = new String(
+								outStream.toByteArray());
+
+						hanlder.post(new Runnable() {
+
+							@Override
+							public void run() {
+								response.ok(result);
+							}
+						});
+
+						isWorkOK = true;
+					}
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					// 网络操作出问题
+					if (!isWorkOK) {
+						response.error(&quot;服务器走神拉！&quot;);
+					}
+
+					if (inputStream != null) {
+						try {
+							inputStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					if (outStream != null) {
+						try {
+							outStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+
+			};
+		}.start();
+
+	}
+
+}
+</pre><br>
+&nbsp;如果对于这一节，不懂的可以看下 我写的 网络编程系列 <br>
+</p>
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/38535619">从java网络编程学起（2）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</a></span><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:24px">第三步，就是json 解析&nbsp; </span><br>
+</p>
+<p>我们在url后面加入 深圳的天气&nbsp;&nbsp; 返回的是</p>
+<p><pre name="code" class="java">{&quot;code&quot;:100000,&quot;text&quot;:&quot;今天多云 24~19&#176;C明天阴 26~21&#176;C后天阴 22~17&#176;C&quot;}</pre><br>
+最外层是一个大括号，so 直接用JsonObject，解析即可&nbsp; <br>
+</p>
+<p><pre name="code" class="java">JSONObject jb = new JSONObject(response);</pre><br>
+<span style="font-size:24px">4.UI准备&nbsp; </span><br>
+</p>
+<p>其实对于ui&nbsp; 并不复杂，&nbsp; 最外层是一个 线性布局，里面是 两个线性布局，第一个装着listview -----&gt;显示聊天信息&nbsp; 第二个 装着 一个button 发送消息 一个Edittext 输入信息</p>
+<p>布局文件:activity_main.xml<br>
+</p>
+<p><pre name="code" class="java">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+
+    &lt;ListView
+        android:id=&quot;@+id/lv&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;0dp&quot;
+        android:layout_weight=&quot;1&quot;
+        android:divider=&quot;@null&quot;
+        android:listSelector=&quot;@android:color/transparent&quot;
+        android:transcriptMode=&quot;alwaysScroll&quot; &gt;
+    &lt;/ListView&gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;horizontal&quot; &gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/sendText&quot;
+            android:layout_width=&quot;0dp&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_weight=&quot;1&quot; /&gt;
+        
+        &lt;Button 
+            android:id=&quot;@+id/send_btn&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:text=&quot;发送&quot;
+            /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;</pre><br>
+<br>
+</p>
+<p>既然说道了listview&nbsp; 就知道我们的聊天信息，要在上面显示，我们要在适配器中 判断是那个发送的消息，进行判断是哪个发送过来的 显示那部分布局 ，左边的是机器人的消息布局&nbsp; 右边是 我们发送消息的布局&nbsp;
+<br>
+</p>
+<p>&nbsp;也不复杂， 一个相对布局中有一个textview&nbsp; 显示发送时间，一个Imageview显示机器人的头像&nbsp; 一个textview 显示消息内容</p>
+<p><br>
+</p>
+<p>机器人消息的布局&nbsp; <br>
+</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/time&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:gravity=&quot;center_horizontal&quot; /&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/iv&quot;
+        android:layout_width=&quot;70dp&quot;
+        android:layout_height=&quot;70dp&quot;
+        android:layout_below=&quot;@id/time&quot;
+        android:padding=&quot;10dp&quot;
+        android:src=&quot;@drawable/robot&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_below=&quot;@id/time&quot;
+        android:layout_marginRight=&quot;50dp&quot;
+        android:layout_toRightOf=&quot;@id/iv&quot;
+        android:background=&quot;@drawable/aio_friend_bg_nor_11&quot;
+        android:gravity=&quot;center&quot; /&gt;
+
+&lt;/RelativeLayout&gt;</pre><br>
+我们发送消息的内容&nbsp; <br>
+</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/time&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:gravity=&quot;center_horizontal&quot; /&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/iv&quot;
+        android:layout_width=&quot;70dp&quot;
+        android:layout_height=&quot;70dp&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_below=&quot;@id/time&quot;
+        android:padding=&quot;10dp&quot;
+        android:src=&quot;@drawable/xiaoxin&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_below=&quot;@id/time&quot;
+        android:layout_marginLeft=&quot;50dp&quot;
+        android:layout_toLeftOf=&quot;@id/iv&quot;
+        android:background=&quot;@drawable/aio_user_bg_nor_11&quot;
+        android:gravity=&quot;center&quot; /&gt;
+
+&lt;/RelativeLayout&gt;</pre><br>
+<br>
+</p>
+<p>不知不觉，就走到了最后一步，相信 你一定会觉得，好简单呀，是的很简单，因为最难的在后面<br>
+</p>
+<p>业务逻辑 ：</p>
+<p>1.Edittext 和listview 和button的实例化</p>
+<p>2.button点击事件的处理&nbsp;</p>
+<p>获取 Edittext输入的内容，进行处理————&gt;去掉空&#26684;和回车的信息，替代成空 。&nbsp; 然后将数据封装到实体类中去。 当大于30条的时候清空一次 然后刷新一下适配器</p>
+<p>将处理好的信息 发送到服务器 获取 回复的信息 然后也封装进行实体类，刷新一下适配器<br>
+</p>
+<p><br>
+</p>
+<p>3. 设置欢迎语言，每一次进来，为了提高用户体验，我们进行欢迎语出现， 先建立一个数组&nbsp; 用来装 欢迎语<br>
+</p>
+<p><br>
+</p>
+<p>来到res/values/Strings 加入数组</p>
+<p><pre name="code" class="html">   &lt;string-array name=&quot;welcome_tips&quot;&gt;
+        &lt;item&gt;主人，奴婢在此等候多时了&lt;/item&gt;
+        &lt;item&gt;主人，近来一切可好&lt;/item&gt;
+        &lt;item&gt;亲爱的，我想死你了&lt;/item&gt;
+        &lt;item&gt;欢迎归来，我亲爱的主人&lt;/item&gt;
+        &lt;item&gt;我是小新机器人，很高兴为您服务&lt;/item&gt;
+    &lt;/string-array&gt;</pre><br>
+然后再 java 代码中如一个方法 <br>
+</p>
+<p><pre name="code" class="java">	private String getRandomWelcomeTips() {
+		String welcome_tip = null;
+		welcome_array = this.getResources()
+				.getStringArray(R.array.welcome_tips);
+		int index = (int) (Math.random() * (welcome_array.length - 1));
+		welcome_tip = welcome_array[index];
+		return welcome_tip;
+	}</pre><br>
+应该不难看懂 通过随机 得到数组内容&nbsp; <br>
+</p>
+<p>其中聊天嘛，应该把时间也加入 <br>
+</p>
+<p><pre name="code" class="java">	private String getTime() {
+		currentTime = System.currentTimeMillis();
+		SimpleDateFormat format = new SimpleDateFormat(&quot;yyyy年MM月dd日 HH:mm:ss&quot;);
+		Date curDate = new Date();
+		String str = format.format(curDate);
+		if (currentTime - oldTime &gt;= 500) {
+			oldTime = currentTime;
+			return str;
+		} else {
+			return &quot;&quot;;
+		}
+
+	}</pre>也就是获取了下 系统时间，然后&#26684;式化了下&nbsp;&nbsp;&nbsp; <br>
+</p>
+<p>Java代码 MainActivity</p>
+<p><pre name="code" class="java">package com.example.AiComputer;
+
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.AiComputer.HttpUtils.OnNetWorkResponse;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+public class MainActivity extends Activity implements OnClickListener{
+	//输入框
+	private EditText sendtext;
+	private Button send_btn;
+    private ListView listView;
+    private String content_str;
+	private String[] welcome_array;
+	private String url=&quot;http://www.tuling123.com/openapi/api?key=349baa5d2bd5d2d7612e4f2c1fcd973d&amp;info=&quot;;
+	private double currentTime=0, oldTime = 0;
+	private List&lt;ListData&gt; lists;
+	private ListData listData;
+	private MyAdapter adapter;
+
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initView();
+    }
+
+	private void initView() {
+		listView = (ListView) findViewById(R.id.lv);
+		sendtext = (EditText) findViewById(R.id.sendText);
+		send_btn = (Button) findViewById(R.id.send_btn);
+		lists = new ArrayList&lt;ListData&gt;();
+		//发送的点击事件
+		send_btn.setOnClickListener(this);
+		adapter = new MyAdapter(lists, this);
+		listView.setAdapter(adapter);
+		listData = new ListData(getRandomWelcomeTips(), ListData.RECEIVER,
+				getTime());
+		lists.add(listData);
+		
+	}
+
+	private String getRandomWelcomeTips() {
+		String welcome_tip = null;
+		welcome_array = this.getResources()
+				.getStringArray(R.array.welcome_tips);
+		int index = (int) (Math.random() * (welcome_array.length - 1));
+		welcome_tip = welcome_array[index];
+		return welcome_tip;
+	}
+/*1.获取 Edittext输入的内容，进行处理————&gt;去掉空格和回车的信息，替代成空 。
+ * 2.然后将数据封装到实体类中去。 当大于30条的时候清空一次 然后刷新一下适配器
+ * */
+	@Override
+	public void onClick(View v) {
+		getTime();
+		content_str = sendtext.getText().toString();
+		sendtext.setText(&quot;&quot;);
+		String dropk = content_str.replace(&quot; &quot;, &quot;&quot;);
+		String droph = dropk.replace(&quot;\n&quot;, &quot;&quot;);
+		listData = new ListData(content_str, ListData.SEND, getTime());
+		lists.add(listData);
+		if (lists.size() &gt; 30) {
+			for (int i = 0; i &lt; lists.size(); i++) {
+				lists.remove(i);
+			}
+		}
+		adapter.notifyDataSetChanged();
+		HttpUtils.RequestNetWork(url+droph, new OnNetWorkResponse() {
+			
+			@Override
+			public void ok(String response) {
+				try {
+					JSONObject jb = new JSONObject(response);
+					// System.out.println(jb.getString(&quot;code&quot;));
+					// System.out.println(jb.getString(&quot;text&quot;));
+					ListData listData;
+					listData = new ListData(jb.getString(&quot;text&quot;), ListData.RECEIVER,
+							getTime());
+					lists.add(listData);
+					adapter.notifyDataSetChanged();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void error(String error) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	private String getTime() {
+		currentTime = System.currentTimeMillis();
+		SimpleDateFormat format = new SimpleDateFormat(&quot;yyyy年MM月dd日 HH:mm:ss&quot;);
+		Date curDate = new Date();
+		String str = format.format(curDate);
+		if (currentTime - oldTime &gt;= 500) {
+			oldTime = currentTime;
+			return str;
+		} else {
+			return &quot;&quot;;
+		}
+
+	}
+}
+</pre>其实在没有点击的时候，欢迎语 已经通过适配器 显示到listview上面去了 所以我们可以放在adapter实例化下面&nbsp; ，实体类，主要起的作用就是将 发送的时间和内容 封装好，在适配器中判断 进行展示<br>
+<br>
+</p>
+<p>其实最重要的是 适配器的内容，应该怎么处理 发送过来的消息:<br>
+</p>
+<p>我们向适配器 传了两个&#20540;集合，装满了实体类数据的集合 一个上下文&nbsp; <br>
+</p>
+<p>&nbsp;我们先建立一个相对布局，用来填充条目的内容&nbsp; 我们要想一个list装着实体类，实体类，有很多数据 ，我们需要通过标识符来判断显示那部分内容。</p>
+<p><pre name="code" class="java">package com.example.AiComputer;
+
+import java.util.List;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+public class MyAdapter extends BaseAdapter{
+	
+	private List&lt;ListData&gt; lists;
+	private Context mContext;
+	private RelativeLayout layout;
+	
+	public MyAdapter(List&lt;ListData&gt; lists,Context mContext) {
+		
+		this.lists = lists;
+		this.mContext = mContext;
+	}
+	
+	@Override
+	public int getCount() {
+		return lists.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return lists.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		if(lists.get(position).getFlag() == ListData.RECEIVER){
+			layout = (RelativeLayout) inflater.inflate(R.layout.leftitem, null);
+		}
+		if (lists.get(position).getFlag() == ListData.SEND) {
+			layout = (RelativeLayout) inflater.inflate(R.layout.rightitem, null);
+		}
+		TextView tv = (TextView) layout.findViewById(R.id.tv);
+		TextView time = (TextView) layout.findViewById(R.id.time);
+		tv.setText(lists.get(position).getContent());
+		time.setText(lists.get(position).getTime());
+		return layout;
+	}
+
+}
+</pre></p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><a target="_blank" href="http://download.csdn.net/detail/jack_king007/8160647">点击下载源码</a></span><br>
+</p>
+<p><br>
+</p>
+<p>如有问题，可以在我博客上面留言<br>
+<br>
+</p>
+<p><br>
+</p>
+<span id="pv-float-bar-container" style="top:1320px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm(1)znltjqr/index.html">练手小项目(1)——智能聊天机器人</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzszgjm/index.html">练手小项目（2）生活小助手周公解梦</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzsxzyscx/index.html">练手小项目（2）生活小助手星座运势查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzssfzcx/index.html">练手小项目（2）生活小助手身份证查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm3djs/index.html">练手小项目（3）倒计时</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/gddtjc_poissyjxs/index.html">高德地图教程_poi搜索以及显示</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java15高新特性之枚举（1）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">1.掌握枚举的作用</span></p>
+<p><span style="font-size:18px">在jdk1.5之前 java可以有2钟方式定义新类型：类和接口对于大部分面向对象编程来说，这两种方法看起来&#20284;乎足够了<br>
+但是一些特殊的情况下 这些方法就不适合 ，其他任何&#20540;都是非法的如果有枚举就能很简单的实现了</span><br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px"><span style="background-color:rgb(255,102,102)">所谓的枚举就是规定好指定的取&#20540;范围 所有内容只能从指定的范围中取得使用简单类完成颜色的固定取&#20540;问题<br>
+也就是说此事 一个类只能产生固定的几个对象</span><br>
+</span></p>
+<p><span style="font-size:18px">定义一个枚举</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">[public]enum 枚举类型名称{<br>
+枚举对象1,枚举对象<br>
+}<br>
+</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:24px">2.可以使用enum关键字定义一个枚举类</span></p>
+<p><span style="font-size:24px"><span style="font-family:monospace; font-size:18px; white-space:pre; background-color:rgb(240,240,240)">public enum Color{RED,GREEN,BLUE ; // 定义三个枚举的类型};</span><br>
+</span></p>
+<p><span style="font-size:24px"><span style="font-family:monospace; font-size:18px; white-space:pre; background-color:rgb(240,240,240)"><br>
+</span></span></p>
+<p><span style="font-family:monospace; font-size:18px"><span style="white-space:pre">3.enumMap的用法</span></span></p>
+<p><span style="font-family:monospace; font-size:18px"><span style="white-space:pre"><img src="2739246878121.jpg" alt=""><br>
+</span></span></p>
+<p><span style="font-family:monospace; font-size:18px"><span style="white-space:pre">例子如下</span></span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"></span></span><pre name="code" class="java" style="font-size:18px;">package KownClass;
+
+import java.util.EnumMap ;
+import java.util.Map ;
+enum Color{
+	RED , GREEN , BLUE ;
+}
+public class ConstructorEnum{
+	public static void main(String args[]){
+		Map&lt;Color,String&gt; desc = null ;		// 定义Map对象，同时指定类型
+		desc = new EnumMap&lt;Color,String&gt;(Color.class) ;	// 实例化EnumMap对象
+		desc.put(Color.RED,&quot;红色&quot;) ;
+		desc.put(Color.GREEN,&quot;绿色&quot;) ;
+		desc.put(Color.BLUE,&quot;蓝色&quot;) ;
+		System.out.println(&quot;====== 输出全部的内容 ======&quot;) ;
+		for(Color c:Color.values()){
+			System.out.println(c.name() + &quot; --&gt; &quot; + desc.get(c)) ;
+		}
+		System.out.println(&quot;====== 输出全部的键值 ======&quot;) ;
+		for(Color c:desc.keySet()){
+			System.out.print(c.name() + &quot;、&quot;) ;
+		}
+		System.out.println() ;
+		System.out.println(&quot;====== 输出全部的内容 ======&quot;) ;
+		for(String s:desc.values()){
+			System.out.print(s + &quot;、&quot;) ;
+		}
+	}
+};</pre><span style="font-size:24px">4.<span style="font-family:monospace; white-space:pre">EnumSet</span></span><span style="font-size:18px"><br>
+EnumSet是Set接口的子类 所以里面的内容是无法重复的在使用EnumSet的时候是不能使用关键字new为其实例化的所以在此提供很多静态方法<br>
+</span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px">实例一 将所有集合设置进去</span></span></span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px"></span></span></span><pre name="code" class="java">package KownClass;
+
+import java.util.EnumSet ;
+enum Color{
+	RED , GREEN , BLUE ;
+}
+public class ConstructorEnum{
+	public static void main(String args[]){
+		EnumSet&lt;Color&gt; es = null ;			// 声明一个EnumSet对象
+		System.out.println(&quot;======== EnumSet.allOf(Color.class) =====&quot;) ;
+		es = EnumSet.allOf(Color.class) ;	// 将枚举的全部类型设置到EnumSet对象之中
+		print(es) ;
+	}
+	public static void print(EnumSet&lt;Color&gt; temp){	// 专门的输出操作
+		for(Color c:temp){		//  循环输出EnumSet中的内容
+			System.out.print(c + &quot;、&quot;) ;
+		}
+		System.out.println() ;
+	}
+};</pre><br>
+示例二：只设置一个内容</p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px">区别在于</span></span></span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px"><img src="496365810028114.jpg" alt=""><br>
+</span></span></span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px">实例三：创建只能放入指定内型的的集合</span></span></span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px"><br>
+</span></span></span></p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px"></span></span></span><pre name="code" class="java">package KownClass;
+
+import java.util.EnumSet ;
+enum Color{
+	RED , GREEN , BLUE ;
+}
+public class EnumSetDemo03{
+	public static void main(String args[]){
+		EnumSet&lt;Color&gt; es = null ;			// 声明一个EnumSet对象
+		System.out.println(&quot;======== EnumSet.noneOf(Color.class) =====&quot;) ;
+		es = EnumSet.noneOf(Color.class) ;	// 将枚举的全部类型设置到EnumSet对象之中
+		es.add(Color.RED) ;	// 增加内容
+		es.add(Color.GREEN) ;	// 增加内容
+		print(es) ;
+	}
+	public static void print(EnumSet&lt;Color&gt; temp){	// 专门的输出操作
+		for(Color c:temp){		//  循环输出EnumSet中的内容
+			System.out.print(c + &quot;、&quot;) ;
+		}
+		System.out.println() ;
+	}
+};</pre><br>
+实例四：创建不包含指定的元素集合</p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px"><img src="15897448766985.jpg" alt=""><br>
+</span></span></span></p>
+<p><span style="font-family:monospace; font-size:24px"><span style="white-space:pre">5.用枚举实现一个接口
+</span></span></p>
+<p><span style="font-family:monospace; font-size:24px"><span style="white-space:pre">必须实现其中的抽象方法</span></span></p>
+<p><span style="font-family:monospace; font-size:24px"><span style="white-space:pre"></span></span><pre name="code" class="java">package KownClass;
+
+interface Print{
+	public String getColor() ;
+}
+enum Color implements Print{
+	RED{
+		public String getColor(){
+			return &quot;红色&quot; ;
+		}
+	},GREEN{
+		public String getColor(){
+			return &quot;绿色&quot; ;
+		}
+	},BLUE{
+		public String getColor(){
+			return &quot;蓝色&quot; ;
+		}
+	} ;
+}
+public class InterfaceEnumDemo{
+	public static void main(String args[]){
+		for(Color c:Color.values()){
+			System.out.print(c.getColor() + &quot;、&quot;) ;
+		}
+	}
+};</pre><br>
+<br>
+</p>
+<p><span style="font-family:monospace"><span style="white-space:pre"><span style="font-size:18px"><br>
+</span></span></span></p>
+<div><span style="font-family:monospace; font-size:18px; white-space:pre; background-color:rgb(240,240,240)"><br>
+</span></div>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

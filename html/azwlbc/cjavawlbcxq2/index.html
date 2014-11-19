@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>从java网络编程学起（2）</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:18px">URL &nbsp;URLConnection<br>
+了解URL类的使用<br>
+了解URLConnection、<br>
+URL统一资源定位符可以使用此类找到互联网上的资源（一个简单的网页）<br>
+<br>
+<br>
+&#26684;式：<br>
+</span>
+<p><span style="font-size:18px">public Url(String protocol,String host,int port,String file)</span></p>
+<p><span style="font-size:18px">实例：</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass ;
+
+import java.net.URL ;
+import java.io.InputStream ;
+import java.util.Scanner ;
+public class FactoryDemo02{
+	public static void main(String args[]) throws Exception {	// 所有异常抛出</pre><pre name="code" class="java">&lt;span style=&quot;white-space:pre&quot;&gt;				&lt;/span&gt;//协议，主机,端口，文件
+		URL url = new URL(&quot;http&quot;,&quot;www.mldnjava.cn&quot;,80,&quot;/curriculum.htm&quot;) ;
+		InputStream input = url.openStream() ;	// 打开输入流
+		Scanner scan = new Scanner(input) ;		// 实例化Scanner类
+		scan.useDelimiter(&quot;\n&quot;) ;	// 设置读取分隔符
+		while(scan.hasNext()){
+			System.out.println(scan.next()) ;
+		}
+	}
+};</pre>2.URLconnecttion是封装访问远程网络资源一般方法的类 是通过他建立远程服务器的连接，<br>
+检查元辰资源的一些属性<br>
+<br>
+<br>
+getContentLengh() 取得内容长度<br>
+getContentType() 取得内容的类型<br>
+public InputStream getInputStream 取得输入流</p>
+<p><span style="font-size:18px">实例2：</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass ;
+
+import java.net.URL ;
+import java.net.URLConnection ;
+import java.io.InputStream ;
+import java.util.Scanner ;
+public class FactoryDemo02{
+	public static void main(String args[]) throws Exception {	// 所有异常抛出
+		URL url = new URL(&quot;http://www.mldnjava.cn&quot;) ;
+		URLConnection urlCon = url.openConnection() ;	// 建立连接
+		System.out.println(&quot;内容大小：&quot; + urlCon.getContentLength()) ;
+		System.out.println(&quot;内容类型：&quot; + urlCon.getContentType()) ;
+	}
+};</pre><br>
+结果：内容大小：33220<br>
+<span style="white-space:pre"></span>内容类型：text/html<br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

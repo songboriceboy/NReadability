@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目（2）生活小助手周公解梦</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">第一篇</span></p>
+<p><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/41174425">练手小项目（2）-生活小助手--身份证查询
+</a><br>
+</p>
+<p><span style="font-size:18px">&nbsp;第二篇&nbsp; </span><br>
+</p>
+<p><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/41207371">练手小项目（2）-生活小助手--星座运势查询</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+</p>
+<p><br>
+</p>
+<p>我在想就是第三个药品查询要不要写出来，因为布局还在讨论用什么展示，因为药品有很多展示，我也不知道用什么展示。 这是一个很纠结的事情 我就先写第四个吧 周公解梦</p>
+<p><img src="19936738243838.jpg" alt=""><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#FF0000">其中代码有点错误我想用for循环进行判断返回数据有几个 但是总是失败，如果有看本篇贴子，解决了，给我留个言，在这篇帖子我只显示一个结果</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">布局跟简单的说 一个Edittext 获取数据，然后button进行数据提取发送到服务器 返回的数据 进行json解析展示在下面的textview</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/textView1&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:textSize=&quot;20dp&quot;
+        android:gravity=&quot;center_horizontal&quot;
+        android:text=&quot;输入你想查询的梦境&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/dream_num&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_below=&quot;@+id/textView1&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:hint=&quot;美女，黄金&quot;
+        android:ems=&quot;10&quot; &gt;
+
+        &lt;requestFocus /&gt;
+    &lt;/EditText&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/dream_serhch&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_below=&quot;@+id/dream_num&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_marginTop=&quot;20dp&quot;
+        android:onClick=&quot;btn&quot;
+        android:text=&quot;查询&quot; /&gt;
+
+  
+
+    &lt;LinearLayout
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_marginTop=&quot;25dp&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_below=&quot;@id/dream_serhch&quot;
+        android:orientation=&quot;vertical&quot; &gt;
+       &lt;TextView
+        android:id=&quot;@+id/title_one&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;title_one&quot; /&gt;
+       &lt;TextView
+        android:id=&quot;@+id/content_one&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        
+        android:text=&quot;内容一&quot; /&gt;
+       &lt;TextView
+        android:id=&quot;@+id/title_two&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginTop=&quot;20dp&quot;
+        android:text=&quot;title_two&quot; /&gt;
+       &lt;TextView
+        android:id=&quot;@+id/content_two&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;内容二&quot; /&gt;
+       &lt;TextView
+        android:id=&quot;@+id/title_three&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginTop=&quot;20dp&quot;
+        android:text=&quot;title_two&quot; /&gt;
+       &lt;TextView
+        android:id=&quot;@+id/content_three&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;内容二&quot; /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/RelativeLayout&gt;
+</pre><br>
+好了 看 java代码 都写了注释的<br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.example.helper;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.example.helper.bean.DreamResult;
+import com.example.helper.utils.HttpUtils;
+import com.example.helper.utils.HttpUtils.OnNetWorkResponse;
+import com.example.helper.utils.UrlApi;
+
+public class DreamSearch extends Activity {
+	//展示内容的textview
+	private TextView title_one, content_one, title_two, content_two,
+			title_three, content_three;
+	//拼接的url
+	private String url;
+	//输入信息的Edittext
+	private EditText dream_num;
+	//url编码后的url
+	private String encode;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.dream_search);
+//		1.实例化组件
+		initView();
+	}
+
+	private void initView() {
+		dream_num = (EditText) findViewById(R.id.dream_num);
+		title_one = (TextView) findViewById(R.id.title_one);
+		content_one = (TextView) findViewById(R.id.content_one);
+		title_two = (TextView) findViewById(R.id.title_two);
+		content_two = (TextView) findViewById(R.id.content_two);
+		title_three = (TextView) findViewById(R.id.title_three);
+		content_three = (TextView) findViewById(R.id.content_three);
+	}
+
+	public void btn(View view) {
+		//获取用户输入的edittext
+		String str = dream_num.getText().toString().trim();
+		try {
+		//使用urlEncode 进行转换 成url编码格式 发送	
+			encode = URLEncoder.encode(str, &quot;utf-8&quot;);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//拼接字符串 成url
+		url = UrlApi.Four + encode;
+		HttpUtils.RequestNetWork(url, new OnNetWorkResponse() {
+
+			@Override
+			public void ok(String response) {
+				try {
+					/*json格式
+					 * {
+						    &quot;error_code&quot;: 0,
+						    &quot;reason&quot;: &quot;successed&quot;,
+						    &quot;result&quot;: [
+						        {
+						            &quot;des&quot;: &quot;梦见穿连身的窄裙套装，你的性格可能是比较缺乏安全感，所以你潜意识中的美人模样，就是一副很能干、成熟稳重的样子。这可能和你从小对母亲印象的反射有关，或许你的母亲很能干，或许你的母爱不够，曾经在你的童年经验中，留下这种缺陷和不足，因为不足，所以会有需求的渴望，你的潜意识中才会梦到这种女人来给你安全感。&quot;,
+						            &quot;id&quot;: &quot;2b1a12a98f719278090c9eb274f98330&quot;,
+						            &quot;title&quot;: &quot;美女的穿着&quot;
+						        },
+						        {
+						            &quot;des&quot;: &quot;梦见与美貌女子交往，为破财之兆。&quot;,
+						            &quot;id&quot;: &quot;428d02b991f501ca46be297eca767485&quot;,
+						            &quot;title&quot;: &quot;美女&quot;
+						        },
+						        {
+						            &quot;des&quot;: &quot;梦见和美女做爱，其实这是一种正常的生理反应，当然你也不泛曾对女性的幻想，这样就自然而然地做出这种和美女做爱的梦境，以达到泄精的目的。&quot;,
+						            &quot;id&quot;: &quot;e9232f4837c91d1c50cfc6972c2876f1&quot;,
+						            &quot;title&quot;: &quot;和美女做爱&quot;
+						        },
+						        {
+						            &quot;des&quot;: &quot;梦见与美貌女子交往，为破财之兆。&quot;,
+						            &quot;id&quot;: &quot;b756fc5b81ec5229bf2b846636c15027&quot;,
+						            &quot;title&quot;: &quot;与美女交往&quot;
+						        }
+						    ]
+						}
+					 * 大家都看了 是返回了三条字符串，怎么展示呢 我在后面用for循环不知道怎么就失败了
+					 * 
+					 * */
+					//json解析 我就不讲解了，如果不懂看我写的前几篇帖子
+					JSONObject o1 = new JSONObject(response);
+					int error_code = o1.getInt(&quot;error_code&quot;);
+					if (error_code == 0) {
+						//建立一个集合填充数据
+						List&lt;DreamResult&gt; list = new ArrayList&lt;DreamResult&gt;();
+						JSONArray j1 = o1.getJSONArray(&quot;result&quot;);
+						for (int i = 0; i &lt; j1.length(); i++) {
+							JSONObject o2 = j1.getJSONObject(i);
+							DreamResult dreamResult = new DreamResult();
+							dreamResult.setDes(o2.getString(&quot;des&quot;));
+							dreamResult.setTitle(o2.getString(&quot;title&quot;));
+							dreamResult.setId(o2.getString(&quot;id&quot;));
+							list.add(dreamResult);
+						}
+						if (list.size()&gt;=0) {
+							title_one.setText(list.get(0).getTitle());
+							content_one.setText(list.get(0).getDes());
+						}
+						else if(list.size()&gt;=1){
+								title_two.setText(list.get(1).getTitle());
+								content_two.setText(list.get(1).getDes());
+						}
+						else if(list.size()&gt;=2) {
+								title_three.setText(list.get(2).getTitle());
+								content_three.setText(list.get(2).getDes());
+							}
+						
+						
+
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void error(String error) {
+
+			}
+		});
+	}
+}
+</pre><br>
+<span style="font-size:18px"><a target="_blank" href="http://download.csdn.net/detail/jack_king007/8167051">点击下载源码</a></span><br>
+</p>
+<p><span style="color:#FF0000"><span style="font-size:18px"></span></span><br>
+</p>
+<p><br>
+</p>
+<span id="pv-float-bar-container" style="top:487px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm(1)znltjqr/index.html">练手小项目(1)——智能聊天机器人</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzszgjm/index.html">练手小项目（2）生活小助手周公解梦</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzsxzyscx/index.html">练手小项目（2）生活小助手星座运势查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzssfzcx/index.html">练手小项目（2）生活小助手身份证查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm3djs/index.html">练手小项目（3）倒计时</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/gddtjc_poissyjxs/index.html">高德地图教程_poi搜索以及显示</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

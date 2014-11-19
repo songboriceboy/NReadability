@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目之新闻类（3）添加广告栏</div><br><div id="article_content" class="article_content">
+
+<p>&nbsp;上一节讲到将TTFragment依附activity上面 那现在看看Fragment的里面的内容&nbsp; <br>
+</p>
+<p><br>
+</p>
+<p>1.首先我需要一个Listview 展示数据，正好Fragment 里面有个内置的Listview的Fragment&nbsp;&nbsp; ListFragment 为了熟悉Fragment里面怎么使用 我们先看看生命周期</p>
+<p><img src="108203210408998.jpg" alt=""></p>
+<p><span style="font-size:18px; color:#FF0000">第一个 attach方法&nbsp; 先依附在activity的内存空间</span></p>
+<p><span style="font-size:18px; color:#FF0000">Oncreate 方法创立Fragment 在Fragment里面要使用的数据，现在这里初始化好===onActivityCreated</span></p>
+<p><span style="font-size:18px; color:#FF0000">OncreateView&nbsp; 创立布局，在这里讲布局初始化好，可以在这里初始化空间</span></p>
+<p>后面使用到其他生命周期我们在讲 <br>
+</p>
+<p><br>
+</p>
+<p>SO，我们现在onActivityCreated 里面进行联网操作 并进行json解析</p>
+<pre name="code" class="html">    &quot;paramz&quot;: {
+        &quot;links&quot;: [],
+        &quot;matches&quot;: [],
+        &quot;tops&quot;: [
+            {
+                &quot;category&quot;: &quot;advert&quot;,
+                &quot;id&quot;: 7006,
+                &quot;oid&quot;: 22,
+                &quot;photo&quot;: &quot;/Attachs/Top/7006/a5e706a8e2f84d2da4346fd416214902.jpg&quot;,
+                &quot;subject&quot;: &quot;《明星到我家》婆媳乌龙大猜想&quot;
+            },
+            {
+                &quot;category&quot;: &quot;map&quot;,
+                &quot;id&quot;: 7007,
+                &quot;oid&quot;: 4264,
+                &quot;photo&quot;: &quot;/Attachs/Top/7007/35d89871ca574af18af54948ce75f0ec.jpg&quot;,
+                &quot;subject&quot;: &quot;济南一小区现马桶家禽等&quot;占车位神器&quot;&quot;
+            },
+            {
+                &quot;category&quot;: &quot;map&quot;,
+                &quot;id&quot;: 7002,
+                &quot;oid&quot;: 4262,
+                &quot;photo&quot;: &quot;/Attachs/Top/7002/5d7f3805d54d4da6a37355a1b084e5dc.jpg&quot;,
+                &quot;subject&quot;: &quot;山东聊城被扎针女婴出院回家&quot;
+            },
+            {
+                &quot;category&quot;: &quot;map&quot;,
+                &quot;id&quot;: 6999,
+                &quot;oid&quot;: 4254,
+                &quot;photo&quot;: &quot;/Attachs/Top/6999/e219606ff96147ce90310f1bb89bd13b.jpg&quot;,
+                &quot;subject&quot;: &quot;温州市区“卖萌”消防栓引市民围观&quot;
+            },
+            {
+                &quot;category&quot;: &quot;advert&quot;,
+                &quot;id&quot;: 6871,
+                &quot;oid&quot;: 23,
+                &quot;photo&quot;: &quot;/Attachs/Top/6871/0388422c5adb4792b3a010115125b923.jpg&quot;,
+                &quot;subject&quot;: &quot;活动：全民付点亮生活&quot;
+            }
+        ]
+    },
+    &quot;status&quot;: &quot;ok&quot;
+}</pre><br>
+json 结构图&nbsp; 如果没有这个工具 可以看 我昨天写的文章
+<p><span style="font-size:18px"><a target="_blank" href="http://blog.csdn.net/jack_king007/article/details/40897217">作为安卓开发者必备的小软件（全是干货）
+</a></span><br>
+</p>
+<p><img src="38993947808531.jpg" alt=""></p>
+<p>最外层是 {} 用jsonObject&nbsp; <br>
+</p>
+<p>JSONObject jsonObject = JSONObject<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.parseObject(response);</p>
+<p>2.通过getString 可以得到 特征码 和paramz&nbsp; 然后继续解析当然你要先解析特征码 看是不是 成功<br>
+</p>
+<p>String status = jsonObject.getString(&quot;status&quot;);</p>
+<p>if (&quot;ok&quot;.equals(status))</p>
+<p>3.然后解析paramz&nbsp;&nbsp; 因为还是{} 所以还是用jsonobject<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp; JSONObject jsonObject2 = jsonObject<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.getJSONObject(&quot;paramz&quot;);</p>
+<p>4.然后里面的tops是我们想要的&nbsp; <br>
+</p>
+<p>通过getString 获得tops里面的内容</p>
+<p>String tops = jsonObject2.getString(&quot;tops&quot;);</p>
+<p>5.然后根据tops里面的内容 写实体类</p>
+<p>我FastJson也是第一次用 先把所有属性写出来吧 然后把tosTRing 方法写出来 构造 和空构造&nbsp;&nbsp;</p>
+<pre name="code" class="java">package com.example.android20_lzhxw.beans;
+/**
+ * 导航上面的数据的实体类
+ * 要展示出去：图片photo（url）、subject
+ * @author cj
+ *
+ */
+public class TopPagerInfo {
+	private String id,oid,category,photo,subject;
+	
+	
+
+	public TopPagerInfo() {
+		super();
+	}
+
+	public TopPagerInfo(String id, String oid, String category, String photo,
+			String subject) {
+		super();
+		this.id = id;
+		this.oid = oid;
+		this.category = category;
+		this.photo = photo;
+		this.subject = subject;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;TopPager [id=&quot; + id + &quot;, oid=&quot; + oid + &quot;, category=&quot; + category
+				+ &quot;, photo=&quot; + photo + &quot;, subject=&quot; + subject + &quot;]&quot;;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	
+}
+</pre><br>
+Fastjson就这里方便 你只要写出实体类，和json&nbsp; 就能帮你解析成集合数据&nbsp; <br>
+<p>List&lt;TopPagerInfo&gt; list = JSONArray.parseArray(<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;tops, TopPagerInfo.class);<br>
+</p>
+<p><br>
+</p>
+<p>// 填充在ViewPager的item中<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;List&lt;View&gt; views = new ArrayList&lt;View&gt;();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;for (int i = 0; i &lt; list.size(); i&#43;&#43;) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;TopPagerInfo topPagerInfo = list.get(i);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;View view = View.inflate(getActivity(),<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;R.layout.item_pager, null);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;ImageView imgv = (ImageView) view<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.findViewById(R.id.imgv_pagerItem);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;imgv.setImageResource(R.drawable.ic_launcher);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;ImageLoader.loadImg(AppURLFinal.URL_IMGBASE<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&#43; topPagerInfo.getPhoto(), imgv,<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;getActivity());<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;TextView txtv = (TextView) view<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.findViewById(R.id.txtv_pagerItem);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;txtv.setText(topPagerInfo.getSubject());<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;views.add(view);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}</p>
+<p>然后将数据填充到广告栏里面去 其中数据源就是 上面的 集合 views&nbsp; <br>
+</p>
+<p>广告栏的布局&nbsp; 可以看到上面是一个自定义viewpage 下面是一个页码<br>
+</p>
+<pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;100dp&quot;&gt;
+
+    &lt;com.example.android20_lzhxw.mviews.TopViewPager
+        android:id=&quot;@+id/pager_header&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;100dp&quot; &gt;
+    &lt;/com.example.android20_lzhxw.mviews.TopViewPager&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/txtv_header&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot; 
+        android:background=&quot;#ff0000&quot;
+        android:padding=&quot;5dp&quot;
+        android:textColor=&quot;#ffffff&quot;
+        android:layout_alignBottom=&quot;@+id/pager_header&quot;/&gt;
+
+&lt;/RelativeLayout&gt;</pre>自定义viewpage 里面 加了一个事件处理机制 <br>
+<pre name="code" class="java">package com.example.android20_lzhxw.mviews;
+
+import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+
+public class TopViewPager extends ViewPager{
+	public TopViewPager(Context context) {
+		super(context);
+	}
+	public TopViewPager(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		getParent().requestDisallowInterceptTouchEvent(true);
+		return super.dispatchTouchEvent(ev);
+	}
+
+}
+</pre><br>
+<br>
+<p>View header = View.inflate(getActivity(),<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;R.layout.header, null);<br>
+</p>
+<p>TopPagerAdapter pagerAdapter = new TopPagerAdapter(<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;views);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pager.setAdapter(pagerAdapter);<br>
+</p>
+<p>PagerAdapter有四个方法<br>
+</p>
+<p>1getCount（）总共有几个view</p>
+<p>2.instantiateItem（）初始化position处的item<br>
+</p>
+<p>3.destroyItem 销毁条目上的信息</p>
+<p>4.isViewFromObject</p>
+<p><span style="color:#006600">功能：该函数用来判断instantiateItem(ViewGroup, int)函数所返回来的Key与一个页面视图是否是代表的同一个视图(即它俩是否是对应的，对应的表示同一个View)</span></p>
+<pre name="code" class="java">package com.example.android20_lzhxw.adapters;
+
+import java.util.List;
+
+import android.support.v4.view.PagerAdapter;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.android20_lzhxw.beans.TopPagerInfo;
+
+public class TopPagerAdapter extends PagerAdapter {
+	private List&lt;View&gt; views;
+
+	public TopPagerAdapter(List&lt;View&gt; views) {
+		super();
+		this.views = views;
+	}
+	
+	@Override
+	public int getCount() {
+		return views == null ? 0 : views.size();
+	}
+	
+	@Override
+	public Object instantiateItem(ViewGroup container, int position) {
+		container.addView(views.get(position));
+		return views.get(position);
+	}
+
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		container.removeView(views.get(position));
+	}
+
+	@Override
+	public boolean isViewFromObject(View arg0, Object arg1) {
+		return arg0==arg1;
+	}
+
+}
+</pre>然后设置页面 在不懂的时候显示当前页码和 滑动的时候设置页面信息
+<p>//textView的显示内容，标示Pager页码<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;final TextView txv_page=(TextView) header.findViewById(R.id.txtv_header);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;final int size=views.size();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;txv_page.setText(&quot;1/&quot;&#43;size);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pager.setOnPageChangeListener(new OnPageChangeListener() {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;@Override<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;public void onPageSelected(int arg0) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;txv_page.setText(arg0&#43;1&#43;&quot;/&quot;&#43;size);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;@Override<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;public void onPageScrolled(int arg0, float arg1, int arg2) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;@Override<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;public void onPageScrollStateChanged(int arg0) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;});<br>
+</p>
+<p>因为listFragment 内置了一个listview 所以 先要获取到</p>
+<p>// 获取ListFragment的ListVIew<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;ListView listView = getListView(); <br>
+</p>
+<p>然后将 Viewpage 设置到listview 头部</p>
+<p>&nbsp;&nbsp;&nbsp; // 添加头部视图的时候，必须在setAdapter之前。<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;listView.addHeaderView(header);</p>
+<p>下一节讲解填充listview的数据<br>
+</p>
+<span id="pv-float-bar-container" style="top:71px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/fxsjwsdgx/index.html">复习手机卫士的构想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPszecjbhbdjg/index.html">天气APP实战二（创建表和包的结构）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPdsz1/index.html">天气APP的实战（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl1lw/index.html">练手小项目之新闻类（1）联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl2Fragmentdlzlj/index.html">练手小项目之新闻类（2）Fragment的另种理解</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl3tjggl/index.html">练手小项目之新闻类（3）添加广告栏</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl4Listviewtphp/index.html">练手小项目之新闻类（4）Listview图片混排</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

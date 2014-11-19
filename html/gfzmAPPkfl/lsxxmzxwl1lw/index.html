@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>练手小项目之新闻类（1）联网</div><br><div id="article_content" class="article_content">
+
+<p>最近培训安卓阶段快要结束了，也拿了个项目教我们做，其实我想提醒大家，既然是练手项目，就有他的意义。</p>
+<p>&nbsp;<span style="font-family:宋体">就拿我前一篇天气教程，一个简单的</span><span style="font-family:Times New Roman">APP</span><span style="font-family:宋体">也有难点，比如数据持久化，图片缓存。多多练手也对于我们这些初级开发者有着重要的意义。</span></p>
+<p>因为只是一个练手项目，页面做的很丑，但是其中含有很多技术点。&nbsp;</p>
+<p><span style="color:#ff00">1.Fastjson&nbsp;<span style="font-family:宋体">解析</span></span></p>
+<p><span style="color:#ff00">2.<span style="font-family:宋体">联网工具内自带线程范问</span></span></p>
+<p><span style="color:#ff00">3.<span style="font-family:宋体">广告栏</span></span></p>
+<p><span style="color:#ff00">4.<span style="font-family:宋体">图片缓存</span></span></p>
+<p><span style="color:#ff00">5.<span style="font-family:宋体">数据持久化</span><span style="font-family:Times New Roman">-</span><span style="font-family:宋体">保存到本地</span></span></p>
+<p>&nbsp;</p>
+<p>我这一节讲解的是联网工具类。我知道联网工具类，有很多，<span style="font-family:Times New Roman">Httpconnection</span><span style="font-family:宋体">，</span><span style="font-family:Times New Roman">httpclient</span><span style="font-family:宋体">，</span><span style="font-family:Times New Roman">Xutils</span><span style="font-family:宋体">，</span><span style="font-family:Times New Roman">volley</span><span style="font-family:宋体">，</span><span style="font-family:Times New Roman">ansy—http</span></p>
+<p>如果前两种因为是初级封装，只是将联网加入，像后面三种都是自己开了线程<span style="font-family:Times New Roman">or&nbsp;</span><span style="font-family:宋体">线程池去联网。所以大家在用用后三种是不用考虑是不是在主线程。前两种得自己开启线程了。</span></p>
+<p>我现在要写的就是第四层<span style="font-family:Times New Roman">&nbsp;&nbsp;</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td valign="center">
+<p>第一层封装就是只是将Http的联网封装进了一个类，但是返回的是一个流，而我们需要的是一个String类型的字符床</p>
+</td>
+<td valign="center">
+<p>&nbsp;</p>
+</td>
+<td valign="center">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td valign="center">
+<p>第二层就是将输入流转字符串加进入了&nbsp;也就是用bufferread进行转&nbsp;输出String，这个时候基本已经满足了我们的需求了，但是还要为了他单独开线程这样不好。</p>
+</td>
+</tr>
+<tr>
+<td valign="center">
+<p>第三层&nbsp;加入线程池&nbsp;进行联网&nbsp;handler.post发送结果，用借口回调给调用者</p>
+</td>
+</tr>
+<tr>
+<td valign="center">
+<p>第四层加入&nbsp;访问图片</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><br>
+</p>
+<p>慢慢来，特别是接口回调</p>
+<p><br>
+</p>
+<p>1. // 使用线程池来下载图片，同一时刻，最多有3个线程在运行<br>
+&nbsp;&nbsp; &nbsp;private static ExecutorService execuotrs = Executors.newFixedThreadPool(3); <br>
+会得到一个 execuotrsService对象 注意的是 通过对象会执行 线程操作</p>
+<p><br>
+</p>
+<p>2.建立接口，并作为参数 ，回调数据</p>
+<p>&nbsp;&nbsp;&nbsp; public interface OnNetWorkResponse {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;public void ok(String response);<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;public void error(String error);<br>
+&nbsp;&nbsp; &nbsp;}</p>
+<p>3.接着就是联网 <br>
+</p>
+<p>URL url = new URL(path);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;HttpURLConnection connection = (HttpURLConnection) url<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.openConnection();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;connection.setConnectTimeout(5000);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;connection.setDoInput(true);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;connection.connect();</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p>4.输入流转String</p>
+<p>if (connection.getResponseCode() == 200) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inputStream = connection.getInputStream();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;outStream = new ByteArrayOutputStream();<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;byte[] b = new byte[1024];<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;int len = 0;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;while ((len = inputStream.read(b)) != -1) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;outStream.write(b, 0, len);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;outStream.flush();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;final String result = new String(<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;outStream.toByteArray());</p>
+<p>5.用handler发送消息回去</p>
+<p><br>
+</p>
+<p>6.调用的话只需要将接口实例化就行了</p>
+<p><pre name="code" class="java">HttpUtils.RequestNetWork(AppURLFinal.URL_NAVIGATION,
+				new OnNetWorkResponse() {
+
+					@Override
+					public void ok(String response) {</pre><br>
+同理，访问图片也就是将 流转成了位图</p>
+<p>final Bitmap bitmap = BitmapFactory<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;.decodeStream(inputStream);</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p>HttpUtils</p>
+<p><pre name="code" class="java">package com.example.android20_lzhxw.utils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteOrder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+
+/**
+ * 封装的 网络 + 线程
+ */
+public class HttpUtils {
+
+	// 使用线程池来下载图片，同一时刻，最多有3个线程在运行
+	private static ExecutorService execuotrs = Executors.newFixedThreadPool(3);
+
+	interface OnBitmapNetWorkResponse {
+		public void ok(Bitmap bitmap);
+
+		public void error(String error);
+	}
+
+	public static void RequestBitmapNetWork(final String path,
+			final OnBitmapNetWorkResponse response) {
+		
+		final Handler handler = new Handler();
+
+		execuotrs.execute(new Runnable() {
+			@Override
+			public void run() {
+				boolean isNetWorkOK = false;
+				try {
+					URL url = new URL(path);
+					HttpURLConnection openConnection = (HttpURLConnection) url
+							.openConnection();
+					openConnection.setConnectTimeout(5000);
+					openConnection.connect();
+					if (openConnection.getResponseCode() == 200) {
+						InputStream inputStream = openConnection
+								.getInputStream();
+						final Bitmap bitmap = BitmapFactory
+								.decodeStream(inputStream);
+
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								response.ok(bitmap);
+							}
+						});
+
+						inputStream.close();
+						isNetWorkOK = true;
+					}
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if (!isNetWorkOK) {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								response.error(&quot;服务器不在服务区内！&quot;);
+							}
+						});
+
+					}
+
+				}
+
+			}
+		});
+	}
+
+	public interface OnNetWorkResponse {
+		public void ok(String response);
+
+		public void error(String error);
+	}
+
+	public static void RequestNetWork(final String path,
+			final OnNetWorkResponse response) {
+		//实例化handler 
+		final Handler hanlder = new Handler();
+
+		new Thread() {
+			public void run() {
+				//标志位
+				boolean isWorkOK = false;
+				
+				InputStream inputStream = null;
+				ByteArrayOutputStream outStream = null;
+				try {
+					URL url = new URL(path);
+					HttpURLConnection connection = (HttpURLConnection) url
+							.openConnection();
+					connection.setConnectTimeout(5000);
+					connection.setDoInput(true);
+					connection.connect();
+
+					if (connection.getResponseCode() == 200) {
+						inputStream = connection.getInputStream();
+						outStream = new ByteArrayOutputStream();
+
+						byte[] b = new byte[1024];
+						int len = 0;
+						while ((len = inputStream.read(b)) != -1) {
+							outStream.write(b, 0, len);
+						}
+						outStream.flush();
+						final String result = new String(
+								outStream.toByteArray());
+
+						hanlder.post(new Runnable() {
+
+							@Override
+							public void run() {
+								response.ok(result);
+							}
+						});
+
+						isWorkOK = true;
+					}
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					// 网络操作出问题
+					if (!isWorkOK) {
+						response.error(&quot;服务器走神拉！&quot;);
+					}
+
+					if (inputStream != null) {
+						try {
+							inputStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					if (outStream != null) {
+						try {
+							outStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+
+			};
+		}.start();
+
+	}
+
+}
+</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/fxsjwsdgx/index.html">复习手机卫士的构想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPszecjbhbdjg/index.html">天气APP实战二（创建表和包的结构）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/tqAPPdsz1/index.html">天气APP的实战（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl1lw/index.html">练手小项目之新闻类（1）联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl2Fragmentdlzlj/index.html">练手小项目之新闻类（2）Fragment的另种理解</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl3tjggl/index.html">练手小项目之新闻类（3）添加广告栏</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/lsxxmzxwl4Listviewtphp/index.html">练手小项目之新闻类（4）Listview图片混排</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

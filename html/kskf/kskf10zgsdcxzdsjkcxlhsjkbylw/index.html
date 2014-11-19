@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>快速开发10之归属地查询——自带数据库查询类和数据库不用联网</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">去数据库查询号码归属地</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">1.网络查询&nbsp;</span></p>
+<p><span style="font-size:18px">2.本地的数据库--数据库写一个工具类，去查询数据库</span></p>
+<p><span style="font-size:18px">对于现在时代能不用流量就不用啊，所以选择第二种重点是因为在安卓里面 数据库必须放在asset里面而要找到必须先初始化拷贝进去</span></p>
+<p><span style="font-size:18px">在activity初始化的时候 加入<span style="white-space:pre"> </span>
+copyDB();方法</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">/**
+* //path 把address.db这个数据库拷贝到data/data/《包名》/files/address.db
+*/
+	private void copyDB() {
+		//只要你拷贝了一次，我就不要你再拷贝了
+		try {
+			//得到目录
+			File file = new File(getFilesDir(), &quot;address.db&quot;);
+			if(file.exists()&amp;&amp;file.length()&gt;0){
+				//正常了，就不需要拷贝了
+				Log.i(TAG, &quot;正常了，就不需要拷贝了&quot;);
+			}else{
+				InputStream is = getAssets().open(&quot;address.db&quot;);
+				
+				FileOutputStream fos = new FileOutputStream(file);
+				byte[] buffer = new byte[1024];
+				int len = 0;
+				while((len = is.read(buffer))!= -1){
+					fos.write(buffer, 0, len);
+				}
+				is.close();
+				fos.close();
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}</pre>其中还有万能代码，基本上输入输出是基本搞得定</p>
+<p><span style="font-size:18px">接下来的代码 查询数据库的类 可以直接复制进你的项目中</span></p>
+<p><span style="font-size:18px">NumberAddressQueryUtils</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package com.xiaoxin.MobleSafe.dao;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+public class NumberAddressQueryUtils {
+
+	private static String path = &quot;data/data/com.xiaoxin.MobleSafe/files/address.db&quot;;
+
+	/**
+	 * 传一个号码进来，返回一归属地回去
+	 * 
+	 * @param number
+	 * @return
+	 */
+	public static String queryNumber(String number) {
+		String address = number;
+		// path 把address.db这个数据库拷贝到data/data/《包名》/files/address.db
+		SQLiteDatabase database = SQLiteDatabase.openDatabase(path, null,
+				SQLiteDatabase.OPEN_READONLY);
+		// 手机号码 13 14 15 16 18
+		// 手机号码的正则表达式
+		if (number.matches(&quot;^1[34568]\\d{9}$&quot;)) {
+			// 手机号码
+
+			Cursor cursor = database
+					.rawQuery(
+							&quot;select location from data2 where id = (select outkey from data1 where id = ?)&quot;,
+							new String[] { number.substring(0, 7) });
+
+			while (cursor.moveToNext()) {
+
+				String location = cursor.getString(0);
+				address = location;
+			}
+			cursor.close();
+
+		} else {
+			// 其他的电话号码
+			switch (number.length()) {
+			case 3:
+				// 110
+				address = &quot;匪警号码&quot;;
+				break;
+			case 4:
+				// 5554
+				address = &quot;模拟器&quot;;
+				break;
+			case 5:
+				// 10086
+				address = &quot;客服电话&quot;;
+				break;
+			case 7:
+				//
+				address = &quot;本地号码&quot;;
+				break;
+
+			case 8:
+				address = &quot;本地号码&quot;;
+				break;
+
+			default:
+				// /处理长途电话 10
+				if (number.length() &gt; 10 &amp;&amp; number.startsWith(&quot;0&quot;)) {
+					// 010-59790386
+					Cursor cursor = database.rawQuery(
+					&quot;select location from data2 where area = ?&quot;,
+					new String[] { number.substring(1, 3) });
+
+			while (cursor.moveToNext()) {
+		&lt;span style=&quot;white-space:pre&quot;&gt;	&lt;/span&gt;String location = cursor.getString(0);
+			address = location.substring(0, location.length() - 2);
+					}
+					cursor.close();
+
+					// 0855-59790386
+					cursor = database.rawQuery(
+					&quot;select location from data2 where area = ?&quot;,
+					new String[] { number.substring(1, 4) });
+					while (cursor.moveToNext()) {
+				String location = cursor.getString(0);
+				address = location.substring(0, location.length() - 2);
+
+					}
+				}
+
+				break;
+			}
+
+		}
+
+		return address;
+	}
+
+}</pre>数据库的问题，你可以去某宝买一个也不贵20元&nbsp;<br>
+<br>
+<br>
+</p>
+<p>
+<p>
+<p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/azViewpagexj1ggt/index.html">安卓Viewpage详解（1）——广告条</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf03zsssbqhdpd/index.html">快速开发03之手势识别器——滑动判断</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf04zdhdtypz/index.html">快速开发04之动画的统一配置</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf05zbzzfdsqysyyksfz/index.html">快速开发05之不做重复的事情——样式一样快速复制</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf06zMD5jmldsy/index.html">快速开发06之MD5加密类的使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf07zsrlzzf/index.html">快速开发07之输入流转字符</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf08zgsdcxTextviewzdxsnr/index.html">快速开发08之归属地查询——Textview自动显示内容</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf09zgsdcxxttgdddzdfw/index.html">快速开发09之归属地查询——系统提供的抖动振动服务</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf10zgsdcxzdsjkcxlhsjkbylw/index.html">快速开发10之归属地查询——自带数据库查询类和数据库不用联网</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf11zdcdjsjsxgndwndm/index.html">快速开发11之多次点击事件实现功能的万能代码</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf12zpmspandroiddphpxzjzh/index.html">快速开发12之屏幕适配—androiddp和px之间转换</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf13zkjqd/index.html">快速开发13之开机启动</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskf14zcjkjfs/index.html">快速开发14之创建快捷方式</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz01buttondanxg/index.html">快速开发之01——button的按钮效果</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/kskfz02textviewnydjsjfs/index.html">快速开发之02——textview能有点击事件发生</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/jnzmqygAPPdJSONsjndd/index.html">教你怎么去一个APP的JSON数据，你懂的</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/sjcjhzSPdyhsgjl/index.html">数据持久化之SP的优化—送工具类</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

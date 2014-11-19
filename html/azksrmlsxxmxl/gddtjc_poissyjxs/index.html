@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高德地图教程_poi搜索以及显示</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:14px">最近打算高仿深圳通的应用，UI已经做好了，我看过APP的查询接口，断了网也可以查询这就表明数据是保存在数据库，或者就是第一次联网，就在网站将数据全部下好了。我就想干脆用地图提供的查询吧。</span></p>
+<p><span style="font-size:14px">以前是接触的百度地图，不过百度地图，不怎么好用，我也就用高德地图了关于工程建立 可以看官方文档，</span></p>
+<p><span style="font-size:14px"><span style="font-size:18px"><a target="_blank" href="http://lbs.amap.com/api/android-sdk/guide/project/">高德配置项目&nbsp;&nbsp;&nbsp;
+<br>
+</a></span></span></p>
+<p><br>
+</p>
+<p>到后面的项目，说不是很清楚，要看官方demo才行。我就干脆自己写一个。 看UI吧 我再把UI代码贴出来 <br>
+</p>
+<p><img src="11270439623178.jpg" alt=""></p>
+<p><br>
+</p>
+<p>Edittext输入信息 button将数据提交查询 listview 显示查询回调的数据&nbsp; <br>
+</p>
+<p><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;horizontal&quot;
+        tools:ignore=&quot;UselessLeaf,UselessParent&quot; &gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/et_keyword&quot;
+            android:layout_width=&quot;0dp&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_weight=&quot;2&quot;
+            android:hint=&quot;请输入关键字&quot; /&gt;
+
+        &lt;Button
+            android:id=&quot;@+id/btn_search&quot;
+            android:layout_width=&quot;0dp&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_weight=&quot;1&quot;
+            android:text=&quot;搜索&quot; /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;ListView
+        android:id=&quot;@+id/lv_result&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot; /&gt;
+
+&lt;/LinearLayout&gt;</pre><br>
+<br>
+</p>
+<p>第一步：初始化控件 <br>
+</p>
+<p><pre name="code" class="java">	// 控件相关
+	private EditText mEtKeyword;
+	private Button mBtnSearch;
+	private ListView mLvResult;</pre><br>
+<pre name="code" class="java">	private void initView() {
+		mEtKeyword = (EditText) findViewById(R.id.et_keyword);
+
+		mBtnSearch = (Button) findViewById(R.id.btn_search);
+
+		mLvResult = (ListView) findViewById(R.id.lv_result);
+		mBtnSearch.setOnClickListener(this);
+		mLvResult.setOnItemClickListener(this);
+	}</pre><br>
+第二部 看button点击事件处理 <br>
+</p>
+<p><pre name="code" class="java">	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_search:
+			//1.获得用户输入数据
+			String keyword = mEtKeyword.getText().toString();
+			//2.判断用户是否输入为空
+			if (keyword.trim().length() == 0) {
+				Toast.makeText(this, &quot;请输入查询条件&quot;, Toast.LENGTH_LONG).show();
+			} else {
+			//3.不为空进行搜索	
+				search(keyword);
+			}
+			break;
+		default:
+			break;
+		}
+	}</pre><br>
+第三步 看搜索数据以及返回</p>
+<p>这时候我们看看官方文档是怎么说的<br>
+</p>
+<p>
+<h3><span id="keyword">关键字搜索</span></h3>
+<p>
+<p>1.搜索条件设置</p>
+<p>您需要通过 PoiSearch.Query(String query, String ctgr, String city) 设置搜索条件。参数“query”为搜索的关键字，“ctgr”为搜索类型（类型参照表从相关下载处获取）、“city”为搜索城市。关键字、类型至少输入一个，搜索城市必须输入。</p>
+<p>通过 Query.setPageSize(int) 设置查询每页的结果数目；</p>
+<p>通过 Query.setPageNum(int) 设置查询第几页。</p>
+<p>2.发送请求和接收数据。</p>
+<p>使用 PoiSearch.searchPOIAsyn() 搜索 POI。使用 PoiSearch.setOnPoiSearchListener() 方法设置监听器，在 PoiSearch.OnPoiSearchListener 接口回调方法 onPoiSearched(PoiResult poiResult,int rCode)中处理返回结果。当指定搜索城市时，若没有返回 POI 结果，则会返回包含关键字的建议城市名称。当关键字搜索无结果时，则会返回搜索建议关键字。</p>
+SO&nbsp; 我们先定义 <br>
+<p>&nbsp;&nbsp;&nbsp; // 兴趣点查询先关<br>
+&nbsp;&nbsp; &nbsp;private PoiSearch search;<br>
+&nbsp;&nbsp; &nbsp;//会返回查询数据的类<br>
+&nbsp;&nbsp; &nbsp;private PoiSearch.Query query;<br>
+</p>
+<p>因为我在深圳 所以 我会搜深圳的东西</p>
+<p><pre name="code" class="java">	private void search(String keyword) {
+		// 初始化查询条件
+		query = new Query(keyword, null, &quot;深圳&quot;);
+		query.setPageSize(10);
+		query.setPageNum(1);
+
+		// 查询兴趣点
+		search = new PoiSearch(this, query);
+		// 异步搜索
+		search.searchPOIAsyn();
+		search.setOnPoiSearchListener(this);
+	}</pre><br>
+第四步 看回调数据&nbsp; 因为我们自己设置了 返回10条数据&nbsp; 用listview 显示</p>
+<p><pre name="code" class="java">	/* -------------------- 兴趣点查询回调 -------------------- */
+	@Override
+	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
+
+	}
+
+	@Override
+	public void onPoiSearched(PoiResult poiResult, int rCode) {
+		List&lt;String&gt; strs = new ArrayList&lt;String&gt;();
+		items = poiResult.getPois();
+		if (items != null &amp;&amp; items.size() &gt; 0) {
+			PoiItem item = null;
+			for (int i = 0, count = items.size(); i &lt; count; i++) {
+				item = items.get(i);
+				strs.add(item.getTitle());
+			}
+			// 给ListView赋值，显示结果
+			ArrayAdapter&lt;String&gt; array = new ArrayAdapter&lt;String&gt;(this,
+					android.R.layout.simple_list_item_1, strs);
+			mLvResult.setAdapter(array);
+		}
+	}
+
+	/* -------------------- 兴趣点查询回调 -------------------- */</pre><br>
+<br>
+</p>
+<p><br>
+<span style="font-size:14px"><span style="font-size:18px"><a target="_blank" href="http://lbs.amap.com/api/android-sdk/guide/project/"></a></span></span></p>
+<p><span style="font-size:14px"><br>
+</span></p>
+<span id="pv-float-bar-container" style="top:1003px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm(1)znltjqr/index.html">练手小项目(1)——智能聊天机器人</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzszgjm/index.html">练手小项目（2）生活小助手周公解梦</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzsxzyscx/index.html">练手小项目（2）生活小助手星座运势查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm2shxzssfzcx/index.html">练手小项目（2）生活小助手身份证查询</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/lsxxm3djs/index.html">练手小项目（3）倒计时</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/gddtjc_poissyjxs/index.html">高德地图教程_poi搜索以及显示</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>从java网络编程学起（1）</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:24px">IP 与InetAddress</span><br>
+<p><span style="font-size:18px">1了解IP地址的使用</span></p>
+<p>IP介绍：在互联网上每一台计算机都有一个唯一标示自己的标记这个地址就是IP地址<br>
+</p>
+<p><span style="font-size:14px">在java中支持网络通讯程序的开发，主要提供了两种通讯协议</span><br>
+<span style="font-size:14px">TCP协议和UDP协议<br>
+1.可靠的连接传输，使用第三方握手的方式完成通讯<br>
+2.不可靠的连接传输 传输的时候接收方不一定可以接到到</span><br>
+所有程序都在开发包里 java.net<br>
+</p>
+<p><span style="font-size:18px">IP地址表示<br>
+IP地址使用32位长度二进制的数据表示，一般在实际中看到的大部分IP地址都是十进制的数据形式表示<br>
+如果193.168.1.168<br>
+IP地址&#26684;式<br>
+IP地址=网络地址&#43;主机地址<br>
+网络号：用于识别主机所在的网络<br>
+主机号：用于识别该网络中的主机<br>
+IP地址中存在的掩码功能就是区分网络号和主机号</span><br>
+</p>
+<p><img src="44878615711506.jpg" alt=""><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:18px">IP地址分类 &nbsp;A类保留给了政府机构 &nbsp;B类分给了中等规模的公司C类分给有需要的人 D类用于主播E类用于实验</span><br>
+</p>
+<p><span style="font-size:18px"><img src="4093005420687.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">实际上可以用127.0.0.1作为本机地址或者用locahost也代表本机</span></p>
+<p><span style="font-size:18px">2了解inetAddress类的使用</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="font-size:18px">inetAddress类主要表示IP地址 这个类有两个子类 inet4Address inet6Address一个是IPV4&nbsp;<br>
+一个是IPV6随着网络主机越来越多 之后就发展为IPV6<br>
+</span></p>
+<p><span style="font-size:18px"><img src="59778110068273.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:18px">实例</span></p>
+<p><span style="font-size:18px"></span><pre name="code" class="java">package KownClass ;
+
+import java.net.InetAddress ;
+public class FactoryDemo02{
+	public static void main(String args[]) throws Exception {// 所有异常抛出
+		InetAddress locAdd = null ;
+		InetAddress remAdd = null ;
+		locAdd = InetAddress.getLocalHost() ;// 得到本机
+		remAdd = InetAddress.getByName(&quot;http://www.mldnjava.cn/&quot;)  ;
+		System.out.println(&quot;本机的IP地址：&quot; + locAdd.getHostAddress()) ;
+		System.out.println(&quot;MLDNJAVA的IP地址：&quot; + remAdd.getHostAddress()) ;
+		System.out.println(&quot;本机是否可达：&quot; + locAdd.isReachable(5000)) ;
+	}
+};</pre><br>
+<br>
+</p>
+<br>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/01SAXjxxml/index.html">01SAX解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/02domjx/index.html">02dom解析</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/03pulljxxml/index.html">03pull解析xml</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/04pullscXML/index.html">04pull生成XML</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/05SaxDompulldbj/index.html">05SaxDompull的比较</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/androidzsygethpostfsxfwqtjqq/index.html">android之使用get和post方式向服务器提交请求</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq1/index.html">从java网络编程学起（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq2/index.html">从java网络编程学起（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cjavawlbcxq4/index.html">从java网络编程学起（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdzefwqdjl/index.html">安卓服务器端之二服务器的建立</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/azfwqdkfzysjkdzb/index.html">安卓服务器端开发之一数据库的准备</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/cpxmzxyfxfz/index.html">彩票项目之协议分析，封装</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

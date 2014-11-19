@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>day2自定义对话框</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">小新最近打算把360安全卫士中的知识点给列出来，为自己以后的快速开发提供帮助，先看效果吧</span></p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><img src="31194276753229.jpg" alt=""><br>
+</p>
+<p><br>
+</p>
+<p><span style="font-size:24px">其实也就是将一个XML用view形式传入进去</span><pre name="code" class="java">/**
+  * 设置密码对话框
+  */
+ private void showSetupPwdDialog() {
+  AlertDialog.Builder builder=new Builder(HomeActivity.this);
+  //自定义一个布局文件
+  View view=	View.inflate(HomeActivity.this, R.layout.dialog_setup_password, null);
+  et_setup_pwd = (EditText) view.findViewById(R.id.et_setup_pwd);
+  et_setup_confirm = (EditText) view.findViewById(R.id.et_setup_confirm);
+  ok = (Button) view.findViewById(R.id.ok);
+  cancel = (Button) view.findViewById(R.id.cancel);
+  cancel.setOnClickListener(new OnClickListener() {
+
+   @Override
+   public void onClick(View v) {
+    //把这个对话框取消掉
+    dialog.dismiss();
+   }
+  });
+  ok.setOnClickListener(new OnClickListener() {
+
+   @Override
+   public void onClick(View v) {
+   // 取出密码
+    String password = et_setup_pwd.getText().toString().trim();
+    String password_confirm = et_setup_confirm.getText().toString().trim();
+    if(TextUtils.isEmpty(password) || TextUtils.isEmpty(password_confirm)){
+     Toast.makeText(HomeActivity.this, &quot;密码为空&quot;, 0).show();
+     return;
+    }
+    //判断是否一致才去保存
+    if(password.equals(password_confirm)){
+     //一致的话，就保存密码，把对话框消掉，还要进入手机防盗页面
+     Editor editor = sp.edit();
+     editor.putString(&quot;password&quot;, MD5Utils.md5Password(password));//保存加密后的
+     editor.commit();
+     dialog.dismiss();
+     Log.i(TAG, &quot;一致的话，就保存密码，把对话框消掉，还要进入手机防盗页面&quot;);
+     Intent intent = new Intent(HomeActivity.this,LostFindActivity.class);
+     startActivity(intent);
+    }else{
+
+     Toast.makeText(HomeActivity.this, &quot;密码不一致&quot;, 0).show();
+     return ;
+    }
+
+
+
+   }
+  });
+  dialog=builder.create();
+  dialog.setView(view,0,0,0,0);
+  dialog.show();
+ }</pre><br>
+<br>
+</p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<br>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px">xml代码</span></p>
+<p><span style="font-size:24px"></span><pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;300dip&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:gravity=&quot;center_horizontal&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+
+    &lt;TextView
+        android:layout_width=&quot;300dip&quot;
+        android:layout_height=&quot;50dip&quot;
+        android:background=&quot;#66ff6600&quot;
+        android:gravity=&quot;center&quot;
+        android:text=&quot;设置密码&quot;
+        android:textColor=&quot;#000000&quot;
+        android:textSize=&quot;22sp&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/et_setup_pwd&quot;
+        android:layout_width=&quot;280dip&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:hint=&quot;请输入你的密码&quot;
+        android:inputType=&quot;textPassword&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/et_setup_confirm&quot;
+        android:layout_width=&quot;280dip&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:hint=&quot;请再次输入密码&quot;
+        android:inputType=&quot;textPassword&quot; /&gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;300dip&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:gravity=&quot;center_horizontal&quot;
+        android:orientation=&quot;horizontal&quot; &gt;
+
+        &lt;Button
+            android:id=&quot;@+id/ok&quot;
+            android:layout_width=&quot;140dip&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:text=&quot;确定&quot; /&gt;
+
+        &lt;Button
+            android:id=&quot;@+id/cancel&quot;
+            android:layout_width=&quot;140dip&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:text=&quot;取消&quot; /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;</pre><br>
+<br>
+</p>
+<p><span style="font-size:24px"><br>
+<br>
+</span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/androidzdmyhbasel/index.html">android之代码优化（base类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/day2zdydhk/index.html">day2自定义对话框</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/zwazkfzbbdxrjqsgh/index.html">作为安卓开发者必备的小软件（全是干货）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/gfxwjcGridviewddjsjcl(2)/index.html">高仿新闻教程Gridview的点击事件处理(2)</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

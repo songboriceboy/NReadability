@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>java基础之构造方法</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:24px">记住一句话：一旦有对象实例化就会调用构造方法</span></p>
+<p><span style="font-size:24px"><br>
+</span></p>
+<p><span style="font-size:24px"><img src="14319949001725.jpg" alt=""><br>
+</span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">&nbsp;构造方法的名称必须与类名称一样<br>
+&nbsp;构造方法的声明不能有任何返回&#20540;类型的声明<br>
+&nbsp;不能在构造方法中使用return返回一个&#20540;</span><br>
+</span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000"><br>
+</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">每当创建一个类 默认创建一个无参的构造方法</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">写一个带有参数的构造方法</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000"><br>
+</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000"></span></span><pre name="code" class="java">package KownClass;
+
+class Person{
+	private String name ;
+	private int age ;
+	public Person(String n,int a){		</pre><pre name="code" class="java">&lt;span style=&quot;white-space:pre&quot;&gt;	&lt;/span&gt;// 声明构造方法，为类中的属性初始化
+		this.setName(n) ;
+		this.setAge(a) ;
+	}
+	public void setName(String n){
+		name = n ;
+	}
+	public void setAge(int a){
+		if(a&gt;0&amp;&amp;a&lt;150){
+			age = a ;
+		}
+	}
+	public String getName(){
+		return name ;
+	}
+	public int getAge(){
+		return age ;
+	}
+	public void tell(){
+		System.out.println(&quot;姓名：&quot; + this.getName() + &quot;；年龄：&quot; + this.getAge()) ;
+	}
+};
+public class test1{
+	public static void main(String args[]){
+		System.out.println(&quot;声明对象：Person per = null ;&quot;) ;
+		Person per =  new Person(&quot;张三&quot;,30) ;//实例化对象
+	
+		per.tell() ;
+	}
+};</pre><br>
+2.构造方法的重载</p>
+<p><span style="font-size:24px"><span style="color:#cc0000"><img src="26136238327389.jpg" alt=""><br>
+</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">构造方法的重载和普通方法一样只要参数类型以及参数个数不同就可以完成重载</span></span></p>
+<p><span style="color:#cc0000"></span><pre name="code" class="java">&lt;span style=&quot;font-size:18px;&quot;&gt;class Person{
+	private String name ;
+	private int age ;
+	public Person(){}					// 声明一个无参的构造方法
+	public Person(String n){			// 声明有一个参数的构造方法
+		this.setName(n) ;
+	}
+	public Person(String n,int a){		// 声明构造方法，为类中的属性初始化
+		this.setName(n) ;
+		this.setAge(a) ;
+	}
+	public void setName(String n){
+		name = n ;
+	}
+	public void setAge(int a){
+		if(a&gt;0&amp;&amp;a&lt;150){
+			age = a ;
+		}
+	}
+	public String getName(){
+		return name ;
+	}
+	public int getAge(){
+		return age ;
+	}
+	public void tell(){
+		System.out.println(&quot;姓名：&quot; + this.getName() + &quot;；年龄：&quot; + this.getAge()) ;
+	}
+};
+public class ConsDemo03{
+	public static void main(String args[]){
+		System.out.println(&quot;声明对象：Person per = null ;&quot;) ;
+		Person per = null ;	// 声明对象时并不去调用构造方法
+		System.out.println(&quot;实例化对象：per = new Person() ;&quot;) ;
+		per = new Person(&quot;张三&quot;,30) ;//实例化对象
+		per.tell() ;
+	}
+};&lt;/span&gt;</pre><br>
+<span style="font-size:14px">3.3 匿名对象</span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">匿名没有名字，在java中如果一个对象只使用一次，就可以定义成匿名对象</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000"></span></span><pre name="code" class="java">class Person{
+	private String name ;
+	private int age ;
+	public Person(String n,int a){	// 声明构造方法，为类中的属性初始化
+		this.setName(n) ;
+		this.setAge(a) ;
+	}
+	public void setName(String n){
+		name = n ;
+	}
+	public void setAge(int a){
+		if(a&gt;0&amp;&amp;a&lt;150){
+			age = a ;
+		}
+	}
+	public String getName(){
+		return name ;
+	}
+	public int getAge(){
+		return age ;
+	}
+	public void tell(){
+		System.out.println(&quot;姓名：&quot; + this.getName() + &quot;；年龄：&quot; + this.getAge()) ;
+	}
+};
+public class NonameDemo01{
+	public static void main(String args[]){
+		new Person(&quot;张三&quot;,30).tell() ;
+	}
+};</pre>所谓匿名对象就是少了一个栈内存引用关系</p>
+<p><span style="font-size:24px"><span style="color:#cc0000"><br>
+</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">4.总结</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">构造方法使用的原则</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">对象实例化必须调用构造方法</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">每一个类必须有一个构造方法</span></span></p>
+<p><span style="font-size:24px"><span style="color:#cc0000">匿名对象只开辟了堆内存的实例对象<br>
+<br>
+</span></span></p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxtxzmj1/index.html">java15高新特性之枚举（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx1/index.html">java15高新知识之泛型（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx2/index.html">java15高新知识之泛型（2）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/java15gxzszfx3/index.html">java15高新知识之泛型（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javasdtxzfz/index.html">java三大特性之封装</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavazArrayListhLinkedListqb/index.html">Java中ArrayList和LinkedList区别</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazIoFilel/index.html">java之IoFile类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcsl/index.html">java之多线程实例</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcslsczyxfz/index.html">java之多线程实例生产者与消费者</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javazdxcrs/index.html">java之多线程认识</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczStringl/index.html">java基础之String类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczbzl/index.html">java基础之包装类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcznmnbl/index.html">java基础之匿名内部类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs1rsclassl/index.html">java基础之反射（1认识class类）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczfs2classldsy/index.html">java基础之反射（2class类的使用）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczdxddtx/index.html">java基础之对象的多态性</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyyy/index.html">java基础之抽象类与接口的应用（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczcxlyjkdyye/index.html">java基础之抽象类与接口的应用（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczjkycx/index.html">java基础之接口与抽象</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczgzff/index.html">java基础之构造方法</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajczlydxdjybyj/index.html">java基础之类与对象的进一步研究</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/javajcmxdxlydxddy/index.html">java基础面向对象、类与对象的定义</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/JavacylkzStringbuffer/index.html">Java常用类库之Stringbuffer</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/Javacylkzrqczl/index.html">Java常用类库之日期操作类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/cjavawlbcxq3/index.html">从java网络编程学起（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/dxcztbhss/index.html">多线程之同步和死锁</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/ljJavadxxlh/index.html">理解Java对象序列化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/gczsjms/index.html">观察者设计模式</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

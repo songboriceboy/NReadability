@@ -1,0 +1,553 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程——加入网络数据（7）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">这一节新闻教程，比较长，因为涉及到联网和json解析，这里的代码</span></p>
+<p><span style="font-size:18px">联网工具 有httpclient和HttpConnnection或者xutils 都可以只要你喜欢 随君选择，但是在这一篇开头我就说了，此片文章我将会不用任何工具，所以联网工具类，我用的是Httpclient。</span></p>
+<p><span style="font-size:18px">我尽量一步一步解析清楚，毕竟这一节如果讲清楚那就很麻烦了，因为联网和JSON都会讲很久</span></p>
+<p>HttpUtils类&nbsp; 会得到一个json字符串</p>
+<p>
+<pre name="code" class="java">package com.xiaoxin.news.util;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+public class HttpUtils {  
+
+    public static String getData(String url) throws Exception {
+
+        StringBuffer sb = new StringBuffer();
+//      1. 创建HttpClient对象。
+        HttpClient httpClient = new DefaultHttpClient();
+//        2. 创建请求方法的实例，并指定请求URL。如果需要发送GET请求，创建HttpGet对象；如果需要发送POST请求，创建HttpPost对象。
+        HttpGet httpGet = new HttpGet(url);
+//        3. 调用HttpClient对象的execute(HttpUriRequest request)发送请求，该方法返回一个HttpResponse。
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+//        4.获得该响应消息的实体
+        HttpEntity httpEntity = httpResponse.getEntity();
+        
+        if (httpEntity != null) {
+        //5.得到一个json的流 你需要把他转成流
+            InputStream instream = httpEntity.getContent();
+        //6.得到是一个字节流 用BufferedReader存到混存六中
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+
+                    instream));
+
+            String line = null;
+
+            while ((line = reader.readLine()) != null) {
+
+                sb.append(line);
+
+            }
+         //7.最后得到一个用toString得到String
+            return sb.toString();
+
+        }
+
+        return null;
+
+    }
+}</pre>到这里的时候，我想把array文件中的内容改了<pre name="code" class="html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;string-array name=&quot;categories&quot;&gt;
+        &lt;item&gt;1|焦点&lt;/item&gt;
+        &lt;item&gt;2|国内&lt;/item&gt;
+        &lt;item&gt;3|国际&lt;/item&gt;
+        &lt;item&gt;4|军事&lt;/item&gt;
+        &lt;item&gt;5|体育&lt;/item&gt;
+        &lt;item&gt;6|科技&lt;/item&gt;
+        &lt;item&gt;7|汽车&lt;/item&gt;
+        &lt;item&gt;8|财经&lt;/item&gt;
+        &lt;item&gt;9|游戏&lt;/item&gt;
+        &lt;item&gt;10|女人&lt;/item&gt;
+    &lt;/string-array&gt;
+&lt;/resources&gt;
+</pre>这样我们就可以通过点击 上面的标题栏 来改变显示内容，但是我突然发现 显示不了标题栏了，&#23612;玛。。。。。。但是内容可以解析出来，这个问题就很诡异....
+<p>
+<p>
+<pre name="code" class="java">		//获取新闻分类
+		String[] categoryArray = getResources().getStringArray(R.array.categories);
+		//把新闻分类保存到List中
+		final List&lt;HashMap&lt;String, Category&gt;&gt; categories = new ArrayList&lt;HashMap&lt;String, Category&gt;&gt;();
+		//分割新闻类型字符串
+		for(int i=0;i&lt;categoryArray.length;i++)
+		{
+			String[] temp = categoryArray[i].split(&quot;[|]&quot;);
+			if (temp.length==2)
+			{
+				int cid = StringUtil.String2Int(temp[0]);
+				String title = temp[1];
+				Category type = new Category(cid, title);
+				HashMap&lt;String, Category&gt; hashMap = new HashMap&lt;String, Category&gt;();
+				hashMap.put(&quot;category_title&quot;, type);
+				categories.add(hashMap);
+			}
+		}</pre><br>
+通过正则表达式 将ID和title分开了&nbsp; 用map集合存起来&nbsp; 这样就可以使用simpleadapter 将数据显示出来 上面有一个实体类，Category&nbsp; 也就是ID 和title&nbsp; 不过我把同tostring改了直接输出 title
+<p>
+<p><br>
+</p>
+<p>
+<pre name="code" class="java">package com.xiaoxin.news.custom;
+
+
+public class Category
+{
+	//类型编号
+	private int cid;
+	//类型名称
+	private String title;
+	//类型次数
+	private int sequnce;
+
+	public Category()
+	{
+		super();
+	}
+
+	public Category(int cid, String title)
+	{
+		super();
+		this.cid = cid;
+		this.title = title;
+	}
+
+	public Category(int cid, String title, int sequnce)
+	{
+		super();
+		this.cid = cid;
+		this.title = title;
+		this.sequnce = sequnce;
+	}
+
+	public int getCid()
+	{
+		return cid;
+	}
+
+	public void setCid(int cid)
+	{
+		this.cid = cid;
+	}
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
+
+	public int getSequnce()
+	{
+		return sequnce;
+	}
+
+	public void setSequnce(int sequnce)
+	{
+		this.sequnce = sequnce;
+	}
+
+	@Override
+	public String toString()
+	{
+		return title;
+	}
+}
+</pre><br>
+然后通过联网工具类得到的json 进行解析 其中ID 我默认选择第一个
+<p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //默认选中的新闻分类<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mCid = 1;</p>
+<p>好了 我们再看怎么解析 JSON吧&nbsp; getSpeCateNews类</p>
+<p><br>
+先看json的&#26684;式</p>
+<p><img src="41467536038040.jpg" alt=""></p>
+<p>当然你可以GSON fastjson jackjson 但是 我这里用的就是自带json解析 <br>
+</p>
+<p>因为json工具&#26684;式化的时候 还少了一个花括弧（大括号}） <br>
+</p>
+<p>可以看出第一层是 <span style="font-size:24px">{ }</span> 只要是大括号就用jsonobject <br>
+</p>
+<p>JSONObject jsonObject = new JSONObject(retStr);</p>
+<p>然后就会得到大括号里面的内容 然后再取出在通过getInt 得到ret&nbsp;&nbsp; 通过 getObject得到data里面的内容<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp; //获取返回码，0表示成功 <br>
+&nbsp;int retCode = jsonObject.getInt(&quot;ret&quot;); 如果成功在获取data里面的内容<span style="color:#CC0000"> json解析就是剥洋葱 一层一层拨开 取出我们想要的内容存到集合里面去&nbsp;</span></p>
+<p>如果遇到[]中括号 就用jsonArray 获取里面的内容&nbsp; 后面的解析 我就不叙述了，相信大家能够举一反三</p>
+<p><br>
+</p>
+<p>
+<pre name="code" class="java">/**
+	 * 获取指定类型的新闻列表
+	 * @param cid 类型ID
+	 * @param newsList 保存新闻信息的集合
+	 */
+	private List&lt;HashMap&lt;String, Object&gt;&gt; getSpeCateNews(int cid)
+	{
+		List&lt;HashMap&lt;String, Object&gt;&gt; newsList = new ArrayList&lt;HashMap&lt;String, Object&gt;&gt;();
+		String url = &quot;http://192.168.1.12:8080/web/getSpecifyCategoryNews?cid=&quot;+cid+&quot;&amp;startnid=0&amp;count=10&quot;;
+		try
+		{
+			String retStr = HttpUtils.getData(url);
+			System.out.println(retStr);
+			//以Get方式请求，并获得返回结果
+			JSONObject jsonObject = new JSONObject(retStr);
+			//获取返回码，0表示成功
+			int retCode = jsonObject.getInt(&quot;ret&quot;);
+			if (0==retCode)
+			{
+				JSONObject dataObject = jsonObject.getJSONObject(&quot;data&quot;);
+				//获取返回数目
+				int totalnum = dataObject.getInt(&quot;totalnum&quot;);
+				if (totalnum&gt;0)
+				{
+					//获取返回新闻集合
+					JSONArray newslist = dataObject.getJSONArray(&quot;newslist&quot;);
+					for(int i=0;i&lt;newslist.length();i++)
+					{
+						JSONObject newsObject = (JSONObject)newslist.opt(i); 
+						HashMap&lt;String, Object&gt; hashMap = new HashMap&lt;String, Object&gt;();
+						hashMap.put(&quot;nid&quot;, newsObject.getInt(&quot;nid&quot;));
+						hashMap.put(&quot;newslist_item_title&quot;, newsObject.getString(&quot;title&quot;));
+						hashMap.put(&quot;newslist_item_digest&quot;, newsObject.getString(&quot;digest&quot;));
+						hashMap.put(&quot;newslist_item_source&quot;, newsObject.getString(&quot;source&quot;));
+						hashMap.put(&quot;newslist_item_ptime&quot;, newsObject.getString(&quot;ptime&quot;));
+						newsList.add(hashMap);
+					}
+				}
+				else
+				{
+					Toast.makeText(MainActivity.this, &quot;该栏目下暂时没有新闻&quot;, Toast.LENGTH_LONG).show();
+				}
+			}
+			else
+			{
+				Toast.makeText(MainActivity.this, &quot;获取新闻失败&quot;, Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			Toast.makeText(MainActivity.this, &quot;获取新闻失败&quot;, Toast.LENGTH_LONG).show();
+		}
+		return newsList;
+	}</pre><br>
+<br>
+<p>
+<p><span style="color:#FF0000">通过json解析 我们会得到一个一个list集合内容&nbsp; </span></p>
+<pre name="code" class="java">&lt;span style=&quot;font-size:18px;&quot;&gt;newsList&lt;/span&gt;
+&lt;span style=&quot;color:#FF0000;&quot;&gt;然后放入simpleadapter第二个参数   第三个参数就是放集合里面 要传递的数据 &lt;/span&gt;
+new String[]{&quot;newslist_item_title&quot;,&quot;newslist_item_digest&quot;,&quot;newslist_item_source&quot;,&quot;newslist_item_ptime&quot;}, 
+&lt;span style=&quot;color:#CC0000;&quot;&gt;第四个是数据要填充的 组件ID&lt;/span&gt;
+new int[]{R.id.newslist_item_title,R.id.newslist_item_digest,R.id.newslist_item_source,R.id.newslist_item_ptime});
+最后  看下全部代码吧
+</pre><pre name="code" class="java">package com.xiaoxin.news.activity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.xiaoxin.news.custom.Category;
+import com.xiaoxin.news.custom.CustomSimpleAdapter;
+import com.xiaoxin.news.util.DensityUtil;
+import com.xiaoxin.news.util.HttpUtils;
+import com.xiaoxin.news.util.StringUtil;
+
+public class MainActivity extends Activity
+{
+	private final int COLUMNWIDTHPX = 55;
+	private final int FLINGVELOCITYPX = 800; // 滚动距离
+
+	private int mColumnWidthDip;
+	private int mFlingVelocityDip;
+	private int mCid;
+	private ListView mNewsList;
+	private SimpleAdapter mNewsListAdapter;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		
+		//把px转换成dip
+		mColumnWidthDip = DensityUtil.px2dip(this, COLUMNWIDTHPX);
+		mFlingVelocityDip = DensityUtil.px2dip(this, FLINGVELOCITYPX);
+		
+		//获取新闻分类
+		String[] categoryArray = getResources().getStringArray(R.array.categories);
+		//把新闻分类保存到List中
+		final List&lt;HashMap&lt;String, Category&gt;&gt; categories = new ArrayList&lt;HashMap&lt;String, Category&gt;&gt;();
+		//分割新闻类型字符串
+		for(int i=0;i&lt;categoryArray.length;i++)
+		{
+			String[] temp = categoryArray[i].split(&quot;[|]&quot;);
+			if (temp.length==2)
+			{
+				int cid = StringUtil.String2Int(temp[0]);
+				String title = temp[1];
+				Category type = new Category(cid, title);
+				HashMap&lt;String, Category&gt; hashMap = new HashMap&lt;String, Category&gt;();
+				hashMap.put(&quot;category_title&quot;, type);
+				categories.add(hashMap);
+			}
+		}
+		//默认选中的新闻分类
+		mCid = 1;
+		//创建Adapter，指明映射字段
+		CustomSimpleAdapter categoryAdapter = new CustomSimpleAdapter(this, categories, R.layout.category_title, new String[]{&quot;category_title&quot;}, new int[]{R.id.category_title});
+		
+		GridView category = new GridView(this);
+		category.setColumnWidth(mColumnWidthDip);//每个单元格宽度
+		category.setNumColumns(GridView.AUTO_FIT);//单元格数目
+		category.setGravity(Gravity.CENTER);//设置对其方式
+		//设置单元格选择是背景色为透明，这样选择时就不现实黄色北京
+		category.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		//根据单元格宽度和数目计算总宽度
+		int width = mColumnWidthDip * categories.size();
+		LayoutParams params = new LayoutParams(width, LayoutParams.FILL_PARENT);
+		//更新category宽度和高度，这样category在一行显示
+		category.setLayoutParams(params);
+		//设置适配器
+		category.setAdapter(categoryAdapter);
+		//把category加入到容器中
+		LinearLayout categoryList = (LinearLayout) findViewById(R.id.category_layout);
+		categoryList.addView(category);
+		//添加单元格点击事件
+		category.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id)
+			{
+				TextView categoryTitle;
+				//恢复每个单元格背景色
+				for (int i = 0; i &lt; parent.getChildCount(); i++)
+				{
+					categoryTitle = (TextView) (parent.getChildAt(i));
+					categoryTitle.setBackgroundDrawable(null);
+					categoryTitle.setTextColor(0XFFADB2AD);
+				}
+				//设置选择单元格的背景色
+				categoryTitle = (TextView) (parent.getChildAt(position));
+				categoryTitle.setBackgroundResource(R.drawable.categorybar_item_background);
+				categoryTitle.setTextColor(0XFFFFFFFF);
+			}
+		});
+		
+		// 箭头
+		final HorizontalScrollView categoryScrollview = (HorizontalScrollView) findViewById(R.id.category_scrollview);
+		Button categoryArrowRight = (Button) findViewById(R.id.category_arrow_right);
+		categoryArrowRight.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				categoryScrollview.fling(DensityUtil.px2dip(MainActivity.this, mFlingVelocityDip));
+			}
+		});
+		
+		//获取指定栏目的新闻列表
+		List&lt;HashMap&lt;String, Object&gt;&gt; newsData = getSpeCateNews(mCid);
+		mNewsListAdapter = new SimpleAdapter(this, newsData, R.layout.newslist_item, 
+										new String[]{&quot;newslist_item_title&quot;,&quot;newslist_item_digest&quot;,&quot;newslist_item_source&quot;,&quot;newslist_item_ptime&quot;}, 
+										new int[]{R.id.newslist_item_title,R.id.newslist_item_digest,R.id.newslist_item_source,R.id.newslist_item_ptime});
+		mNewsList = (ListView)findViewById(R.id.newslist);
+		mNewsList.setAdapter(mNewsListAdapter);
+		mNewsList.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id)
+			{
+				Intent intent = new Intent(MainActivity.this, NewsDetailsActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
+	
+	/**
+	 * 获取指定类型的新闻列表
+	 * @param cid 类型ID
+	 * @param newsList 保存新闻信息的集合
+	 */
+	private List&lt;HashMap&lt;String, Object&gt;&gt; getSpeCateNews(int cid)
+	{
+		List&lt;HashMap&lt;String, Object&gt;&gt; newsList = new ArrayList&lt;HashMap&lt;String, Object&gt;&gt;();
+		String url = &quot;http://192.168.1.12:8080/web/getSpecifyCategoryNews?cid=&quot;+cid+&quot;&amp;startnid=0&amp;count=10&quot;;
+		try
+		{
+			String retStr = HttpUtils.getData(url);
+			System.out.println(retStr);
+			//以Get方式请求，并获得返回结果
+			JSONObject jsonObject = new JSONObject(retStr);
+			//获取返回码，0表示成功
+			int retCode = jsonObject.getInt(&quot;ret&quot;);
+			if (0==retCode)
+			{
+				JSONObject dataObject = jsonObject.getJSONObject(&quot;data&quot;);
+				//获取返回数目
+				int totalnum = dataObject.getInt(&quot;totalnum&quot;);
+				if (totalnum&gt;0)
+				{
+					//获取返回新闻集合
+					JSONArray newslist = dataObject.getJSONArray(&quot;newslist&quot;);
+					for(int i=0;i&lt;newslist.length();i++)
+					{
+						JSONObject newsObject = (JSONObject)newslist.opt(i); 
+						HashMap&lt;String, Object&gt; hashMap = new HashMap&lt;String, Object&gt;();
+						hashMap.put(&quot;nid&quot;, newsObject.getInt(&quot;nid&quot;));
+						hashMap.put(&quot;newslist_item_title&quot;, newsObject.getString(&quot;title&quot;));
+						hashMap.put(&quot;newslist_item_digest&quot;, newsObject.getString(&quot;digest&quot;));
+						hashMap.put(&quot;newslist_item_source&quot;, newsObject.getString(&quot;source&quot;));
+						hashMap.put(&quot;newslist_item_ptime&quot;, newsObject.getString(&quot;ptime&quot;));
+						newsList.add(hashMap);
+					}
+				}
+				else
+				{
+					Toast.makeText(MainActivity.this, &quot;该栏目下暂时没有新闻&quot;, Toast.LENGTH_LONG).show();
+				}
+			}
+			else
+			{
+				Toast.makeText(MainActivity.this, &quot;获取新闻失败&quot;, Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			Toast.makeText(MainActivity.this, &quot;获取新闻失败&quot;, Toast.LENGTH_LONG).show();
+		}
+		return newsList;
+	}
+}</pre><br>
+最后我将把数据库和服务器 端 客户端源码全部上传 数据库 是一个sql文件 你只需要直接在mysql导入即可 ，服务器端 直接在 myeclipse中配置用tomcat里面运行就行了
+<p>
+<p><br>
+</p>
+<p><a target="_blank" href="http://download.csdn.net/detail/jack_king007/8121811">点击下载源码</a><br>
+</p>
+<span id="pv-float-bar-container" style="top:3340px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual"></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier"></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

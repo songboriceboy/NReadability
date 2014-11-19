@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>安卓四大组件的复习——实现IP拨号Demo</div><br><div id="article_content" class="article_content">
+
+<p>今天对于广播从新复习下~~~~~~~~~~~~~~·</p>
+<p><span style="font-size:18px; color:#FF0000"><br>
+</span></p>
+<p><span style="font-size:18px; color:#FF0000">第一点，我们为什么要用广播，方便了我们做什么事？</span></p>
+<p><span style="font-size:18px; color:#FF0000"><span style="color:#000000">答案：</span></span></p>
+<p><span style="font-size:18px; color:#FF0000"><span style="color:#000000">（1）如果没有广播 ，系统一开机，啥都没有，一个系统没有软件，就像吃饭没有菜一样，有了广播，一开机，系统就用广播大喊:&quot;我要开机了&quot;,软件就会听到，启动，为用户准备好了一些常用的软件。</span></span></p>
+<p><span style="font-size:18px; color:#FF0000"><span style="color:#000000"><br>
+</span></span></p>
+<p><span style="font-size:18px; color:#FF0000"><span style="color:#000000">（2）方便我们开发，如果我们要开机启动，就可以监听系统开机广播。</span><br>
+</span></p>
+<p><span style="font-size:18px; color:#FF0000">第二点&nbsp;&nbsp; 谷歌为什么要将广播定义成四大组件？&nbsp;&nbsp;</span></p>
+<p><span style="font-size:18px">答案：</span><br>
+</p>
+<p><span style="font-size:18px; color:#FF0000"><span style="color:#000000">作为安卓的四大组件，他有着重要的作用，让应用的关系更加得紧密了。</span></span><br>
+</p>
+<p><br>
+</p>
+<p>好啦，废话不多说就用一个demo 来讲解吧&nbsp; <br>
+</p>
+<p>界面是：</p>
+<p><img src="11925046947389.jpg" alt=""></p>
+<p>Demo需求：拨打电话的时候，自动加上一个IP号码<br>
+</p>
+<p>界面：Edittext 是用来输入 要 IP号码&nbsp; Button是用来保存到SP中去 <br>
+</p>
+<p>&nbsp;思路：先将IP号码用Sp缓存起来 <br>
+</p>
+<p>代码实现： 主类获取Edittext的号码 并且用SP缓存起来 在activity启动的时候，获取sp中缓存的号码&nbsp; <br>
+</p>
+<p>然后新建一个广播 监听拨打电话的广播，获取其号码 在前段加上IP号码<br>
+</p>
+<p><br>
+</p>
+<p><pre name="code" class="java">package com.itheima.ipdail;
+
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+	private EditText et_ipnumber;
+	private SharedPreferences sp;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		et_ipnumber = (EditText) findViewById(R.id.et_ipnumber);
+		sp = getSharedPreferences(&quot;config&quot;, MODE_PRIVATE);
+		et_ipnumber.setText(sp.getString(&quot;ipnumber&quot;, &quot;&quot;));
+		
+	}
+
+	public void click(View view){
+		String ipnumber = et_ipnumber.getText().toString().trim();
+		Editor editor = sp.edit();
+		editor.putString(&quot;ipnumber&quot;, ipnumber);
+		editor.commit();
+		Toast.makeText(this, &quot;设置完成&quot;, 0).show();
+	}
+
+}
+基本上代码没有难度，唯一有点难度的是 SP缓存了 sp是activity中内置的一个方法 可以直接通过 Context.getSharedPreferences  
+第一个参数是 文件名字，第二个参数是 保存模式  因为SP无法实现直接编辑 要通过一个借口edit（）； 得到一个Editor 才能进行编辑
+
+&#160;到了 新建广播类了，首先遵循安卓的原则，四大组件都要在配置文件中注册
+
+</pre>&nbsp;&nbsp;&nbsp; &lt;!-- 定义了一个广播接受者&nbsp; new出来了一个收音机&nbsp;&nbsp; ,设置action 就相当于设置了监听的频道 --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;receiver android:name=&quot;.OutCallReceiver&quot; &gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;intent-filter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action android:name=&quot;android.intent.action.NEW_OUTGOING_CALL&quot; /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/intent-filter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/receiver&gt;</p>
+<p>可以看出来 在配置文件中他的名字是receiver&nbsp;&nbsp;&nbsp; 后面的是要注册广播的名字，下一级节点是过滤器&nbsp;&nbsp; 指定动作是 拨打电话 android.intent.action.NEW_OUTGOING_CALL</p>
+<p>因为我们要监听 拨打电话 所以要加上 权限</p>
+<p>&nbsp;&lt;uses-permission android:name=&quot;android.permission.PROCESS_OUTGOING_CALLS&quot;/&gt;</p>
+<p>现在可以回到广播类中编辑代码了，</p>
+<p>&nbsp;<pre name="code" class="java">package com.itheima.ipdail;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+
+public class OutCallReceiver extends BroadcastReceiver {
+
+	//当有广播事件产生的时候 就会执行onrecevie方法
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		System.out.println(&quot;onreceiver 发现了新的外拨电话...&quot;);
+		String number = getResultData();//外拨的电话号码
+		System.out.println(&quot;number=&quot;+number);
+		//替换掉这个号码
+		
+		SharedPreferences sp = context.getSharedPreferences(&quot;config&quot;, Context.MODE_PRIVATE);
+		String ipnumber = sp.getString(&quot;ipnumber&quot;, &quot;&quot;);
+		String newnumber = ipnumber+number;
+		//设置外拨的电话号码
+		setResultData(newnumber);
+		//不会生效的 广播终止不了 显示的指定了接受者
+//		abortBroadcast();
+		
+	}
+
+}
+</pre><br>
+<br>
+</p>
+<span id="pv-float-bar-container" style="top:499px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

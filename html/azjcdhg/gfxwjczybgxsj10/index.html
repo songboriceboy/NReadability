@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>高仿新闻教程之异步更新数据（10）</div><br><div id="article_content" class="article_content">
+
+<p><span style="font-size:18px">对于异步和handler的要求 。面试有很高的要求，对于这一节我也不是很清楚，不过我会边写边梳理我的思路，尽量在我讲的时候，顺便把这一节内容一起讲完。</span></p>
+<p><br>
+</p>
+<p><span style="font-size:18px">今天是我写这一篇教程第十版，深圳的11月很凉爽</span>,<span style="font-size:18px">其实写着一篇教程我同时也在梳理我的思路，我是一个小菜鸟，只能写出基本的程序结构，不过现在打基础，后面还有很多精彩的开源项目，等着我们开发，我们要压抑着这份惊喜，好好的打基础</span>。</p>
+<p><span style="font-size:18px">谷歌公司为什么会出现异步，因为为了保证APP的<span style="color:#FF0000">流畅性</span>，所以谷歌就在架构中加入，如果过多耗时操作在主线程执行就会报异常，或者直接down，然后给开发者提供了一套教程，当然这时候开发者就应该想你不让我在主线程耗时，那我就开启子线程更新呗，这时候问题来了..........................</span></p>
+<p><span style="font-size:18px">子线程执行的耗时操作的结果不能在UI更新，这时候，开发者就要想了，那就把数据传给UI线程更新呗，当然这是消息机制了，这时候，谷歌肯定是有进步的，这不就有了把东西全部封装好，开发者直接调用方法就行了。</span></p>
+<p><span style="font-size:18px"><br>
+</span></p>
+<p><span style="color:#FF0000">以上是我猜的............. 结果谷歌官方给出的解释呢&nbsp; 你猜是不是这样的</span></p>
+<p><br>
+</p>
+<p><span style="font-size:24px">官方解释</span>：</p>
+<p><span style="font-size:18px">android提供了一套专门用于异步处理的类。即：AynsTask类。使用这个类可以为耗时程序开辟一个新线程进行处理，处理完时返回。</span></p>
+<p><br>
+</p>
+<p>其实对于谷歌这个德行大家习惯就好，谷歌并不比我们聪明多少，但是关键java的三大特性 是啥 封装 继承 多态&nbsp; 这就给了谷歌时间，给一些基层的东西不断封装成一个工具类，继承和多态证明了扩展性，这个现在已经成了安卓系统了不是。</p>
+<p><br>
+</p>
+<p><span style="font-size:18px; color:#FF0000">AsynTask类就是对Thread类的一个封装，并且加入了一些新的方法。编程时，两者都可以实现同样的功能。本文后面将对AsynTask和Thread进行比较。</span></p>
+<p><br>
+</p>
+<p>AsynTask类结构<br>
+asysTask类主要用到的几个内部回调函数有：</p>
+<p><img src="17657549304033.jpg" alt=""></p>
+<p>怎么感觉再写下去专门写 异步的了，回到原题<br>
+</p>
+<p>onPreExecute()</p>
+<p><span style="color:#FF0000">1.主线程调用AsynTask子类实例的execute()方法后，首先会调用onPreExecute()方法。onPreExecute()在主线程中运行，可以用来写一些开始提示代码。</span></p>
+<p>&nbsp;&nbsp;&nbsp; // 隐藏刷新按钮<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mTitlebarRefresh.setVisibility(View.GONE);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;// 显示进度条<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mLoadnewsProgress.setVisibility(View.VISIBLE);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;// 设置LoadMore Button 显示文本<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;loadMoreBtn.setText(R.string.loadmore_txt);<br>
+doInBackGround()<br>
+</p>
+<p><span style="color:#CC0000">2.之后启动新线程，调用doInBackground()方法，进行异步数据处理。</span></p>
+<p><span style="color:#CC0000">在这里刷新界面~~~~<br>
+</span></p>
+<p>&nbsp;&nbsp;&nbsp; return getSpeCateNews((Integer) params[0], mNewsData,<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;(Integer) params[1], (Boolean) params[2]);<br>
+</p>
+<p>onPostExecute()</p>
+<p><span style="color:#CC0000">3.处理完毕之后异步线程结束，在主线程中调用onPostExecute()方法。onPostExecute()可以进行一些结束提示处理。</span></p>
+<p>UI更新&nbsp;</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; // 根据返回&#20540;显示相关的Toast<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp; switch (result) {<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;case NONEWS:<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Toast.makeText(MainActivity.this, R.string.no_news,<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Toast.LENGTH_LONG).show();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;case NOMORENEWS:<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Toast.makeText(MainActivity.this, R.string.no_more_news,<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Toast.LENGTH_LONG).show();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;case LOADERROR:<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Toast.makeText(MainActivity.this, R.string.load_news_failure,<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Toast.LENGTH_LONG).show();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; mNewsListAdapter.notifyDataSetChanged();<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;// 显示刷新按钮<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mTitlebarRefresh.setVisibility(View.VISIBLE);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;// 隐藏进度条<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mLoadnewsProgress.setVisibility(View.GONE);<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;// 设置LoadMore Button 显示文本<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;loadMoreBtn.setText(R.string.loadmore_btn);<br>
+</p>
+onProgressUpdate()
+<p><span style="color:#CC0000">4.在doInBackground()方法异步处理的时候，如果希望通知主线程一些数据（如：处理进度）。这时，可以调用publishProgress()方法。这时，主线程会调用AsynTask子类的onProgressUpdate()方法进行处理</span></p>
+<p>这个时候 我们就完成了一个 异步加载新闻了，主要是通过点击刷新按钮 来实现的.</p>
+<p><img src="1371649846554.jpg" alt=""></p>
+<p>再看异步这个类 <br>
+</p>
+<p>&nbsp;&nbsp;&nbsp; private class LoadNewsAsyncTask extends AsyncTask&lt;Object, Integer, Integer&gt;</p>
+<p>AsynTask类在继承时要传入3个泛型。</p>
+<p><span style="font-size:18px; color:#FF0000">第一个泛型对应execute（）向doInBackground（）的传递类型。</span></p>
+<p><span style="font-size:18px; color:#FF0000">第二个泛型对应doInBackground()的返回类型和传递给onPostExecute()的类型。</span></p>
+<p><span style="font-size:18px; color:#FF0000">第三个泛型对应publishProgress()向progressUpdate（）传递的类型。</span></p>
+<p><span style="font-size:32px">在这里之前我们跟handler 对比一下 </span>~~~~~~~~~~~~~~我是淫荡的分割线~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+</p>
+<p><span style="font-size:14px">初次看到这个异步调用关系可能觉得很复杂，但其实熟悉了之后会发现这种结构很好用。这种结构将所有的线程通信都封装成<span style="color:#FF0000">回调函数</span>，调用逻辑容易书写。尤其是在异步处理结束之后，有回调函数进行收尾处理。如果是使用Thread的run()方法，run()结束之后<span style="color:#CC0000">没有返回&#20540;。所以必须要自己建立通信机制</span>。但是，<span style="color:#FF0000">其实使用Handler&#43;Thread机制其实完全可以替代AsynTask的这种调用机制</span>。只要将Handler对象传给Thread，就可以进行方便的异步处理。且这种MVC模式结构更加明显，方便管理。所以我觉得，使用asynTask还是Handler&#43;Thread结构，个人喜好吧。但是有一点可以明显能感觉到得是，<span style="color:#CC0000">Handler&#43;Thread适合进行大框架的异步处理，而asynTask适用于小型简单的异步处理。</span></span></p>
+<p><br>
+</p>
+<p>好了开始写我们的代码吧<br>
+首先是对于我们的button 实例化，并且添加事件处理 我要的效果就是点刷新的时候，顺便将刷新的button 更换为 progressbar</p>
+<p>
+<pre name="code" class="html">		&lt;Button
+			android:id=&quot;@id/titlebar_refresh&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:background=&quot;@drawable/titlebar_btn_refresh_selector&quot;
+			android:layout_marginTop=&quot;7.0dip&quot;
+			android:layout_marginRight=&quot;14.0dip&quot;
+			android:layout_alignParentRight=&quot;true&quot;
+			/&gt;
+		&lt;ProgressBar
+			android:id=&quot;@+id/loadnews_progress&quot;
+			android:layout_width=&quot;25.0dip&quot;
+			android:layout_height=&quot;25.0dip&quot;
+			android:clickable=&quot;false&quot;
+			android:visibility=&quot;gone&quot;
+			android:layout_marginRight=&quot;20.0dip&quot;
+			android:layout_marginTop=&quot;10.0dip&quot;
+			android:layout_alignParentRight=&quot;true&quot;
+			style=&quot;?android:attr/progressBarStyleLarge&quot; /&gt;</pre><br>
+<span style="font-size:18px">大家可以看出 我刷新的button正常是显示的&nbsp; progressbar是隐藏的 当你点击的时候，就会 progressbar显示 刷新的button隐藏</span>
+<p>
+<p><span style="font-size:18px">实例化button&nbsp; 和progressbar<br>
+</span></p>
+<p>
+<pre name="code" class="java">mTitlebarRefresh = (Button) findViewById(R.id.titlebar_refresh);
+		mLoadnewsProgress = (ProgressBar) findViewById(R.id.loadnews_progress);
+		mTitlebarRefresh.setOnClickListener(loadMoreListener);</pre><br>
+然后再是就是异步的开启&nbsp; 然后把所有更新UI的操作都放在异步。
+<p>
+<p>
+<pre name="code" class="java">	private OnClickListener loadMoreListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			loadNewsAsyncTask = new LoadNewsAsyncTask();
+			switch (v.getId()) {
+			case R.id.loadmore_btn:
+				// 获取该栏目下新闻
+				// getSpeCateNews(mCid,mNewsData,mNewsData.size(),false);
+				// 通知ListView进行更新
+				// mNewsListAdapter.notifyDataSetChanged();ww
+				loadNewsAsyncTask.execute(mCid, mNewsData.size(), false);
+				break;
+			case R.id.titlebar_refresh:
+				loadNewsAsyncTask.execute(mCid, 0, true);
+				break;
+			}
+		}
+	};</pre><br>
+然后再看 异步类
+<p>
+<p>
+<pre name="code" class="java">private class LoadNewsAsyncTask extends AsyncTask&lt;Object, Integer, Integer&gt; {
+
+		@Override
+		protected void onPreExecute() {
+			// 隐藏刷新按钮
+			mTitlebarRefresh.setVisibility(View.GONE);
+			// 显示进度条
+			mLoadnewsProgress.setVisibility(View.VISIBLE);
+			// 设置LoadMore Button 显示文本
+			loadMoreBtn.setText(R.string.loadmore_txt);
+		}
+
+		@Override
+		protected Integer doInBackground(Object... params) {
+			return getSpeCateNews((Integer) params[0], mNewsData,
+					(Integer) params[1], (Boolean) params[2]);
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			// 根据返回值显示相关的Toast
+			switch (result) {
+			case NONEWS:
+				Toast.makeText(MainActivity.this, R.string.no_news,
+						Toast.LENGTH_LONG).show();
+				break;
+			case NOMORENEWS:
+				Toast.makeText(MainActivity.this, R.string.no_more_news,
+						Toast.LENGTH_LONG).show();
+				break;
+			case LOADERROR:
+				Toast.makeText(MainActivity.this, R.string.load_news_failure,
+						Toast.LENGTH_LONG).show();
+				break;
+			}
+			mNewsListAdapter.notifyDataSetChanged();
+			// 显示刷新按钮
+			mTitlebarRefresh.setVisibility(View.VISIBLE);
+			// 隐藏进度条
+			mLoadnewsProgress.setVisibility(View.GONE);
+			// 设置LoadMore Button 显示文本
+			loadMoreBtn.setText(R.string.loadmore_btn);
+		}
+	}
+</pre><br>
+<p>关于异步 基本就是我的那个思想基础就好</p>
+<p><a target="_blank" href="http://download.csdn.net/detail/jack_king007/8125755">点击下载源码</a><br>
+</p>
+<p>
+<span id="pv-float-bar-container" style="top:2492px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span><span id="pv-float-bar-container" style="top:1955px; left:0px"><span title="查看原始" class="pv-float-bar-button pv-float-bar-button-actual" style=""></span><span title="查看当前" class="pv-float-bar-button pv-float-bar-button-current"></span><span title="放大镜" class="pv-float-bar-button pv-float-bar-button-magnifier" style=""></span><span title="查看库" class="pv-float-bar-button pv-float-bar-button-gallery"></span></span>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

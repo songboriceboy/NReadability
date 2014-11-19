@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="android,ios" />
+        <meta name="keywords" content="android,ios" />
+
+        <title>Jack_King007的专栏</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Jack_King007的专栏</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/androiddmyh/index.html">android代码优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/appkfzwgnsl/index.html">app开发之我给你思路</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/javajcjq/index.html">java基础加强</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/ypwzjnzjlsjytjsd/index.html">一片文章就能在简历上加一条技术点</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azzjsgl/index.html">安卓之技术归类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/index.html">安卓基础的回顾</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azksrmlsxxmxl/index.html">安卓快速入门——练手小项目系列</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azwlbc/index.html">安卓网络编程</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/kskf/index.html">快速开发</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/wfl/index.html">未分类</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/gfzmAPPkfl/index.html">高仿著名APP开发类</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>黑名单之Listview的优化</div><br><div id="article_content" class="article_content">
+
+<span style="font-size:32px">listview的优化</span><br>
+<br>
+<br>
+<span style="font-size:24px">1.复用历史缓存的view对象 converview<br>
+2.减少子孩子id查询的次数<br>
+3.分批的加载数据<br>
+4.分页的加载数据<br>
+<br>
+<br>
+<br>
+<br>
+优化的原则： 拆东墙补西墙。<br>
+<br>
+<br>
+1.时间换时间（listview的分批加载数据）<br>
+<br>
+<br>
+2.时间换空间 &nbsp;文件拷贝<br>
+<br>
+<br>
+3.空间换时间 &nbsp;文件快速查找的索引。&nbsp;<br>
+<br>
+<br>
+</span>
+<p><span style="font-size:24px">4.空间换空间 &nbsp;虚拟内存 &nbsp;RAMdisk</span></p>
+<p><br>
+</p>
+<p><span style="font-size:24px">代码思想：</span></p>
+<p><span style="font-size:24px">1.在布局里面加一个 progressbar &nbsp;体现客户需求<br>
+<br>
+<br>
+2.利用数据库查询分批加载查询数据，一次10条 然后添加一个滚动监听事件，滚动到最后 自动加载10条，显示<span style="font-size:24px">progressbar &nbsp;</span><br>
+</span></p>
+<p><span style="font-size:24px"><span style="font-size:24px"><br>
+</span></span></p>
+<p><span style="font-size:24px"><span style="font-size:24px">3.</span></span></p>
+<p><span style="font-size:24px"><span style="font-size:24px"><br>
+</span></span></p>
+<p><span style="font-size:24px"><span style="font-size:24px"></span></span><pre name="code" class="java">package com.itheima.mobilesafe;
+
+import java.util.List;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.itheima.mobilesafe.db.dao.BlackNumberDao;
+import com.itheima.mobilesafe.domain.BlackNumberInfo;
+
+public class CallSmsSafeActivity extends Activity {
+	public static final String TAG = &quot;CallSmsSafeActivity&quot;;
+	private ListView lv_callsms_safe;
+	//从数据库传过来的黑名单
+	private List&lt;BlackNumberInfo&gt; infos;
+	private BlackNumberDao dao;
+	private CallSmsSafeAdapter adapter;
+	private LinearLayout ll_loading;
+	private int offset = 0;
+	private int maxnumber = 20;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_call_sms_safe);
+	ll_loading = (LinearLayout) findViewById(R.id.ll_loading);
+	lv_callsms_safe = (ListView) findViewById(R.id.lv_callsms_safe);
+	dao = new BlackNumberDao(this);
+	fillData();
+
+	// listview注册一个滚动事件的监听器。
+	lv_callsms_safe.setOnScrollListener(new OnScrollListener() {
+	// 当滚动的状态发生变化的时候。
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	switch (scrollState) {
+	case OnScrollListener.SCROLL_STATE_IDLE:// 空闲状态
+	// 判断当前listview滚动的位置
+	// 获取最后一个可见条目在集合里面的位置。
+	int lastposition = lv_callsms_safe.getLastVisiblePosition();
+
+	// 集合里面有20个item 位置从0开始的 最后一个条目的位置 19
+	if (lastposition == (infos.size() - 1)) {
+	System.out.println(&quot;列表被移动到了最后一个位置，加载更多的数据。。。&quot;);
+	offset += maxnumber;
+	fillData();
+	}
+
+	break;
+	case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:// 手指触摸滚动
+	break;
+	case OnScrollListener.SCROLL_STATE_FLING:// 惯性滑行状态
+	break;
+	}
+	}
+
+&lt;span style=&quot;white-space:pre&quot;&gt;	&lt;/span&gt;// 滚动的时候调用的方法。
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+	int visibleItemCount, int totalItemCount) {
+
+			}
+		});
+
+	}
+
+	private void fillData() {
+		ll_loading.setVisibility(View.VISIBLE);
+		new Thread() {
+			public void run() {
+			if (infos == null) {
+			infos = dao.findPart(offset, maxnumber);
+				} else {// 原来已经加载过数据了。
+			infos.addAll(dao.findPart(offset, maxnumber));
+				}
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+			ll_loading.setVisibility(View.INVISIBLE);
+			if (adapter == null) {
+			adapter = new CallSmsSafeAdapter();
+			lv_callsms_safe.setAdapter(adapter);
+						}else{
+				adapter.notifyDataSetChanged();
+						}
+					}
+				});
+			};
+		}.start();
+	}
+
+	private class CallSmsSafeAdapter extends BaseAdapter {
+		@Override
+		public int getCount() {
+			return infos.size();
+		}
+
+		// 有多少个条目被显示，这个方法就会被调用多少次
+		@Override
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
+			View view;
+			ViewHolder holder;
+			// 1.减少内存中view对象创建的个数
+			if (convertView == null) {
+			Log.i(TAG, &quot;创建新的view对象：&quot; + position);
+				// 把一个布局文件转化成 view对象。
+		view = View.inflate(getApplicationContext(),
+			R.layout.list_item_callsms, null);
+			// 2.减少子孩子查询的次数 内存中对象的地址。
+			holder = new ViewHolder();
+			holder.tv_number = (TextView) view
+			.findViewById(R.id.tv_black_number);
+			holder.tv_mode = (TextView) view
+			.findViewById(R.id.tv_block_mode);
+			holder.iv_delete = (ImageView) view
+			.findViewById(R.id.iv_delete);
+		// 当孩子生出来的时候找到他们的引用，存放在记事本，放在父亲的口袋
+		view.setTag(holder);
+			} else {
+	Log.i(TAG, &quot;厨房有历史的view对象，复用历史缓存的view对象：&quot; + position);
+			view = convertView;
+		holder = (ViewHolder) view.getTag();// 5%
+			}
+		holder.tv_number.setText(infos.get(position).getNumber());
+			String mode = infos.get(position).getMode();
+			if (&quot;1&quot;.equals(mode)) {
+				holder.tv_mode.setText(&quot;电话拦截&quot;);
+			} else if (&quot;2&quot;.equals(mode)) {
+				holder.tv_mode.setText(&quot;短信拦截&quot;);
+			} else {
+				holder.tv_mode.setText(&quot;全部拦截&quot;);
+			}
+			holder.iv_delete.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					AlertDialog.Builder builder = new Builder(
+							CallSmsSafeActivity.this);
+					builder.setTitle(&quot;警告&quot;);
+					builder.setMessage(&quot;确定要删除这条记录么？&quot;);
+					builder.setPositiveButton(&quot;确定&quot;,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// 删除数据库的内容
+									dao.delete(infos.get(position).getNumber());
+									// 更新界面。
+									infos.remove(position);
+									// 通知listview数据适配器更新
+									adapter.notifyDataSetChanged();
+								}
+							});
+					builder.setNegativeButton(&quot;取消&quot;, null);
+					builder.show();
+				}
+			});
+			return view;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+	}
+
+	/**
+	 * view对象的容器 记录孩子的内存地址。 相当于一个记事本
+	 */
+	static class ViewHolder {
+		TextView tv_number;
+		TextView tv_mode;
+		ImageView iv_delete;
+	}
+
+	private EditText et_blacknumber;
+	private CheckBox cb_phone;
+	private CheckBox cb_sms;
+	private Button bt_ok;
+	private Button bt_cancel;
+
+	public void addBlackNumber(View view) {
+		AlertDialog.Builder builder = new Builder(this);
+		final AlertDialog dialog = builder.create();
+		View contentView = View.inflate(this, R.layout.dialog_add_blacknumber,
+				null);
+		et_blacknumber = (EditText) contentView
+				.findViewById(R.id.et_blacknumber);
+		cb_phone = (CheckBox) contentView.findViewById(R.id.cb_phone);
+		cb_sms = (CheckBox) contentView.findViewById(R.id.cb_sms);
+		bt_cancel = (Button) contentView.findViewById(R.id.cancel);
+		bt_ok = (Button) contentView.findViewById(R.id.ok);
+		dialog.setView(contentView, 0, 0, 0, 0);
+		dialog.show();
+		bt_cancel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		bt_ok.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String blacknumber = et_blacknumber.getText().toString().trim();
+				if (TextUtils.isEmpty(blacknumber)) {
+					Toast.makeText(getApplicationContext(), &quot;黑名单号码不能为空&quot;, 0)
+							.show();
+					return;
+				}
+				String mode;
+				if (cb_phone.isChecked() &amp;&amp; cb_sms.isChecked()) {
+					// 全部拦截
+					mode = &quot;3&quot;;
+				} else if (cb_phone.isChecked()) {
+					// 电话拦截
+					mode = &quot;1&quot;;
+				} else if (cb_sms.isChecked()) {
+					// 短信拦截
+					mode = &quot;2&quot;;
+				} else {
+					Toast.makeText(getApplicationContext(), &quot;请选择拦截模式&quot;, 0)
+							.show();
+					return;
+				}
+				// 数据被加到数据库
+				dao.add(blacknumber, mode);
+				// 更新listview集合里面的内容。
+				BlackNumberInfo info = new BlackNumberInfo();
+				info.setMode(mode);
+				info.setNumber(blacknumber);
+				infos.add(0, info);
+				// 通知listview数据适配器数据更新了。
+				adapter.notifyDataSetChanged();
+				dialog.dismiss();
+			}
+		});
+
+	}
+}
+</pre><br>
+<br>
+</p>
+
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/AndroidhqpmfbljDisplayMetricsjj/index.html">Android获取屏幕分辨率及DisplayMetrics简介</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/ContentProvderfxzyxqsq/index.html">ContentProvder复习之一相亲神器</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc/index.html">Day13持久化存储——SQLite数据库存储</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkcc(zsg)/index.html">Day13持久化存储——SQLite数据库存储(增删改)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Day13cjhccSQLitesjkccsycontentValuefz/index.html">Day13持久化存储——SQLite数据库存储（使用contentValue封装）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/day13sjkdsx/index.html">day13数据库的思想</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Hanldexxcljzdfxwltpxz/index.html">Hanlde消息处理机制的复习——网络图片下载</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/Loaderybzzfxjdbtxlzs/index.html">Loader异步装载复习——简答版通讯录助手</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/WebViewzzdylq1/index.html">WebView之自定义浏览器（1）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/cjavaeezxljsqlite/index.html">从javaee重新理解sqlite</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrtgzfxdxbf/index.html">内容提供者复习——短信备份</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/nrgczfxjtdxdemo/index.html">内容观察者复习监听短信demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/az(1)jnzmsyxlsx/index.html">安卓(1)教你怎么使用下拉刷新</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxjtdxe/index.html">安卓四大组件复习监听短信（二）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjfxzdygbs/index.html">安卓四大组件复习自定义广播（三）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxsxIPbhDemo/index.html">安卓四大组件的复习——实现IP拨号Demo</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azsdzjdfxqtdh(s)/index.html">安卓四大组件的复习——窃听电话(四)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azfxjcxsglxt/index.html">安卓复习基础学生管理系统</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/azjnsyIXListViewslgdxlsx(2)/index.html">安卓教你使用IXListView上拉更多，下拉刷新(2)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjhscwj/index.html">客户端与服务器端的交互——上传文件</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/khdyfwqddjlzjdsxasynchttpjdb/index.html">客户端与服务器端的交流——自己动手写asynchttp简单版</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/mhndbtlActionBar1tjansy/index.html">美化你的标题栏—ActionBar（1）添加按钮使用</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfwxzjmbsyrhkj/index.html">高仿威信主界面，不使用任何框架</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcjrwlsj7/index.html">高仿新闻教程——加入网络数据（7）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjctjbuttonsxjzgdsj(9)/index.html">高仿新闻教程——添加button实现加载更多数据(9)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcdjtmgxlistview(8)/index.html">高仿新闻教程——点击条目更新listview(8)</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcqqwlsjjrxwnry11/index.html">高仿新闻教程——请求网络数据加入新闻内容页（11）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrUIdyh5/index.html">高仿新闻教程—新闻内容UI的优化（5）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjczybgxsj10/index.html">高仿新闻教程之异步更新数据（10）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjchfnrjmdjr6/index.html">高仿新闻教程回复内容界面的加入（6）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjckykjdjdsxwyxwdbtly/index.html">高仿新闻教程开源框架的简单实现——网易新闻的标题栏（一）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwItemdbjfx3/index.html">高仿新闻教程新闻Item的布局复习（3）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/gfxwjcxwnrdbj4/index.html">高仿新闻教程新闻内容的编辑（4）</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdzListviewdyh/index.html">黑名单之Listview的优化</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/azjcdhg/hmdljzSQLitedyf/index.html">黑名单拦截之SQLite的用法</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
