@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="文学,历史" />
+        <meta name="keywords" content="文学,历史" />
+
+        <title>Ico_Coco</title>
+        <style type='text/css'>
+            body {
+                background-color: #CCC;
+            }
+        </style>
+        <link rel="stylesheet" href="../../../css/bootstrap.css" />
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Ico_Coco</h1>
+
+            <div class='navbar navbar-inverse'>
+                <div class='navbar-inner nav-collapse' style="height: auto;">
+                    <ul class="nav">
+                              				<li><a href="http://songboriceboy.github.io/NReadability/html/Encourage/index.html">Encourage</a></li>
+    				          				<li><a href="http://songboriceboy.github.io/NReadability/html/Javascriptyh/index.html">Javascript优化</a></li>
+    				                      </ul>
+                </div>
+            </div>
+
+            <div id='content' class='row-fluid'>
+
+                <div class='span9 main'>
+				<div style="color:blue" align=center>优化javaScript代码，提高执行效率</div><br><p><span style="background-color: #ccffff; color: #3366ff;">&nbsp; &nbsp; 今天看完书，总结了一下可以如何优化JavaScript</span></p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ccffff; color: #ff00ff;">1.合并js文件</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp; &nbsp; &nbsp; &nbsp; 为优化性能，可以把多个js文件(css文件也可以)合并成极少数大文件。跟十个5k的js文件相比，合并成一个50k的文件更好。虽然代码总字节数没变，却避免了多个HTTP请求造成的开销。每个请求都会在客户端和服务器两边有个建立和消除的过程，导致请求和响应header带来开销，还有服务器端更多的进程和线程资源消耗（可能还有为压缩内容耗费的cpu时间）。<span>除了HTTP请求，并发问题也很重要。默认情况下，在使用持久连接（persistent connections）时，ie和firefox在同一域名内只会同时下载</span><span style="color: #0066dd;">两个资源</span><span>。这就意味着，在我们等待下载2个js文件的同时，将无法下载图片资源。也就是说，这段时间内用户在页面上看不到图片。</span></span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;"><span>（<span style="color: #ff0000;">这个方法有缺点：把所有资源一起打包，将强制用户一次下载完所有资源，造成某些用户不必要的开销</span>）</span></span></p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ccffff; color: #ff00ff;">2、减缓代码下载时间：</span></p>
+<p><span style="color: #3366ff; background-color: #ccffff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Web浏览器下载的是javaScript的源码、其中包含的长变量名、注释、空格和换行等多余字符大大减缓了代码下载的时间。这些字符对于团队编写时十分有效、但在最后工程完成上传到服务器时、应当将它们全部删除。例如：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">function</span>&nbsp;showMeTheMoney(){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(!money){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>&nbsp;<span class="keyword">false</span>;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>{&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">}&nbsp;&nbsp;</span></li>
+</ol></div>
+<div id="" class="dp-highlighter">
+<div class="bar">
+<div class="tools"><span style="background-color: #ccffff; color: #3366ff;">Javascript代码 &nbsp;</span><span style="background-color: #ccffff; color: #3366ff;">可优化成：</span></div>
+</div>
+</div>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">function</span>&nbsp;showMeTheMoney(){<span class="keyword">if</span>(!money){<span class="keyword">return</span>&nbsp;<span class="keyword">false</span>;}<span class="keyword">else</span>{...}} &nbsp;</span></li>
+</ol></div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这样、优化后就节约了25个字节、倘若是一个大的javaScript工程、将节省出非常大的空间、不但提高了用户的下载速度、也减轻了服务器的压力。相信这样的代码大家见过不少、很多优秀的js插件源码都这么干！</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 另外、对于布尔型的值true和false、true都可以用1来代替,而false可以用0来代替。对于true节省了3个字节、而false则节省了4个字节、例如</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;bSearch&nbsp;=&nbsp;<span class="keyword">false</span>;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>(<span class="keyword">var</span>&nbsp;i=0;i&lt;aChoices.length&amp;&amp;!bSearch;i++){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(aChoices[i]&nbsp;==&nbsp;vValue)&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bSearch&nbsp;=&nbsp;<span class="keyword">true</span>&nbsp;;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">替换成：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;bSearch&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>(<span class="keyword">var</span>&nbsp;i=0;i&lt;aChoices.length&amp;&amp;!bSearch;i++){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(aChoices[i]&nbsp;==&nbsp;vValue)&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bSearch&nbsp;=&nbsp;1&nbsp;;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} &nbsp;</span></li>
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><br><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 替换了布尔值之后、代码的执行效率、结果都相同、但节省了7个字节。</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 代码中常常会出现检测某个值是否为有效值的语句、而很多条件非的判断就判断某个变量是否为"undefined"、"null"、或者"false"、例如：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">if</span>(myValue&nbsp;!=&nbsp;undefined){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//...&nbsp;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(myValue&nbsp;!=<span class="keyword">null</span>){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//...&nbsp;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(myValue&nbsp;!=&nbsp;<span class="keyword">false</span>){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//...&nbsp;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} &nbsp;</span></li>
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><br><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这些虽然都正确、但采用逻辑非操作符"!"也可以有同样的效果、代码如下：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">if</span>(!myValue){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//...&nbsp;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这样的替换也可以节省一部分字节、而且不太影响代码的可读性。类型的代码优化还有将数组定义时的 new Array()直接用"[]"代替、对象定义时的 new Object()用"{}"代替等、例如：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;myArray&nbsp;=&nbsp;<span class="keyword">new</span>&nbsp;Array();&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;myArray&nbsp;=&nbsp;[];&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;myObject&nbsp;=&nbsp;<span class="keyword">new</span>&nbsp;Object();&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;myObject&nbsp;=&nbsp;{};&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 显然、第二行和第四行的代码较为精简、而且也很容易理解。</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 另外、在编写代码时往往为了提高可读性、函数名称、变量名称使用了很长的英文单词、同时也大大增加了代码的长度、例如：</span></p>
+<p class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">function</span>&nbsp;AddThreeVarsTogether(firstVar,secondVar,thirdVar){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>&nbsp;(firstVar+secondVar+thirdVar);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} &nbsp;</span></li>
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><br><span style="background-color: #ccffff; color: #3366ff;">可优化成：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">function</span>&nbsp;A(a,b,c){<span class="keyword">return</span>&nbsp;(a+b+c);} &nbsp;</span></li>
+</ol></div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意：在进行变量名称替换时、必须十分小心、尤其不推荐使用文本编辑器的"查找"、"替换"功能、因为编辑器不能很好地区分变量名称或者其他代码。例如、希望将变量"tion"全部替换成"io"、很可能导致关键字"function"也被破坏。</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 对于上面说的这些减少代码体积的方法、有一些很实用的小工具可以自动完成类似的工作、例如ECMAScript Cruncher、JSMin、Online JavaScript Compressor等。</span></p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ccffff; color: #ff00ff;">3、合理声明变量</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 减少代码的体积仅仅只能使得用户下载的速度变快、但执行程序的速度并没有改变。要提高代码执行的效果、还得在各方面做调整。</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在浏览器中、JavaScript默认的变量范围是window对象、也就是全局变量。全局变量只有在浏览器关闭才释放。而JavaScript也有局部变量、通常在function中执行完毕就会立即被释放。因此在函数体中要尽可能使用var关键字来声明变量：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">function</span>&nbsp;First(){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;=&nbsp;<span class="string">""</span>&nbsp;;&nbsp;&nbsp;&nbsp;<span class="comment">//直接使用变量&nbsp;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">function</span>&nbsp;Second(){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(a);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First();&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Second();&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这样、变量"a"就成为了全局变量、直到页面关闭时才会被销毁、浪费了不必要的资源、如果在"a"的前面加上"var"、这样"a"就成为了当前function的局部变量。在执行完First()便立即被销毁。因此、在函数体中、如果不是特别需要的全局变量、都应当使用"var"进行声明、从而节省系统资源。</span></p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ccffff; color: #ff00ff;">4、使用内置函数缩短编译时间</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 只要可能、应当尽量使用JavaScript的内置函数。因为这些内置的属性、方法都是用类似C、C++之类的言语编译过的、运行起来比实时编译的JavaScript快很多。例如计算指数函数、可以自己编写：</span></p>
+<div class="dp-highlighter bg_html"><ol class="dp-xml">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="tag">&lt;</span><span class="tag-name">html</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">head</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">base</span>&nbsp;<span class="attribute">href</span>=<span class="attribute-value">"&lt;%=basePath%&gt;"</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">title</span><span class="tag">&gt;</span>内置函数<span class="tag">&lt;/</span><span class="tag-name">title</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">meta</span>&nbsp;<span class="attribute">http-equiv</span>=<span class="attribute-value">"pragma"</span>&nbsp;<span class="attribute">content</span>=<span class="attribute-value">"no-cache"</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">meta</span>&nbsp;<span class="attribute">http-equiv</span>=<span class="attribute-value">"cache-control"</span>&nbsp;<span class="attribute">content</span>=<span class="attribute-value">"no-cache"</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">meta</span>&nbsp;<span class="attribute">http-equiv</span>=<span class="attribute-value">"expires"</span>&nbsp;<span class="attribute">content</span>=<span class="attribute-value">"0"</span><span class="tag">&gt;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">meta</span>&nbsp;<span class="attribute">http-equiv</span>=<span class="attribute-value">"keywords"</span>&nbsp;<span class="attribute">content</span>=<span class="attribute-value">"keyword1,keyword2,keyword3"</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">meta</span>&nbsp;<span class="attribute">http-equiv</span>=<span class="attribute-value">"description"</span>&nbsp;<span class="attribute">content</span>=<span class="attribute-value">"This&nbsp;is&nbsp;my&nbsp;page"</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">script</span>&nbsp;<span class="attribute">type</span>=<span class="attribute-value">"text/javascript"</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;myPower(iNum,n){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;<span class="attribute">iResult</span>&nbsp;=&nbsp;<span class="attribute-value">iNum</span>&nbsp;;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(var&nbsp;<span class="attribute">i</span>=<span class="attribute-value">0</span>;i<span class="tag">&lt;</span><span class="tag-name">n</span>;i++)&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iResult&nbsp;*=&nbsp;iNum&nbsp;;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;iResult;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;<span class="attribute">myDate1</span>&nbsp;=&nbsp;<span class="attribute-value">new</span>&nbsp;Date();&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(var&nbsp;<span class="attribute">i</span>=<span class="attribute-value">0</span>;i<span class="tag">&lt;</span><span class="tag-name">150000</span>;i++){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myPower(7,8);&nbsp;&nbsp;//自定义方法&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;<span class="attribute">myDate2</span>&nbsp;=&nbsp;<span class="attribute-value">new</span>&nbsp;Date();&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.write(myDate2&nbsp;-&nbsp;myDate1);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.write("<span class="tag">&lt;</span><span class="tag-name">br</span><span class="tag">/&gt;</span>");&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">myDate1</span>&nbsp;=&nbsp;<span class="attribute-value">new</span>&nbsp;Date();&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(var&nbsp;<span class="attribute">i</span>=<span class="attribute-value">0</span>;i<span class="tag">&lt;</span><span class="tag-name">150000</span>;i++){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Math.pow(7,8);&nbsp;&nbsp;//采用系统内置方法&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">myDate2</span>&nbsp;=&nbsp;<span class="attribute-value">new</span>&nbsp;Date();&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.write(myDate2&nbsp;-&nbsp;myDate1);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/</span><span class="tag-name">script</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;<span class="tag">&lt;/</span><span class="tag-name">head</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;<span class="tag">&lt;</span><span class="tag-name">body</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;<span class="tag">&lt;/</span><span class="tag-name">body</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;"><span class="tag">&lt;/</span><span class="tag-name">html</span><span class="tag">&gt;</span>&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp; &nbsp; &nbsp; &nbsp; 运行的结果：在IE上使用定义的方法耗时2156ms，使用内置方法为750ms； &nbsp;在firefox浏览器上，<span>使用定义的方法耗时3625ms，使用内置方法为766ms；</span></span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;</span></p>
+<p><span style="background-color: #ccffff; color: #ff00ff;">5、合理书写if语句</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if语句恐怕是所有代码中使用最频繁的、然而很可惜的是它的执行效率并不是很高。在用if语句和多个else语句时、一定要把最有可能的情况放在第一个、然后是可能性第二的、依此类推。例如预计某个数值在0~100之间出现的概率最大、则可以这样安排代码：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">if</span>(iNum&gt;0&amp;&amp;iNum&nbsp;&lt;100){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"在0和100之间"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>&nbsp;<span class="keyword">if</span>(iNum&gt;99&amp;&amp;iNum&lt;200){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"在100和200之间"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>&nbsp;<span class="keyword">if</span>(iNum&gt;199&amp;&amp;iNum&lt;300){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"在200和300之间"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>{&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"小于等于0或者大于等于300"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} &nbsp;</span></li>
+</ol></div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 总是将出现概率最多的情况放在前面、这样就减少了进行多次测试后才能遇到正确条件的情况。当然也要尽可能减少使用else if 语句、例如上面的代码还可以进一步优化成如下代码：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">if</span>(iNum&gt;0){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(iNum&lt;100){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"在0和100之间"</span>);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>{&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(iNum&lt;200){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"在100和200之间"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>{&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>(iNum&lt;300){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"在200和300之间"</span>);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>{&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"大于等于300"</span>);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span class="keyword">else</span>{&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="string">"小于等于0"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上面的代码看起来比较复杂、但因为考虑了很多代码潜在的判断问题、执行问题、因此执行速度要较前面的代码快。</span><span style="background-color: #ccffff; color: #3366ff;">另外、通常当超过两种情况时、最好能够使用switch语句。经常用switch语句代替if语句、可令执行速度快甚至10倍。另外、由于case语句可以使用任何类型、也大大方便switch语句的编写。</span></p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ccffff; color: #ff00ff;"> 6、最小化语句数量</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 脚本找哦个的语句越少执行的时间就越短、而且代码的体积也会相应减少。例如使用var定义变量时可以一次定义多个、代码如下</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;iNum&nbsp;=&nbsp;365;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;sColor&nbsp;=&nbsp;<span class="string">"yellow"</span>;&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;aMyNum&nbsp;=&nbsp;[8,7,12,3]&nbsp;;&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;oMyDate&nbsp;=&nbsp;<span class="keyword">new</span>&nbsp;Date();&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上面的多个定义可以用var关键字一次性定义、代码如下：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;iNum&nbsp;=&nbsp;365,&nbsp;sColor&nbsp;=&nbsp;<span class="string">"yellow"</span>&nbsp;,&nbsp;aMyNum&nbsp;=&nbsp;[8,7,12,3],oMyDate&nbsp;=&nbsp;<span class="keyword">new</span>&nbsp;Date()&nbsp;; &nbsp;</span></li>
+</ol></div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同样在很多迭代运算的时候、也应该尽可能减少代码量、如下两行代码：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;sCar&nbsp;=&nbsp;aCars[i];&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 可优化成：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;sCar&nbsp;=&nbsp;aCars[i++]; &nbsp;</span></li>
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><br><span style="background-color: #ccffff; color: #3366ff;"><br></span></p>
+<p><span style="background-color: #ccffff; color: #ff00ff;">7、节约使用DOM</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JavaScript对DOM的处理可能是最耗费时间的操作之一。每次JavaScript对DOM的操作都会改变页面的表现、并重新渲染整个页面、从而有明显的时间消耗。比较快捷的方法就是尽可能不在页面进行DOM操作、如下例中为ul添加了10个条目</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;oUl&nbsp;=&nbsp;document.getElementById(<span class="string">"ulItem"</span>);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>(<span class="keyword">var</span>&nbsp;i=0;i&lt;10;i++){&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;oLi&nbsp;=&nbsp;document.createElement(<span class="string">"li"</span>);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oUl.appendChild(oLi);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oLi.appendChild(document.createTextNode(<span class="string">"Item&nbsp;"</span>+i));&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+
+</ol></div>
+<div id="" class="dp-highlighter">&nbsp;</div>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 以上代码在循环中调用oUl.appendChild(oLi)、每次执行这条语句后、浏览器就会重新渲染页面、其次给列表添加文本节点oLi.appendChild(document.createTextNode("Item "+i))、这也会造成页面被重新渲染。因此每次运行都会造成两次重新渲染页面、共20次。</span></p>
+<p><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 通常应当尽可能减少DOM的操作、将列表项目在添加文本节点之后在添加、并合理地使用createDocumentFragment()、代码如下：</span></p>
+<div class="dp-highlighter bg_javascript"><ol class="dp-c">
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;"><span class="keyword">var</span>&nbsp;oUl&nbsp;=&nbsp;document.getElementById(<span class="string">"ulItem"</span>);&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;oTemp&nbsp;=&nbsp;document.createDocumentFragment();&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>(<span class="keyword">var</span>&nbsp;i=0;i&lt;10;i++){&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">var</span>&nbsp;oLi&nbsp;=&nbsp;document.createElement(<span class="string">"li"</span>);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oLi.appendChild(document.createTextNode(<span class="string">"Item&nbsp;"</span>+i));&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oTemp.appendChild(oLi);&nbsp;&nbsp;</span></li>
+<li class="alt"><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li>
+<li><span style="background-color: #ccffff; color: #3366ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oUl.appendChild(oTemp); &nbsp;</span></li>
+</ol>
+<p><span style="background-color: #ccffff; color: #3366ff;"><span>&nbsp;</span></span></p>
+<p>&nbsp;</p>
+</div>
+                </div>
+
+                <div class='span3 sidebar'>
+                    <h2>导航栏</h2>
+                    <ul class="nav nav-tabs nav-stacked">
+                             				<li><a href="http://songboriceboy.github.io/NReadability/html/Javascriptyh/yhjavaScriptdmtgzxxl/index.html">优化javaScript代码，提高执行效率</a></li>
+    				                                         
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
