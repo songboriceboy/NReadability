@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" />
+<title>小小塔防</title>
+
+</head>
+<body>
+
+<img src="img/enemy.png" id="enemy_img" style="display:none;" />
+<img src="img/tower.png" id="tower_img" style="display:none;" />
+<img src="img/bullet.png" id="bullet_img" style="display:none;" />
+<img src="img/btn.png" id="btn_img" style="display:none;" />
+
+<div id="game" style="position:relative;float:left;width:600px;height:500px;">
+	<canvas id="map" width="500" height="500" style="background:url(img/bg.png) repeat;position:absolute;left:0;top:0;z-index:99;"></canvas>
+	<canvas id="main" width="500" height="500" style="position:absolute;left:0;top:0;z-index:100;"></canvas>
+	<canvas id="tower" width="500" height="500" style="position:absolute;left:0;top:0;z-index:100;"></canvas>
+	<canvas id="select" width="500" height="500" style="position:absolute;left:0;top:0;z-index:101;"></canvas>
+	<canvas id="info" width="100" height="500" style="background-color:black;position:absolute;left:500px;top:0;z-index:102;"></canvas>
+</div>
+
+<div style="float:left;width:500px;margin-left:50px;">
+	
+	<p>
+		说明：每种塔都可以升级到3级，升级的价格与本身建造相同，卖掉的话就是总额的一半。<br/><br/>
+		第一种塔：升级到3级，有小偷功能，每攻击一次会偷取1块钱。<br/>
+		第二种塔：减速攻击，3级时可以同时减速两个。<br/>
+		第三种塔：多重攻击。攻击多个目标。<br/>
+		第四种塔：穿刺攻击，攻击一条线上，攻击力最高。<br/>
+		第五种塔：秒杀攻击，有一定几率把敌人秒杀。<br/><br />
+		选择地图<select id="select_map"><option value="1">地图一</option><option value="2">地图二</option></select>,然后按<input type="button" value="开始" onclick="startGame()" />开始游戏！
+	</p>
+	
+</div>
+
+
+<script type="text/javascript" src="js/tools.js"></script>
+<script type="text/javascript" src="js/MapData.js"></script>
+<script type="text/javascript" src="js/Map.js"></script>
+<script type="text/javascript" src="js/Info.js"></script>
+<script type="text/javascript" src="js/Enemy.js"></script>
+<script type="text/javascript" src="js/Tower.js"></script>
+<script type="text/javascript" src="js/Bullet.js"></script>
+<script type="text/javascript" src="js/Game.js"></script>
+
+<script type="text/javascript">
+	
+    var isStart = false;
+    
+	function startGame(){
+		
+        if(!isStart)Game.start();
+        else Game.restart();
+        
+        isStart = true;
+	}
+	
+</script>
+
+</body>
+</html>
